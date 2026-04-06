@@ -1,0 +1,31 @@
+const transactionSearchFilters: SavedSearchFilters = [
+    ['posting', 'is', 'T'],
+    'AND',
+    ['account', 'anyof', '851'],
+    'AND',
+    ['line.cseg_njt_divisions', 'anyof', '@ALL@'],
+    'AND',
+    ['cseg_njt_seg_proj', 'anyof', '60'],
+];
+
+const transactionSearchColAccount = search.createColumn({ name: 'account' });
+const transactionSearchColAmountDebit = search.createColumn({ name: 'debitamount' });
+const transactionSearchColAmountCredit = search.createColumn({ name: 'creditamount' });
+const transactionSearchColStatusRef = search.createColumn({ name: 'statusref' });
+const transactionSearchColTranId = search.createColumn({ name: 'tranid' });
+const transactionSearchColSJSDivisions = search.createColumn({ name: 'line.cseg_njt_divisions' });
+const transactionSearchColProjectCode = search.createColumn({ name: 'cseg_njt_seg_proj' });
+
+const transactionSearch: search.Search = search.create({
+    type: 'transaction',
+    filters: transactionSearchFilters,
+    columns: [
+        transactionSearchColAccount,
+        transactionSearchColAmountDebit,
+        transactionSearchColAmountCredit,
+        transactionSearchColStatusRef,
+        transactionSearchColTranId,
+        transactionSearchColSJSDivisions,
+        transactionSearchColProjectCode,
+    ],
+});
