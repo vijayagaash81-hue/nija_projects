@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Authentication API",
+    "status": "Completed",
+    "statusClass": "status-done",
+    "description": "Implemented secure JWT-based authentication for the new mobile application backend.",
+    "dueDate": "Oct 12",
+    "progress": 100
+  },
+  {
+    "title": "User Dashboard UI",
+    "status": "In Progress",
+    "statusClass": "status-progress",
+    "description": "Building the front-end user portal using React and Tailwind CSS. Currently connecting API endpoints.",
+    "dueDate": "Nov 05",
+    "progress": 60
+  },
+  {
+    "title": "Database Migration",
+    "status": "Planning",
+    "statusClass": "status-planning",
+    "description": "Mapping out the schema changes required to move from the legacy SQL database to PostgreSQL.",
+    "dueDate": "Dec 01",
+    "progress": 0
+  },
+  {
+    "title": "Your Custom Project 1",
+    "status": "Planning",
+    "statusClass": "status-planning",
+    "description": "Description for the project you mentioned. Replace this text with your specific project details.",
+    "dueDate": "TBD",
+    "progress": 0
+  },
+  {
+    "title": "Your Custom Project 2",
+    "status": "In Progress",
+    "statusClass": "status-progress",
+    "description": "Description for the second project you mentioned. Replace this text with your specific project details.",
+    "dueDate": "TBD",
+    "progress": 15
+  }
+]

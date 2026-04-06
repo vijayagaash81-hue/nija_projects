@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects</title>
+    <style>
+        :root {
+            --gh-bg: #0a0a0a;
+            --gh-header-bg: #141414;
+            --gh-border: #333333;
+            --gh-text-main: #ffffff;
+            --gh-text-muted: #a3a3a3;
+            --gh-link: #ff0000;
+            --gh-btn-bg: #141414;
+            --gh-btn-border: #333333;
+            --gh-btn-hover: #262626;
+            --gh-primary-bg: #ff0000;
+            --gh-primary-hover: #cc0000;
+            --gh-input-bg: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        }
+
+        body {
+            background-color: var(--gh-bg);
+            color: var(--gh-text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* GitHub-style Header */
+        header {
+            background-color: var(--gh-header-bg);
+            padding: 16px 32px;
+            border-bottom: 1px solid var(--gh-border);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        header a {
+            color: var(--gh-text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        header a:hover {
+            color: var(--gh-text-muted);
+        }
+
+        /* Main Layout */
+        main {
+            max-width: 1012px;
+            margin: 0 auto;
+            padding: 32px 16px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gh-border);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            background-color: var(--gh-btn-bg);
+            color: var(--gh-text-main);
+            border: 1px solid var(--gh-btn-border);
+            padding: 5px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--gh-btn-hover);
+            border-color: var(--gh-text-muted);
+        }
+
+        .btn-primary {
+            background-color: var(--gh-primary-bg);
+            color: #ffffff;
+            border-color: rgba(255, 0, 0, 0.5);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--gh-primary-hover);
+        }
+
+        /* Project Form */
+        #new-project-form-container {
+            background-color: var(--gh-header-bg);
+            border: 1px solid var(--gh-border);
+            border-radius: 6px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none; /* Hidden by default */
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            background-color: var(--gh-input-bg);
+            border: 1px solid var(--gh-border);
+            color: var(--gh-text-main);
+            padding: 5px 12px;
+            font-size: 14px;
+            line-height: 20px;
+            border-radius: 6px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gh-link);
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.3);
+        }
+
+        /* Project List */
+        .project-list {
+            border: 1px solid var(--gh-border);
+            border-radius: 6px;
+        }
+
+        .project-item {
+            padding: 24px;
+            border-bottom: 1px solid var(--gh-border);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .project-item:last-child {
+            border-bottom: none;
+        }
+
+        .project-title {
+            color: var(--gh-link);
+            font-size: 20px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .project-title:hover {
+            text-decoration: underline;
+        }
+
+        .project-desc {
+            color: var(--gh-text-muted);
+            font-size: 14px;
+            max-width: 75%;
+        }
+
+        .project-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--gh-text-muted);
+            margin-top: 8px;
+        }
+
+        .timeline-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html">← Back to Dashboard</a>
+        <span style="color: var(--gh-text-muted);">/</span>
+        <span style="font-weight: 600;">My Projects</span>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h2 style="font-size: 24px; font-weight: 400;">Repositories / Projects</h2>
+            <button class="btn btn-primary" id="toggle-form-btn">New</button>
+        </div>
+
+        <div id="new-project-form-container">
+            <form id="project-form">
+                <div class="form-group">
+                    <label for="p-title">Project Name</label>
+                    <input type="text" id="p-title" class="form-control" required placeholder="e.g., frontend-refactor">
+                </div>
+                <div class="form-group">
+                    <label for="p-desc">Description (optional)</label>
+                    <input type="text" id="p-desc" class="form-control" placeholder="Short description of the project">
+                </div>
+                <div class="form-group">
+                    <label for="p-timeline">Timeline / Due Date</label>
+                    <input type="text" id="p-timeline" class="form-control" required placeholder="e.g., Q4 2023 or Nov 15">
+                </div>
+                <div style="display: flex; gap: 8px; margin-top: 24px;">
+                    <button type="submit" class="btn btn-primary">Create project</button>
+                    <button type="button" class="btn" id="cancel-form-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="project-list" id="project-list-container">
+            <!-- Projects will load here dynamically -->
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const listContainer = document.getElementById('project-list-container');
+            const toggleBtn = document.getElementById('toggle-form-btn');
+            const cancelBtn = document.getElementById('cancel-form-btn');
+            const formContainer = document.getElementById('new-project-form-container');
+            const projectForm = document.getElementById('project-form');
+
+            // Toggle the Add Project form
+            toggleBtn.addEventListener('click', () => {
+                formContainer.style.display = 'block';
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                formContainer.style.display = 'none';
+                projectForm.reset();
+            });
+
+            // Function to render a single project item
+            function createProjectElement(title, desc, timeline) {
+                const item = document.createElement('div');
+                item.className = 'project-item';
+                item.innerHTML = `
+                    <div>
+                        <a href="#" class="project-title">${title}</a>
+                    </div>
+                    <p class="project-desc">${desc || 'No description provided.'}</p>
+                    <div class="project-meta">
+                        <span class="timeline-badge">📅 Timeline: ${timeline}</span>
+                        <span>Updated just now</span>
+                    </div>
+                `;
+                return item;
+            }
+
+            // 1. Fetch initial projects from the JSON file
+            fetch('projects.json')
+                .then(res => res.json())
+                .then(projects => {
+                    projects.forEach(p => {
+                        listContainer.appendChild(createProjectElement(p.title, p.description, p.dueDate));
+                    });
+                })
+                .catch(err => {
+                    console.error('Error loading projects:', err);
+                    listContainer.innerHTML = '<div class="project-item"><p class="project-desc">Ensure you are running a Live Server to view projects.</p></div>';
+                });
+
+            // 2. Handle Add New Project submission
+            projectForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const title = document.getElementById('p-title').value;
+                const desc = document.getElementById('p-desc').value;
+                const timeline = document.getElementById('p-timeline').value;
+
+                const newProject = {
+                    title: title,
+                    status: "Planning", // Default status for new projects
+                    statusClass: "status-planning",
+                    description: desc,
+                    dueDate: timeline,
+                    progress: 0
+                };
+
+                try {
+                    // Send the new project to the Node.js server
+                    const response = await fetch('/api/projects', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(newProject)
+                    });
+
+                    if (response.ok) {
+                        const newElem = createProjectElement(title, desc, timeline);
+                        listContainer.prepend(newElem); // Add to UI
+                        projectForm.reset();
+                        formContainer.style.display = 'none';
+                    } else {
+                        alert("Failed to save project. Is the server running?");
+                    }
+                } catch (err) {
+                    console.error("Error saving project:", err);
+                    alert("Network error. Ensure the Node.js server is running.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
