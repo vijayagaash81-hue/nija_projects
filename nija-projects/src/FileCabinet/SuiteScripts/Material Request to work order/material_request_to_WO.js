@@ -1121,8 +1121,9 @@ if (context.sublistId === 'recmachcustrecord_njt_mat_request' ||
 
     function validateLine(context) {
         var currentRecord = context.currentRecord;
-        
+
         if (context.sublistId === 'recmachcustrecord_njt_mat_request') {
+            // 1. Item Type Check (Raw Material or Trading)
             var itemType = currentRecord.getCurrentSublistValue({
                 sublistId: 'recmachcustrecord_njt_mat_request',
                 fieldId: 'custrecord1289'
@@ -1134,6 +1135,52 @@ if (context.sublistId === 'recmachcustrecord_njt_mat_request' ||
                     message: 'Item Type Should be Raw material or Trading Are allowded for the material request'
                 });
                 return false;
+            }
+
+            // 2. Duplicate Item Check against Production Order
+            var prodOrderId = currentRecord.getValue({
+                fieldId: 'custrecord_njt_mr_prodorder'
+            });
+
+            var item = currentRecord.getCurrentSublistValue({
+                sublistId: 'recmachcustrecord_njt_mat_request',
+                fieldId: 'custrecord_njt_mat_req_details_item'
+            });
+
+            // Only run the check if we have the necessary IDs
+            if (prodOrderId && item) {
+                try {
+                    // This query checks if the same item already exists on the linked Production Order on a line
+                    // that is still 'open' (i.e., status is not 2).
+                    // IMPORTANT: You must replace 'customrecord_njt_product_order_line' with the actual Script ID of the child record
+                    // that makes up the 'recmachcustrecord_njt_pro_2' sublist on the Production Order.
+                    var sql = "SELECT id FROM customrecord_njt_prod_deta " +
+                        "WHERE custrecord_njt_pro_2 = ? " + // This is the field on the child record linking it to the parent Production Order.
+                        "AND custrecord_njt_itm_code = ? " +
+                        "AND (custrecord_njt_transfer_ord_sts IS NULL OR custrecord_njt_transfer_ord_sts <> 2)";
+
+                    var results = query.runSuiteQL({
+                        query: sql,
+                        params: [prodOrderId, item]
+                    }).asMappedResults();
+
+                    // If we find any results, it means an open duplicate exists.
+                    if (results.length > 0) {
+                        dialog.alert({
+                            title: 'Duplicate Item',
+                            message: 'This item already exists on the Production Order and has not been completed. A new line cannot be added.'
+                        });
+                        return false; // Block the line from being added.
+                    }
+                } catch (e) {
+                    console.error('Error checking for duplicate item on Production Order', e);
+                    dialog.alert({
+                        title: 'Validation Error',
+                        message: 'An error occurred while validating the item: ' + e.message
+                    });
+                    // Fail safely by blocking the line if the check fails.
+                    return false;
+                }
             }
         }
         return true;
