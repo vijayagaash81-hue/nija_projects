@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+ 
+<pdf>
+    <head>
+        <link name="NotoSans" type="font" subtype="truetype" src="${nsfont.NotoSans_Regular}" src-bold="${nsfont.NotoSans_Bold}" src-italic="${nsfont.NotoSans_Italic}" src-bolditalic="${nsfont.NotoSans_BoldItalic}" bytes="2" />
+        <#if .locale == "zh_CN">
+            <link name="NotoSansCJKsc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKsc_Regular}" src-bold="${nsfont.NotoSansCJKsc_Bold}" bytes="2" />
+        <#elseif .locale == "zh_TW">
+            <link name="NotoSansCJKtc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKtc_Regular}" src-bold="${nsfont.NotoSansCJKtc_Bold}" bytes="2" />
+        <#elseif .locale == "ja_JP">
+            <link name="NotoSansCJKjp" type="font" subtype="opentype" src="${nsfont.NotoSansCJKjp_Regular}" src-bold="${nsfont.NotoSansCJKjp_Bold}" bytes="2" />
+        <#elseif .locale == "ko_KR">
+            <link name="NotoSansCJKkr" type="font" subtype="opentype" src="${nsfont.NotoSansCJKkr_Regular}" src-bold="${nsfont.NotoSansCJKkr_Bold}" bytes="2" />
+        <#elseif .locale == "th_TH">
+            <link name="NotoSansThai" type="font" subtype="opentype" src="${nsfont.NotoSansThai_Regular}" src-bold="${nsfont.NotoSansThai_Bold}" bytes="2" />
+        </#if>
+        <macrolist>
+           <macro id="nlheader">
+               {{subLegalName}}
+               <!-- {{subsitable}} -->
+             
+           </macro>
+ 
+        <macro id="nlfooter">
+       <table style="width:100%;margin-top: 10px;">
+    <tr>
+        <td style="width: 17%; font-size: 8pt; color: grey; text-align: center; font-weight: bold;">
+            PREPARED BY
+        </td>
+        <td style="width: 20%; font-size: 8pt; color: grey; text-align: center; font-weight: bold;">
+            CHECKED BY <br />
+            <span style="font-weight: lighter;">(Internal Auditor)</span>
+        </td>
+        <td style="width: 20%; font-size: 8pt; color: grey; text-align: center; font-weight: bold;">
+            REVIEWED BY <br />
+            <span style="font-weight: lighter;">(Personnel Manager)</span>
+        </td>
+        <td style="width: 20%; font-size: 8pt; color: grey; text-align: center; font-weight: bold;">
+            APPROVED BY <br />
+            <span style="font-weight: lighter;">(Business Head)</span>
+        </td>
+        <td style="width: 23%; font-size: 8pt; color: grey; text-align: center; font-weight: bold;">
+            AUTHORIZED SIGNATORY <br />
+            <span style="font-weight: lighter;">(Managing Director)</span>
+        </td>
+    </tr>
+</table>
+
+            <table width="100%" style="font-size:9pt;border-top:1px solid black;font-size: 8pt;">
+        <tr>
+            <!-- Left Side: Date and Time -->
+            <td align="left" style="width:33%;">
+                <b>{{currentDate}} {{currentTime}}</b>
+            </td>
+
+            <!-- Center: Page Number -->
+            <td align="center" style="width:34%;font-weight:bold;">
+                Page&nbsp;<pagenumber/> of <totalpages/>
+            </td>
+
+            <!-- Right Side: HRF 600A -->
+            <td align="right" style="width:33%;font-weight:bold;">
+                HRF 600A
+            </td>
+        </tr>
+    </table>
+        </macro>
+        <macro id="watermark">
+            &nbsp;
+        </macro>
+        </macrolist>
+        <style type="text/css">
+            * {
+                <#if .locale == "zh_CN">
+                    font-family: NotoSans, NotoSansCJKsc, sans-serif;
+                <#elseif .locale == "zh_TW">
+                    font-family: NotoSans, NotoSansCJKtc, sans-serif;
+                <#elseif .locale == "ja_JP">
+                    font-family: NotoSans, NotoSansCJKjp, sans-serif;
+                <#elseif .locale == "ko_KR">
+                    font-family: NotoSans, NotoSansCJKkr, sans-serif;
+                <#elseif .locale == "th_TH">
+                    font-family: NotoSans, NotoSansThai, sans-serif;
+                <#else>
+                    font-family: NotoSans, sans-serif;
+                </#if>
+            }
+            table {
+                font-size: 9pt;
+                table-layout: fixed;
+            }
+ 
+            td {
+                padding: 4px 6px;
+            }
+ 
+            table.header td {
+                padding: 0;
+                font-size: 10pt;
+            }
+ 
+            table.footer td {
+                padding: 0;
+                font-size: 8pt;
+            }
+ 
+            table.body td {
+                padding-top: 2px;
+            }
+ 
+            span.title {
+                font-size: 28pt;
+            }
+ 
+            .nameandaddress {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+            }
+        </style>
+    </head>
+ 
+<body header="nlheader" header-height="8%" footer="nlfooter" footer-height="3%" padding="0.5in 0.5in 0.5in 0.5in" size="Letter">
+<table style="width: 100%; ">   
+<tr>
+    
+    <td align='right' style="width:60%;font-weight:bold;padding-right:30%;">
+    <!-- VACATION SETTLEMENT -->
+                       <span style="font-size:10pt;text-decoration:underline;font-weight:bold;padding-right:30px;">VACATION SETTLEMENT</span>
+                    </td>
+                     <td align='right' style="width:40%;">
+                       
+                        
+                    </td>
+  </tr>
+
+</table>
+<table width="100%" style="font-size:8pt;border-bottom:1px solid black;">
+ 
+             <tr>
+                   <td align="left" style="width:11%;">
+                   Voucher <br /><br />
+    Code<br /><br />
+    Name<br /><br />
+    Designation<br /><br />
+    Nationality
+</td>
+ 
+<td  style="width:1%;">
+         : <br /><br /> : <br /><br /> : <br /><br /> : <br /><br /> :            
+</td>
+<td align='left' style="width:21%;">
+   ${record.custrecord_hrms_lveset_leaverefno}<br /><br />{{empCode}}<br /><br />{{empLegalName}}<br /><br />{{empDesignation}}<br /><br />{{empNationality}}              
+</td>
+<td align="center" style="width:30%; padding-right:45px;">
+    {{employeeimage}}
+</td>
+
+ <td  style="width:5%;">
+                     
+</td>
+<td  style="width:16%;">
+      Date of Joining <br /><br />
+Last Working Date<br /><br />                    
+No of Days<br /><br />  
+No of Years Worked <br /><br />
+Last Rejoin Date                
+</td>
+ <td  style="width:1%;">
+       : <br /><br /> : <br /><br /> : <br /><br /> : <br /><br />:                
+</td>
+<td  style="width:15%;">
+  {{formattedDateOfJoining}}<br /><br />{{formattedLastWorkingDay}}<br /><br />{{NoofdaysA}}<br /><br />${record.custrecord_hrms_lveset_noofyears}<br /><br />{{rejoindate}}                   
+</td>
+                 
+                 </tr>
+             </table>
+       
+
+        <table style="width:100%;border-bottom:1px solid black;margin-top:10px;">
+            <tr>
+               <td align='left' style="width:65%;"> 
+                  <b>Description</b>
+               </td>
+               <td align='right' style="width:15%;">
+                   <b>${record.custrecord_hrms_lveset_year}</b>
+               </td>
+               <td align='right' style="width:20%;">
+                   <b>Total</b>
+               </td>
+            </tr>
+        </table>
+        <table style="width:100%;border-bottom:1px solid black;margin-top:10px;font-size:8pt;">
+    <tr>
+        <td align='left' style="width:65%;">Basic Salary</td>
+        <td align='right' style="width:15%;">{{Basesalary}}</td>
+        <td align='right' style="width:20%;"></td>
+    </tr>
+    <tr>
+        <td style="width: 70%; font-size: 8pt; color: grey;">Rate Per Day</td>
+        <td align='right' style="width: 15%; font-size: 8pt; color: grey; text-align: right;">{{Ratesperday}}</td>
+        <td align='right' style="width: 15%; font-size: 8pt; color: grey; text-align: right;"><b></b></td>
+    </tr>
+</table>
+
+       <table style="width: 100%; margin-top: 10px; border-bottom: 1px dotted black;">
+  <tr>
+    <td style="width: 65%; font-size: 8pt; color: grey;">No of Days</td>
+    <td align='right' style="width: 15%; font-size: 8pt; color: grey; ">{{salarynoOfDays}}</td>
+    <td align='right' style="width: 20%; font-size: 8pt; color: grey; "><b>{{salarynoOfDays1}}</b></td>
+  </tr>
+  <tr>
+    <td style="width: 65%; font-size: 8pt; color: grey;">Leave Salary</td>
+    <td align='right' style="width: 15%; font-size: 8pt; color: grey; text-align: right;">{{leaveSalary}}</td>
+    <td align='right' style="width:20%; font-size: 8pt; color: grey; text-align: right;"><b>{{leaveSalary1}}</b></td>
+  </tr>
+  <tr>
+    <td style="width: 65%; font-size: 8pt; color: grey;">Air Ticket</td>
+    <td align='right' style="width: 15%; font-size: 8pt; color: grey; text-align: right;">{{airTicket}}</td>
+    <td align='right' style="width: 20%; font-size: 8pt; color: grey; text-align: right;"><b>{{airTicket1}}</b></td>
+  </tr>
+  <tr>
+    <td style="width: 65%; font-size: 8pt; color: grey;">Salary Advance</td>
+    <td align='right' style="width: 15%; font-size: 8pt; color: grey; text-align: right;">{{salaryAdvance}}</td>
+    <td align='right' style="width: 20%; font-size: 8pt; color: grey; text-align: right;"><b>{{salaryAdvance1}}</b></td>
+  </tr>
+</table>
+
+        <table style="width:100%;border-bottom:1px solid black;">
+            <tr>
+                <td align='left' style="width:65%;"> <!-- Remaining width for the first column -->
+                   <b>Net Total</b>
+                </td>
+                <td align='right' style="width:15%;">
+                    <b>{{totalAmount}}</b>
+                </td>
+                <td align='right' style="width:20%;">
+                    <b>{{totalAmount1}}</b>
+                </td>
+            </tr>
+        </table>
+ 
+        <table style="width:100%;border-bottom:1px dotted black;border-left:1px solid black;border-right:1px solid black;">
+    <tr style="border-bottom:1px solid black;">
+        <td align='left' style="width:50%;"> <!-- Remaining width for the first column -->
+            <b>Description For  Salary</b>
+        </td>
+        <td align='right' style="width:30%;">
+            <b>Pending as on {{pendingmonth}}- {{pendingyear}}</b>
+        </td>
+        <td align='right' style="width:20%;">
+            <b>Total</b>
+        </td>
+    </tr>
+   {{htmlOutput}}
+
+</table>
+{{netTotalTable}}
+       
+  <!-- <table style="width:100%; border-collapse: collapse; margin-top: 10px;">
+  <tr>
+    <td style="text-align: left; font-weight: bold; ">Other Additions &nbsp;:</td>
+    <td style="text-align: right; border: 1px solid #000; width: 80px;">${record.custrecord_hrms_lveset_additionamount}</td>
+    <td style="text-align: left; font-weight: bold; ">Other Deductions &nbsp;:</td>
+    <td style="text-align: right; border: 1px solid #000; width: 80px;">${record.custrecord_hrms_lveset_deductionamount}</td>
+    
+    <td style="text-align: left; font-weight: bold;">Net Amount</td>
+    <td style="text-align: right; font-weight: bold; width: 100px;">${record.custrecord_hrms_lveset_settleamount}</td>
+  </tr>
+</table> -->
+<table style="width:100%;margin-top:10px;font-size: 8pt;">
+                       <tr>
+                        <td style="width:18%">Other Additions&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                        <td align='center' style="width:12%;border-left:1px solid black;border-top:1px solid black;border-right:1px solid black;border-bottom:1px solid black;"></td>
+                        <td style="width:2%"></td>
+                        <td style="width:19%">Other Deductions&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                        <td align='center' style="width:14%;border-left:1px solid black;border-top:1px solid black;border-right:1px solid black;border-bottom:1px solid black;"></td>
+                        <td style="width:5%"></td>
+                        <td style="width:14%">Net Amount&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                        <td align='right' style="width:20%;border-bottom:1px solid black;">{{netamtbottom}}</td>
+                        
+                       </tr>
+                    </table>
+
+<table style="width: 100%; border-collapse: collapse; margin-top: 10px;font-size: 8pt;">
+  <tr>
+    <td style="text-align: left;  padding: 5px; width: 20%;">Amount In Words:</td>
+    <td style="text-align: left; font-weight: normal; padding: 5px; width: 80%;border-bottom:1px solid black;">{{amtinwrd}}</td>
+  </tr>
+</table>
+
+
+
+ <table style="width:100%;margin-top:120px;">
+                       <tr>
+                        <td style="width:16%">Receiver's Name</td>
+                        <td style="width:20%;border-bottom:1px solid black;"></td>
+                        <td style="width:2%"></td>
+                        <td style="width:20%">Receiver's Signature</td>
+                        <td style="width:16%;border-bottom:1px solid black;"></td>
+                        <td style="width:2%"></td>
+                        <td style="width:8%">Date :</td>
+                        <td style="width:14%;border-bottom:1px solid black;"></td>
+                        <td style="width:2%"></td>
+                       </tr>
+                    </table>
+
+
+  
+    </body>
+</pdf>
