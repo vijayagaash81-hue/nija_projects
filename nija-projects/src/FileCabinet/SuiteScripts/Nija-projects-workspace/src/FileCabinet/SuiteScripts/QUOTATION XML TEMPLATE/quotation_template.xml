@@ -1,0 +1,266 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+<style>
+    body { font-family: Helvetica; font-size: 10pt; }
+
+    .title {
+        font-size: 20pt;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .company {
+        font-size: 10pt;
+        line-height: 14px;
+    }
+
+    table { width: 100%; border-collapse: separate; border-spacing: 0; }
+
+    .label { color: #777; font-size: 9pt; }
+    .value { font-weight: bold; }
+
+    .th {
+        background-color: #dcdbf2;
+        font-weight: bold;
+        padding: 6px;
+        font-size: 9pt;
+        
+       
+    }
+
+    .td {
+        padding: 6px;
+        font-size: 9pt;
+        
+        
+    
+}
+
+    .item-table {
+        border-collapse: collapse;
+    }
+
+    .right { text-align: right; }
+    .center { text-align: center; }
+
+    .total-label { padding: 4px; }
+    .total-value { padding: 4px; text-align: right; }
+
+    .total-final-label {
+        border-top: 1px solid #000;
+        font-weight: bold;
+        padding-top: 6px;
+    }
+
+    .total-final-value {
+        border-top: 1px solid #000;
+        font-weight: bold;
+        text-align: right;
+        padding-top: 6px;
+    }
+
+</style>
+<macrolist>
+    <macro id="quoteFooter">
+        <table style="width: 100%; background-color: #2e5190; margin-bottom: 30px;">
+            <tr>
+                <td style="height: 6px; padding: 0;"></td>
+            </tr>
+        </table>
+        <table style="width: 100%; font-size: 9pt;">
+            <tr>
+                <td style="width: 22%; text-align: center; border-top: 1px solid #000; padding-top: 5px;">Prepared By</td>
+                <td style="width: 4%;"></td>
+                <td style="width: 22%; text-align: center; border-top: 1px solid #000; padding-top: 5px;">Accounts Approval</td>
+                <td style="width: 4%;"></td>
+                <td style="width: 22%; text-align: center; border-top: 1px solid #000; padding-top: 5px;">Check &amp; Approved By</td>
+                <td style="width: 4%;"></td>
+                <td style="width: 22%; text-align: center; border-top: 1px solid #000; padding-top: 5px;">Acknowledge By</td>
+            </tr>
+        </table>
+    </macro>
+</macrolist>
+</head>
+
+<body footer="quoteFooter" footer-height="70pt">
+
+<!-- HEADER -->
+<table>
+<tr>
+
+<td width="100%" style="vertical-align: top;">
+    <table>
+        <tr>
+            <td style="font-size:20pt; font-weight:bold;">
+                Request for Quotation
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size:10pt; line-height:14px; padding-top:6px;">
+                <span>Vendor's Name:</span><br/>
+                <b>${record.custrecord_njt_pq_vendor}</b><br/>
+                ${record.custrecord_njt_pq_vendor}<br/>
+                Phone: ${companyInformation.phone}
+            </td>
+        </tr>
+    </table>
+</td>
+
+</tr>
+</table>
+
+<br/><br/>
+
+<!-- QUOTATION DETAILS -->
+<table style="width: 100%;">
+    <tr>
+        <td style="width: 25%;">
+            <span class="label">Quotation No</span><br/>
+            <span class="value">${record.custrecord_njt_pq_quotation_ref_no}</span>
+        </td>
+        <td style="width: 25%;">
+            <span class="label">Quotation Date</span><br/>
+            <span class="value">${record.custrecord_njt_pq_date}</span>
+        </td>
+        <td style="width: 25%;">
+            <span class="label">Valid Till Date</span><br/>
+            <span class="value">${record.duedate}</span>
+        </td>
+        <td style="width: 25%;">
+            <span class="label">Payment Terms</span><br/>
+            <span class="value">${record.terms}</span>
+        </td>
+    </tr>
+</table>
+
+<br/>
+
+<!-- Setup Accumulators for Dynamic Calculation -->
+<#assign totalAmount = 0>
+<#assign totalVat = 0>
+<#assign grandTotal = 0>
+
+<!-- ITEM TABLE -->
+<table class="item-table" style="border: 1px solid #504ec2;">
+
+<tr>
+    <td class="th">Item</td>
+    <td class="th center">UOM</td>
+    <td class="th center">Quantity</td>
+    <td class="th right">Rate</td>
+    <td class="th right">Amount</td>
+    <td class="th center" style="white-space: nowrap;">VAT Rate</td>
+    <td class="th right" >VAT</td>
+    <td class="th right">Total</td>
+</tr>
+
+<#list record.recmachcustrecord_njt_pq_items_parent_link as item>
+<!-- Summing up the lines securely as numbers -->
+<#if item.custrecord_njt_pq_items_amount?has_content>
+    <#assign totalAmount = totalAmount + item.custrecord_njt_pq_items_amount?number>
+</#if>
+<#if item.custrecord_njt_pq_items_taxamt?has_content>
+    <#assign totalVat = totalVat + item.custrecord_njt_pq_items_taxamt?number>
+</#if>
+<#if item.custrecord_njt_pq_items_gross_amt?has_content>
+    <#assign grandTotal = grandTotal + item.custrecord_njt_pq_items_gross_amt?number>
+</#if>
+<tr>
+
+    <td class="td" style="white-space: nowrap;">
+        ${item_index + 1}. ${item.custrecord_njt_pq_items_items}
+    </td>
+
+    <td class="td center" style="white-space: nowrap;">${item.custrecord_njt_pq_items_units}</td>
+    <td class="td center" style="white-space: nowrap;">${item.custrecord_njt_pq_items_quantity}</td>
+
+    <td class="td right" style="white-space: nowrap;"> ${item.custrecord_njt_pq_items_rate?string["#,##0.00"]}</td>
+    <td class="td right" style="white-space: nowrap;"> ${item.custrecord_njt_pq_items_amount?string["#,##0.00"]}</td>
+
+    <td class="td center" style="white-space: nowrap;">${item.custrecord_njt_pq_items_taxrate}%</td>
+    <td class="td right" style="white-space: nowrap;"> ${item.custrecord_njt_pq_items_taxamt?string["#,##0.00"]}</td>
+
+    <td class="td right" style="white-space: nowrap;"> ${item.custrecord_njt_pq_items_gross_amt?string["#,##0.00"]}</td>
+
+</tr>
+</#list>
+
+</table>
+
+<br/><br/>
+
+<!-- Macro to dynamically convert numbers to words inside the PDF -->
+<#function numToWords n>
+    <#assign units = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"]>
+    <#assign tens = ["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]>
+    <#if (n < 20)>
+        <#return units[n]>
+    <#elseif (n < 100)>
+        <#return (tens[(n/10)?floor] + ((n%10 != 0)?string(" " + units[n%10], "")))>
+    <#elseif (n < 1000)>
+        <#return (units[(n/100)?floor] + " Hundred" + ((n%100 != 0)?string(" and " + numToWords(n%100), "")))>
+    <#elseif (n < 1000000)>
+        <#return (numToWords((n/1000)?floor) + " Thousand" + ((n%1000 != 0)?string(" " + numToWords(n%1000), "")))>
+    <#elseif (n < 1000000000)>
+        <#return (numToWords((n/1000000)?floor) + " Million" + ((n%1000000 != 0)?string(" " + numToWords(n%1000000), "")))>
+    <#else>
+        <#return "">
+    </#if>
+</#function>
+
+<#assign wholePart = grandTotal?floor>
+<#assign decimalPart = ((grandTotal - wholePart) * 100)?round>
+<#assign words = "">
+<#if wholePart == 0><#assign words = "Zero Dirhams">
+<#else><#assign words = numToWords(wholePart) + " Dirhams">
+</#if>
+<#if decimalPart gt 0><#assign words = words + " and " + numToWords(decimalPart) + " Fils">
+</#if>
+
+<!-- BOTTOM SECTION -->
+<table>
+<tr>
+
+<td width="60%" style="vertical-align: top; padding-right: 20px;">
+    <!-- TERMS -->
+    <b>TERMS AND CONDITIONS</b><br/>
+    1.<br/>
+    2.
+
+    <br/><br/>
+
+    <!-- NOTES -->
+    <b>ADDITIONAL NOTES</b><br/>
+    1.<br/>
+    2.<br/>
+    3.
+</td>
+
+<td width="40%" style="vertical-align: top;">
+    <table>
+        <tr>
+            <td class="total-label">Amount</td>
+            <td class="total-value">AED ${record.custrecord_amount}</td>
+        </tr>
+        <tr>
+            <td class="total-label">VAT</td>
+            <td class="total-value">AED ${record.custrecord_tax}</td>
+        </tr>
+        <tr>
+            <td class="total-final-label">Total (AED)</td>
+            <td class="total-final-value">AED ${record.custrecord_total}</td>
+        </tr>
+    </table>
+
+    <br/>
+    <b>TOTAL (IN WORDS) :</b><br/>
+    ${customData.totalWords} ONLY
+</td>
+
+</tr>
+</table>
+
+</body>
+</pdf>

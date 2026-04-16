@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetSuite PDF Template Preview</title>
+    <style>
+        body { 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background: #0a0a0a; 
+            color: #ffffff; 
+        }
+        header { 
+            padding: 16px 24px; 
+            background: #141414; 
+            border-bottom: 1px solid #333; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .container { 
+            display: flex; 
+            flex: 1; 
+            overflow: hidden; 
+        }
+        .editor-pane, .preview-pane { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .editor-pane { border-right: 1px solid #333; }
+        textarea { 
+            flex: 1; 
+            background: #1e1e1e; 
+            color: #d4d4d4; 
+            font-family: 'Consolas', 'Courier New', monospace; 
+            border: none; 
+            padding: 16px; 
+            resize: none; 
+            outline: none; 
+            font-size: 14px; 
+            line-height: 1.5;
+        }
+        iframe { 
+            flex: 1; 
+            border: none; 
+            background: #ffffff; 
+        }
+        button { 
+            background: #ff0000; 
+            color: #ffffff; 
+            border: none; 
+            padding: 8px 16px; 
+            cursor: pointer; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            transition: 0.2s;
+        }
+        button:hover { background: #cc0000; }
+    </style>
+</head>
+<body>
+    <header>
+        <h2 style="margin: 0; font-size: 18px; font-weight: 500;">NetSuite Advanced PDF/HTML Preview</h2>
+        <button id="render-btn">Render PDF (Ctrl + S)</button>
+    </header>
+    
+    <div class="container">
+        <div class="editor-pane">
+            <textarea id="code-editor" placeholder="Paste your NetSuite Advanced PDF/HTML Template (XML) here..."></textarea>
+        </div>
+        <div class="preview-pane">
+            <iframe id="pdf-frame"></iframe>
+        </div>
+    </div>
+
+    <script>
+        const editor = document.getElementById('code-editor');
+        const renderBtn = document.getElementById('render-btn');
+        const iframe = document.getElementById('pdf-frame');
+
+        // Warn the user if they open the file directly instead of using the local server
+        if (window.location.protocol === 'file:') {
+            document.body.innerHTML = '<div style="padding: 50px; text-align: center; color: red; font-family: sans-serif;"><h1>Configuration Error</h1><p>You opened this file directly from your computer.</p><p>Please run <code>node server.js</code> in your terminal and open <a href="http://localhost:3000/pdf-preview.html" style="color: #ffaaaa;">http://localhost:3000/pdf-preview.html</a> in your browser.</p></div>';
+        }
+
+        // Preload with standard NetSuite PDF XML boilerplate
+        const defaultTemplate = `<?xml version="1.0"?>\n<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">\n<pdf>\n<head>\n    <style>\n        body {\n            font-family: sans-serif;\n            font-size: 10pt;\n        }\n        table {\n            width: 100%;\n            border-collapse: collapse;\n            margin-top: 20px;\n        }\n        th {\n            font-weight: bold;\n            background-color: #f2f2f2;\n            padding: 8px;\n            text-align: left;\n        }\n        td {\n            padding: 8px;\n            border-bottom: 1px solid #dddddd;\n        }\n    </style>\n</head>\n<body padding="0.5in 0.5in 0.5in 0.5in" size="Letter">\n    <h2>Tax Proforma Invoice</h2>\n    <p><b>Customer:</b> \${record.entity}</p>\n    <p><b>Date:</b> \${record.trandate}</p>\n    \n    <table>\n        <tr>\n            <th>Item</th>\n            <th>Quantity</th>\n            <th>Rate</th>\n            <th>Amount</th>\n        </tr>\n        <tr>\n            <td>Sample Item 1</td>\n            <td>2</td>\n            <td>10.00</td>\n            <td>20.00</td>\n        </tr>\n    </table>\n</body>\n</pdf>`;
+        editor.value = defaultTemplate;
+
+        async function renderPdf() {
+            const content = editor.value;
+            if (!content) return;
+
+            renderBtn.textContent = 'Rendering...';
+            renderBtn.style.opacity = '0.7';
+            renderBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/render-pdf', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: content
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    // Set iframe source to the new PDF Blob
+                    iframe.src = url;
+                } else {
+                    alert('Failed to render PDF. Check server logs.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Network error. Ensure the Node.js server is running.');
+            } finally {
+                renderBtn.textContent = 'Render PDF (Ctrl + S)';
+                renderBtn.style.opacity = '1';
+                renderBtn.disabled = false;
+            }
+        }
+
+        // Bind click event
+        renderBtn.addEventListener('click', renderPdf);
+        
+        // Allow Ctrl+S or Cmd+S to trigger the render inside the textarea
+        editor.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                renderPdf();
+            }
+        });
+
+        // Render once on load
+        renderPdf();
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+<style type="text/css">
+body {
+    font-family: Arial;
+    font-size: 10pt;
+}
+
+.title {
+    font-size: 28px;
+    color: #7b61ff;
+    font-weight: bold;
+}
+
+.card {
+    background: #f3f0ff;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table th {
+    background: #6a1b9a;
+    color: white;
+    padding: 10px;
+}
+
+.table td {
+    background: #f5f5f5;
+    padding: 10px;
+}
+
+.right {
+    text-align: right;
+}
+
+</style>
+</head>
+
+<body size="A4">
+
+<div class="title">Purchase Order</div>
+
+<br/>
+
+<table style="width: 100%;">
+<tr>
+    <td style="width: 50%;">
+        <b>PO No:</b> {{tranid}}<br/>
+        <b>RFQ Ref:</b> {{rfq}}<br/>
+        <b>Delivery Point:</b> {{delivery}}
+    </td>
+    <td style="width: 50%;">
+        <b>Date:</b> {{date}}<br/>
+        <b>Due Date:</b> {{duedate}}<br/>
+        <b>Payment Terms:</b> {{terms}}<br/>
+        <b>Delivery Terms:</b> {{deliveryterms}}
+    </td>
+</tr>
+</table>
+
+<br/>
+
+<table style="width: 100%; table-layout: fixed;">
+<tr>
+    <td style="width: 48%; padding: 0; vertical-align: top;">
+        <div class="card">
+            <b>Order By</b><br/><br/>
+            {{orderby}}
+        </div>
+    </td>
+    
+    <td style="width: 4%; padding: 0;"></td>
+    
+    <td style="width: 48%; padding: 0; vertical-align: top;">
+        <div class="card">
+            <b>Order To</b><br/><br/>
+            {{orderto}}
+        </div>
+    </td>
+</tr>
+</table>
+
+<br/>
+
+<table class="table">
+<tr>
+    <th>Item</th>
+    <th>Qty</th>
+    <th>Rate</th>
+    <th>Total</th>
+</tr>
+
+{{items}}
+
+</table>
+
+<br/>
+
+<table style="width: 100%;">
+<tr>
+    <td style="width: 50%; vertical-align: top;">
+        <b>Total (in words):</b><br/>
+        {{words}}
+    </td>
+    <td style="width: 50%; vertical-align: top;" class="right">
+        Amount: {{amount}}<br/>
+        Tax: {{tax}}<br/>
+        <b>Total: {{total}}</b>
+    </td>
+</tr>
+</table>
+
+</body>
+</pdf>

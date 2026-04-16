@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf xmlns:pdf="http://big.faceless.org/pdf" version="1.1">
+<head>
+    <macrolist>
+        <macro id="nlheader">
+            <table class="border" style="border-bottom:1pt solid black;">
+                <tr>
+                    <td class="border" width="20%" align="center" rowspan="2">
+                        <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=1339&amp;c=12075805&amp;h=NnP30L6CZd52s7O5z2K8la0V3C3p3hj9lENrB2a0j8TTqrQG" style="width:120px;height:90px;" />
+                    </td>
+                    <td class="border center" align="center">
+                        <p class="title" align="center">SJS Enersol Engineering Works LLC</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border center" align="center">
+                        <p class="sub-title" align="center">Non-Conformance Report</p>
+                    </td>
+                </tr>
+            </table>
+        </macro>
+        <macro id="nlfooter">
+            <p align="center" style="font-size: 9pt; padding-top: 10px;">Doc Ref No: ${record.name!}, Issue Date: ${record.custrecord_njt_non_confor!}</p>
+            <p align="center" style="font-size: 9pt;">Page <pagenumber/> of <totalpages/></p>
+        </macro>
+    </macrolist>
+    <style>
+        body { font-family: Helvetica; font-size: 9pt; }
+        p { margin: 0; padding: 0; }
+
+        .title {
+            font-size: 20pt;
+            font-weight: bold;
+            text-align: center;
+            
+        }
+
+        .sub-title {
+            font-size: 15pt;
+            text-align: center;
+            font-weight: bold;
+            
+        }
+
+        .border { border: 0.5pt solid black; border-bottom:none;}
+        .center { text-align: center; }
+        .left { text-align: left; }
+        .bold { font-weight: bold; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: -0.5pt; }
+        td { padding: 8px; }
+    </style>
+</head>
+
+<body header="nlheader" header-height="85pt" footer="nlfooter" footer-height="40pt" size="A4">
+
+<!-- NCR + DATE -->
+<table>
+    <tr>
+        <td class="bold" width="15%" align="right" style="padding-right: 6px;">NCR Nr.</td>
+        <td width="35%" style="border-bottom: none;">${record.name!}</td>
+        <td class="bold" width="15%" align="right" style="padding-right: 6px;">Date:</td>
+        <td width="35%" style="border-bottom: none;">${record.custrecord_njt_non_confor!}</td>
+    </tr>
+</table>
+
+<!-- TYPE -->
+<table class="border">
+    <tr>
+        <td class="border center" width="33%">Internal NCR: <#if (record.custrecord_njt_non_con_type_of_ncr!"")?string == "Internal NCR">Yes<#else>No</#if></td>
+        <td class="border center" width="34%">Supplier NCR: <#if (record.custrecord_njt_non_con_type_of_ncr!"")?string == "Supplier NCR">Yes<#else>No</#if></td>
+        <td class="border center" width="33%">Customer NCR: <#if (record.custrecord_njt_non_con_type_of_ncr!"")?string == "Customer NCR">Yes<#else>No</#if></td>
+    </tr>
+</table>
+
+<!-- DETAILS -->
+<table class="border">
+    <tr>
+        <td class="border" width="50%">Name: ${record.custrecord_njt_non_con_name!}</td>
+        <td class="border" width="50%">Vendor/Supplier: ${record.vendor!}</td>
+    </tr>
+    <tr>
+        <td class="border">Position: ${record.custrecord_njt_non_con_position!}</td>
+        <td class="border">Customer: ${record.customer!}</td>
+    </tr>
+    <tr>
+        <td class="border">Part Number/Drawing Number: ${record.custrecord_njt_non_con_part_number!}</td>
+        <td class="border">Contract/Purchase Order Ref: ${record.poNumber!}</td>
+    </tr>
+</table>
+
+<!-- QTY -->
+<table class="border">
+    <tr>
+        <td class="border" width="50%">Total order Qty: ${record.custrecord_njt_non_con_toqty!}</td>
+        <td class="border" width="50%">Rejected: ${record.rejectedQty!}</td>
+    </tr>
+</table>
+
+<!-- REPORT TYPE -->
+<table class="border">
+    <tr>
+        <td class="border bold" colspan="2">Report Type (tick one box):</td>
+    </tr>
+    <tr>
+        <td class="border" width="50%">Non-Conformance/Corrective Action: <#if record.custrecord_njt_non_con_correct_action!false>Yes<#else>No</#if></td>
+        <td class="border" width="50%">Opportunity for Improvement/Preventative Action: <#if record.custrecord_njt_non_con_improvement_pre!false>Yes<#else>No</#if></td>
+    </tr>
+</table>
+
+<!-- ORIGIN -->
+<table class="border">
+    <tr>
+        <td class="border bold" colspan="2">Report Origin (tick one box):</td>
+    </tr>
+    <tr>
+        <td class="border" width="50%">Vendor/Supplier Feedback: <#if record.custrecord_njt_non_con_vendor_fee!false>Yes<#else>No</#if></td>
+        <td class="border" width="50%">In-house Inspection: <#if record.custrecord_njt_non_con_inhouse!false>Yes<#else>No</#if></td>
+    </tr>
+    <tr>
+        <td class="border">Customer Feedback: <#if record.custrecord_njt_non_con_customer_feed!false>Yes<#else>No</#if></td>
+        <td class="border">Audit Finding: <#if record.custrecord_njt_non_con_audit_finding!false>Yes<#else>No</#if></td>
+    </tr>
+</table>
+
+<!-- DESCRIPTION -->
+<table class="border">
+    <tr>
+        <td class="border bold">Description of Non-Conformity:</td>
+    </tr>
+    <tr>
+        <td class="border" height="400px">${record.custrecord_njt_non_con_description_con!}</td>
+    </tr>
+</table>
+
+<!-- SIGN -->
+<table class="border" style="border-bottom:1pt solid black;">
+    <tr>
+        <td class="border" width="50%">Originators Signature: ${record.originatorSignature!}</td>
+        <td class="border" width="50%">Date: ${record.originatorDate!}</td>
+    </tr>
+</table>
+
+<!-- PAGE BREAK -->
+<pbr/>
+
+<!-- ================= PAGE 2 ================= -->
+
+<table class="border">
+    <tr>
+        <td class="border center bold" align="center">
+            MANAGER – PROPOSED ACTIONS (please complete)
+        </td>
+    </tr>
+</table>
+
+<table class="border">
+    <tr>
+        <td class="border bold">Root Cause of Problem:</td>
+    </tr>
+    <tr>
+        <td class="border" height="100px">${record.custrecord_njt_non_con_root_problem!}</td>
+    </tr>
+</table>
+
+<!-- SEVERITY -->
+<table class="border">
+    <tr>
+        <td class="border bold" colspan="2">Non-Conformance Severity:</td>
+    </tr>
+    <tr>
+        <td class="border" width="50%">Cosmetic/Non-Critical: <#if record.custrecord_njt_non_con_cosmetic!false>Yes<#else>No</#if></td>
+        <td class="border" width="50%">Critical: <#if record.custrecord_njt_non_con_critical!false>Yes<#else>No</#if></td>
+    </tr>
+</table>
+
+<!-- DISPOSITION -->
+<table class="border">
+    <tr>
+        <td class="border bold" colspan="2">Disposition:</td>
+    </tr>
+    <tr>
+        <td class="border" width="50%">Use-as-is: <#if record.custrecord_njt_non_con_use_as_is!false>Yes<#else>No</#if></td>
+        <td class="border" width="50%">Rework: <#if record.custrecord_njt_non_con_rework!false>Yes<#else>No</#if></td>
+    </tr>
+    <tr>
+        <td class="border">Reject/Return to Supplier: <#if record.custrecord_njt_non_con_reject!false>Yes<#else>No</#if></td>
+        <td class="border">Scrap: <#if record.custrecord_njt_non_con_scrap!false>Yes<#else>No</#if></td>
+    </tr>
+</table>
+
+<!-- ACTION -->
+<table class="border">
+    <tr>
+        <td class="border bold">Proposed Correction/Corrective/Preventative Action:</td>
+    </tr>
+    <tr>
+        <td class="border" height="100px">${record.custrecord_njt_non_con_propose_correct!}</td>
+    </tr>
+</table>
+
+<table class="border" style="border-bottom:1pt solid black;">
+    <tr>
+        <td class="border" width="50%">Managers Signature: ${record.managerSignature!}</td>
+        <td class="border" width="50%">Date: ${record.managerDate!}</td>
+    </tr>
+</table>
+
+<br/>
+
+<!-- CLOSURE -->
+<table class="border">
+    <tr>
+        <td class="border center bold" align="center">
+            RESPONSIBLE MANAGER – CLOSURE OF NON-CONFORMITY
+        </td>
+    </tr>
+</table>
+
+<table class="border">
+    <tr>
+        <td class="border bold">Description of Action Taken:</td>
+    </tr>
+    <tr>
+        <td class="border" height="100px">${record.custrecord_njt_non_con_des_action!}</td>
+    </tr>
+</table>
+
+<table class="border" style="border-bottom:1pt solid black;">
+    <tr>
+        <td class="border" width="50%">Managers Signature: ${record.closureManagerSignature!}</td>
+        <td class="border" width="50%">Date: ${record.closureManagerDate!}</td>
+    </tr>
+    <tr>
+        <td class="border">Originators: ${record.closureOriginator!}</td>
+        <td class="border">Date: ${record.closureOriginatorDate!}</td>
+    </tr>
+    <tr>
+        <td class="border">QA Signature: ${record.closureQASignature!}</td>
+        <td class="border">Date: ${record.closureQADate!}</td>
+    </tr>
+</table>
+
+</body>
+</pdf>

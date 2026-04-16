@@ -1,0 +1,254 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+<style>
+    body { font-family: Helvetica; font-size: 10pt; }
+
+    .title {
+        font-size: 24pt;
+        color: #6539c0;
+        font-weight: bold;
+    }
+
+    table { width: 100%; border-collapse: separate; border-spacing: 0; }
+
+    .label { color: #888888; font-size: 9pt; }
+    .value { font-weight: bold; font-size: 10pt; }
+
+    .card-header {
+        color: #6539c0;
+        font-weight: bold;
+        font-size: 11pt;
+    }
+
+    .th {
+        background-color: #6539c0;
+        color: #ffffff;
+        padding: 8px 10px;
+        font-weight: bold;
+        font-size: 9pt;
+        white-space: nowrap;
+    }
+
+    .td {
+        padding: 10px;
+        background-color: #e6e5e7;
+        font-size: 9pt;
+        border-bottom: 1px solid #e0e0e0;
+        white-space: nowrap;
+    }
+
+    .td-item {
+        padding: 10px;
+        background-color: #e6e5e7;
+        font-size: 9pt;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .item-description {
+        color: #666666;
+        font-size: 8.5pt;
+    }
+
+    .right { text-align: right; }
+    .center { text-align: center; }
+    .total-label { font-size: 9pt; padding: 4px 6px; }
+    .total-value { font-size: 9pt; padding: 4px 6px; text-align: right; }
+    .total-final-label { font-size: 11pt; font-weight: bold; padding: 6px 6px; border-top: 1.5px solid #000000; border-bottom: 1.5px solid #000000; }
+    .total-final-value { font-size: 11pt; font-weight: bold; padding: 6px 6px; text-align: right; border-top: 1.5px solid #000000; border-bottom: 1.5px solid #000000; }
+
+    .section-header {
+        color: #6a1b9a;
+        font-weight: bold;
+        font-size: 10pt;
+    }
+
+    .terms-text { font-size: 9pt; }
+</style>
+<macrolist>
+    <macro id="poHeader">
+        <!-- TITLE -->
+        <table>
+        <tr>
+        <td class="title">Purchase Order</td>
+        </tr>
+        </table>
+
+        <br/>
+
+        <!-- HEADER INFO -->
+        <table style="table-layout: fixed; padding-top:-30px;">
+        <tr>
+        <td width="50%" style="vertical-align: top; padding-right: 20px;">
+            <table width="100%">
+                <tr>
+                    <td class="label" width="120px" style="padding-bottom: 12px;">Purchase Order No</td>
+                    <td class="value" style="padding-bottom: 12px;">${record.tranid}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="padding-bottom: 12px;">RFQ REF #</td>
+                    <td class="value" style="padding-bottom: 12px;">${record.otherrefnum}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="padding-bottom: 12px;">Delivery Point</td>
+                    <td class="value" style="padding-bottom: 12px;">${record.shipaddress}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="padding-bottom: 12px;">Delivery Date</td>
+                    <td class="value" style="padding-bottom: 12px;">${record.deliverydate}</td>
+                </tr>
+            </table>
+        </td>
+
+        <td width="50%" style="vertical-align: top; padding-left: 100px;">
+            <table align="right">
+                <tr>
+                    <td class="label" width="150px" style="padding-bottom: 12px;">Purchase Order Date</td>
+                    <td class="value right" style="padding-bottom: 12px;">${record.trandate}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="padding-bottom: 12px;">Due Date</td>
+                    <td class="value right" style="padding-bottom: 12px;">${record.duedate}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="padding-bottom: 12px;">Payment Terms</td>
+                    <td class="value right" style="padding-bottom: 12px;">${record.terms}</td>
+                </tr>
+                <tr>
+                    <td class="label" style="padding-bottom: 12px;">Delivery Terms</td>
+                    <td class="value right" style="padding-bottom: 12px;">${record.shipmethod}</td>
+                </tr>
+            </table>
+        </td>
+        </tr>
+        </table>
+
+        <br/>
+
+        <!-- ORDER BY / ORDER TO CARDS -->
+        <table style="table-layout: fixed; corner-radius: 6px; padding-top:-30px; ">
+        <tr>
+        <td width="50%" style="padding: 0; vertical-align: top;">
+            <table width="100%" style="background-color: #eeeaf8; height: 170px;">
+                <tr>
+                    <td style="padding: 14px; vertical-align: top;">
+                        <span class="card-header">Order By</span><br/><br/>
+                        <b>${record.subsidiary}</b><br/>
+                        ${record.shipaddress}<br/>
+                        <span style="color:#444444;">VAT Number (TRN): ${record.vatregnum}</span><br/>
+                        <span style="color:#444444;">Phone: ${record.phone}</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+
+        <td width="2%"></td>
+
+        <td width="50%" style="padding: 0; vertical-align: top;">
+            <table width="100%" style="background-color: #eeeaf8; border-radius: 8px; height: 170px;">
+                <tr>
+                    <td style="padding: 14px; vertical-align: top;">
+                        <span class="card-header">Order To</span><br/><br/>
+                        <b>${record.entity}</b><br/>
+                        ${record.billingaddress}<br/>
+                        ${record.billaddr1}<br/>
+                        ${record.billstate}<br/>
+                        <span style="color:#444444;">VAT Number: ${record.vatregnum}</span><br/>
+                        <span style="color:#444444;">Phone: ${record.phone}</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+
+        </tr>
+        </table>
+        <br/>
+    </macro>
+    <macro id="poFooter">
+        <!-- TERMS AND CONDITIONS -->
+        <span class="section-header">Terms and Conditions</span><br/>
+        <span class="terms-text">
+        1. MTC UPON DELIVERY<br/>
+        2.
+        </span>
+
+        <br/><br/>
+
+        <!-- ADDITIONAL NOTES -->
+        <span class="section-header">Additional Notes</span><br/>
+        <span class="terms-text">
+        1. Above Purchase Order No Must Appear on all invoices or correspondence.<br/>
+        2. Mail One Copy of Your Invoice.<br/>
+        3. Our Standard Conditions of Purchase Apply
+        </span>
+    </macro>
+</macrolist>
+</head>
+
+<body size="a4" header="poHeader" header-height="350pt" footer="poFooter" footer-height="120pt">
+
+<!-- ITEM TABLE WITH PAGINATION -->
+<#list record.item?chunk(5) as itemBatch>
+<table style="padding-top:-50px;">
+    <tr>
+        <td class="th" width="28%" style="border-radius: 8px 0px 0px 0px;">Item</td>
+        <td class="th" width="8%" style="text-align:center;">UOM</td>
+        <td class="th" width="10%" style="text-align:center;">Quantity</td>
+        <td class="th" width="11%" style="text-align:right;">Rate</td>
+        <td class="th" width="12%" style="text-align:right;">Amount</td>
+        <td class="th" width="9%" style="text-align:center;">TAX Rate</td>
+        <td class="th" width="10%" style="text-align:right;">TAX Amount</td>
+        <td class="th" width="12%" style="text-align:right; border-radius: 0px 8px 0px 0px;">Total</td>
+    </tr>
+    <#list itemBatch as item>
+    <tr>
+        <td class="td-item" <#if !item?has_next && !itemBatch?has_next>style="border-radius: 0px 0px 0px 8px;"</#if>>
+            ${item_index + 1 + (itemBatch?index * 5)}.&#160;&#160;${item.item}
+        </td>
+        <td class="td" style="text-align:center;">${item.units}</td>
+        <td class="td" style="text-align:center;">${item.quantity}</td>
+        <td class="td" style="text-align:right;">AED ${item.rate?string["#,##0.00"]}</td>
+        <td class="td" style="text-align:right;">AED ${item.amount?string["#,##0.00"]}</td>
+        <td class="td" style="text-align:center;">${item.taxrate1}</td>
+        <td class="td" style="text-align:right;">AED ${item.tax1amt?string["#,##0.00"]}</td>
+        <td class="td" style="text-align:right; <#if !item?has_next && !itemBatch?has_next>border-radius: 0px 0px 8px 0px;</#if>">AED ${item.grossamt?string["#,##0.00"]}</td>
+    </tr>
+    </#list>
+</table>
+
+<!-- TOTAL SECTION - REPEATED ON EVERY PAGE -->
+<br/>
+<table style="padding-top:-30px;">
+<tr>
+<td width="55%" >
+    <b>Total (in words):</b>
+    <span style="font-size: 9pt;"><b> ${customData.totalWords}</b></span>
+</td>
+<td width="45%">
+    <table width="100%">
+        <tr>
+            <td class="total-label">Amount</td>
+            <td class="total-value">AED ${record.subtotal?string["#,##0.00"]}</td>
+        </tr>
+        <tr>
+            <td class="total-label">TAX Amount</td>
+            <td class="total-value">AED ${record.taxtotal?string["#,##0.00"]}</td>
+        </tr>
+        <tr>
+            <td class="total-final-label">Total (AED)</td>
+            <td class="total-final-value">AED ${record.total?string["#,##0.00"]}</td>
+        </tr>
+    </table>
+</td>
+</tr>
+</table>
+
+<#if itemBatch?has_next>
+    <!-- PAGE BREAK FOR MORE ITEMS -->
+    <pbr/>
+</#if>
+</#list>
+
+</body>
+</pdf>

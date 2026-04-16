@@ -1,0 +1,165 @@
+<?xml version="1.0"?> 
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+    <style type="text/css">
+        body {
+            font-family: Helvetica, sans-serif;
+            font-size: 9pt;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            font-weight: bold;
+            text-align: left;
+            border: 1px solid black;
+            padding: 4px 4px;
+            font-size: 9pt;
+        }
+
+        td {
+            padding: 2px 4px;
+        }
+
+        .border {
+            border: 0.2px solid black;
+        }
+
+        .row-height {
+            height: 17px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #000000;
+            font-size: 9pt;
+        }
+    </style>
+</head>
+
+<body size="A4" margin="-10pt">
+
+<!-- PAGINATION LOGIC: 25 ITEMS PER PAGE TO KEEP IT DYNAMIC -->
+<#list record.recmachcustrecord_njt_packing_list_drt?chunk(25) as itemBatch>
+
+<div style="border: 1px solid black; padding: 0px;">
+
+    <!-- HEADER: Logo only, no red border line -->
+    <table style="margin: 0px;">
+        <tr>
+            <td style="padding: 10px 15px 8px 15px;">
+                <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=1345&amp;c=12075805&amp;h=oxJr2CNYdwCz0TJsbbtkt6STehBgPajb40mWp8wtLfhM6v38"
+                     style="width: 620px; height: 80px;" />
+            </td>
+        </tr>
+    </table>
+
+    <!-- PACKING LIST TITLE -->
+    <table style="width: 100%; margin: 0px;">
+        <tr>
+            <td align="center" style="padding: 8px 15px 4px 15px; font-size: 11pt; font-weight: bold;">
+                PACKING LIST
+            </td>
+        </tr>
+    </table>
+
+    <!-- DATE / INVOICE / PO -->
+    <table style="width: 60%; margin: 0px;">
+        <tr>
+            <td class="info-label" style="width: 30%; padding: 2px 15px;">DATE :</td>
+            <td style="padding: 2px 4px;">${record.custrecord_njt_packing_list_date}</td>
+        </tr>
+        <tr>
+            <td class="info-label" style="padding: 2px 15px;">INVOICE NO :</td>
+            <td style="padding: 2px 4px;">${record.custrecord_njt_packing_list_inv}</td>
+        </tr>
+        <tr>
+            <td class="info-label" style="padding: 2px 15px;">PO NO :</td>
+            <td style="padding: 2px 4px;">${record.custrecord_njt_packing_list_client_po}</td>
+        </tr>
+    </table>
+
+    <!-- Spacer -->
+    <table><tr><td style="height: 8px;"></td></tr></table>
+
+    <!-- MAIN TABLE -->
+    <table style="border-top: 1px solid black; margin: 0px; width: 100%;">
+        <thead>
+            <tr>
+                <th style="width: 7%; border-top: none; border-bottom: 1px solid black; border-left: none; border-right: 0.2px solid black; padding: 4px; text-align: center;">SI. NO</th>
+                <th style="width: 28%; border-top: none; border-bottom: 1px solid black; border-left: 0.2px solid black; border-right: 0.2px solid black; padding: 4px;">ITEM</th>
+                <th style="width: 10%; border-top: none; border-bottom: 1px solid black; border-left: 0.2px solid black; border-right: 0.2px solid black; padding: 4px; text-align: center;">SIZE</th>
+                <th style="width: 10%; border-top: none; border-bottom: 1px solid black; border-left: 0.2px solid black; border-right: 0.2px solid black; padding: 4px; text-align: center;">UNIT</th>
+                <th style="width: 15%; border-top: none; border-bottom: 1px solid black; border-left: 0.2px solid black; border-right: 0.2px solid black; padding: 4px; text-align: right;">BOX QTY</th>
+                <th style="width: 15%; border-top: none; border-bottom: 1px solid black; border-left: 0.2px solid black; border-right: 0.2px solid black; padding: 4px; text-align: right;">TOTAL BOX</th>
+                <th style="width: 15%; border-top: none; border-bottom: 1px solid black; border-left: 0.2px solid black; border-right: none; padding: 4px; text-align: right;">TOTAL QTY</th>
+            </tr>
+        </thead>
+        <tbody>
+        <#-- Dynamic Item Rendering -->
+        <#list itemBatch as item>
+            <tr class="row-height">
+                <td class="border" style="border-left: none;" align="center">${item_index + 1 + (itemBatch?index * 25)}</td>
+                <td class="border">
+                    ${item.custrecord_njt_packing_list_det_item}
+                    <#if item.custrecord_njt_packing_list_det_desc?has_content><br/><span style="font-size:8pt; color:#444444;">${item.custrecord_njt_packing_list_det_desc}</span></#if>
+                </td>
+                <td class="border" align="center">${item.custrecord_njt_packing_list_det_package!""}</td>
+                <td class="border" align="center">${item.custrecord_njt_packing_list_det_unit}</td>
+                <td class="border" align="right">${item.custrecord_njt_packing_list_det_bqty!""}</td>
+                <td class="border" align="right">${item.custrecord_njt_packing_list_det_tbox!""}</td>
+                <td class="border" style="border-right: none;" align="right">${item.custrecord_njt_packing_list_det_tqty!""}</td>
+            </tr>
+            </#list>
+
+        </tbody>
+    </table>
+
+    <!-- SHOW SUMMARY ONLY ON THE LAST PAGE -->
+    <#if !itemBatch?has_next>
+    <!-- SUMMARY + PALLET SECTION -->
+    <table style="border-top: 1px solid black; margin: 0px; width: 100%;">
+        <tr class="row-height">
+            <td colspan="2" style="border-bottom: 0.2px solid black;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="width: 68%; border-right: 1px solid black; padding: 0; vertical-align: top;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="font-weight: bold; font-size: 9pt; width: 50%; padding: 4px 10px; border-bottom: 0.2px solid black;">TOTAL NUMBER OF BOXES</td>
+                        <td style="width: 50%; padding: 4px; border-left: 0.2px solid black; border-bottom: 0.2px solid black;">${record.custrecord_njt_packing_list_tota_box!""}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; font-size: 9pt; padding: 4px 10px; border-bottom: 0.2px solid black;">TOTAL NUMBER OF PALLET</td>
+                        <td style="padding: 4px; border-left: 0.2px solid black; border-bottom: 0.2px solid black;">${record.custrecord_njt_packing_pallete!""}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; font-size: 9pt; padding: 4px 10px; border-bottom: 0.2px solid black;">TOTAL NET WEIGHT</td>
+                        <td style="padding: 4px; border-left: 0.2px solid black; border-bottom: 0.2px solid black;">${record.custrecord_njt_total_net_weight!""}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; font-size: 9pt; padding: 4px 10px;">TOTAL GROSS WEIGHT</td>
+                        <td style="padding: 4px; border-left: 0.2px solid black;">${record.custrecord_njt_total_gross_weight!""}</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width: 32%; text-align: center; vertical-align: middle; font-weight: bold; font-size: 13pt; padding: 10px;">
+                PALLET. ${record.custrecord_njt_packing_pallete!""}
+            </td>
+        </tr>
+    </table>
+    </#if>
+
+</div>
+
+<#if itemBatch?has_next>
+    <pbr />
+</#if>
+</#list>
+
+</body>
+</pdf>
