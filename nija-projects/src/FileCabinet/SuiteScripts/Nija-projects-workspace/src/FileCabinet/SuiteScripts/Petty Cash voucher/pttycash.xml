@@ -1,0 +1,241 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+
+<pdf>
+<head>
+
+    <style type="text/css">
+
+        body {
+            font-family: sans-serif;
+            font-size: 10pt;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .border {
+            border: 1px solid black;
+        }
+
+        .title {
+            font-size: 12pt;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .company {
+            font-size: 15pt;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+    </style>
+
+    <macrolist>
+        <macro id="nlheader">
+            <!-- Company -->
+            <table align="center" style="width: 80%; border: 1px solid black; margin-bottom: 20px; margin-top: 10px;">
+                <tr>
+                    <td align="center" class="company" style="padding: 0px;">
+                        ${record.subsidiary}
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Title -->
+            <table align="center" style="width: 80%; border: 1px solid black;">
+                <tr>
+                    <td align="center" class="title" style="padding: 0px;">
+                        PETTY CASH VOUCHER
+                    </td>
+                </tr>
+            </table>
+
+            <br/>
+
+            <!-- Header -->
+            <table>
+                <tr>
+                    <td width="50%">
+                        <span class="label">Voucher No :</span>
+                        <#if record.tranid??>
+                            ${record.tranid}
+                        </#if>
+                    </td>
+                    <td width="50%" align="right">
+                        <span class="label">Date :</span>
+                        <#if record.trandate??>
+                            ${record.trandate}
+                        </#if>
+                    </td>
+                </tr>
+            </table>
+
+            <br/>
+
+            <!-- Narration -->
+            <table>
+                <tr>
+                    <td width="20%" class="label">
+                        Narration :
+                    </td>
+                    <td width="80%" class="border">
+                        <#if record.memo??>
+                            ${record.memo}
+                        </#if>
+                    </td>
+                </tr>
+            </table>
+        </macro>
+        <macro id="nlfooter">
+            <!-- Totals & Amount in Words -->
+            <table style="margin-bottom: 20px;">
+                <tr>
+                    <td width="22%" class="label">Total Amount</td>
+                    <td width="3%" align="center" class="label">:</td>
+                    <td width="75%">
+                        <#if record.total?has_content>
+                            ${record.total?string("#,##0.00")}
+                        </#if>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Currency</td>
+                    <td align="center" class="label">:</td>
+                    <td>
+                        <#if record.currency??>
+                            ${record.currency}
+                        </#if>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Amount in Words</td>
+                    <td align="center" class="label">:</td>
+                    <td>
+                        ${(customData.totalWords)!record.totalwords!""}
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Signatures -->
+            <table>
+                <tr>
+                    <td align="center" width="33%" style="border-top: 1px solid black; padding-top: 5px;">Prepared By</td>
+                    <td align="center" width="33%" style="border-top: 1px solid black; padding-top: 5px;">Checked By</td>
+                    <td align="center" width="34%" style="border-top: 1px solid black; padding-top: 5px;">Approved By</td>
+                </tr>
+            </table>
+        </macro>
+    </macrolist>
+</head>
+
+<body header="nlheader" header-height="160pt" footer="nlfooter" footer-height="110pt">
+
+<#if record??>
+
+    <!-- Consolidate Lines for Pagination -->
+    <#assign allLines = []>
+    <#if record.expense?? && record.expense?has_content>
+        <#list record.expense as exp>
+            <#assign allLines = allLines + [{"department": exp.department!"", "account": exp.account!"", "memo": exp.memo!"", "amount": exp.amount!""}]>
+        </#list>
+    </#if>
+    <#if record.item?? && record.item?has_content>
+        <#list record.item as itm>
+            <#assign desc = itm.description!itm.memo!"">
+            <#assign allLines = allLines + [{"department": itm.department!"", "account": itm.item!"", "memo": desc, "amount": itm.amount!""}]>
+        </#list>
+    </#if>
+    <#if allLines?size == 0 && record.line?? && record.line?has_content>
+        <#list record.line as line>
+            <#assign allLines = allLines + [{"department": line.department!"", "account": line.account!"", "memo": line.memo!"", "amount": line.amount!""}]>
+        </#list>
+    </#if>
+    <#if allLines?size == 0>
+        <#assign allLines = [{"department": "", "account": "", "memo": "", "amount": ""}]>
+    </#if>
+
+    <!-- PAGINATION LOGIC: 10 ITEMS PER PAGE -->
+    <#list allLines?chunk(10) as lineBatch>
+
+    <!-- Main Table -->
+    <table class="border">
+
+        <tr style="font-weight:bold;">
+
+            <td class="border center" width="8%">
+                S.No
+            </td>
+
+            <td class="border center" width="18%">
+                Division
+            </td>
+
+            <td class="border center" width="18%">
+                Account
+            </td>
+
+            <td class="border center" width="36%">
+                Description of Account
+            </td>
+
+            <td class="border center" width="20%">
+                Amount
+            </td>
+
+        </tr>
+
+        <#assign rowIndex = 1 + (lineBatch?index * 10)>
+
+        <#list lineBatch as row>
+            <#if row.account?has_content || row.memo?has_content || row.amount?has_content>
+                <tr>
+                    <td class="border center">${rowIndex}</td>
+                    <td class="border">${row.department}</td>
+                    <td class="border">${row.account}</td>
+                    <td class="border">${row.memo}</td>
+                    <td class="border right"><#if row.amount?has_content>${row.amount?string("#,##0.00")}</#if></td>
+                </tr>
+                <#assign rowIndex = rowIndex + 1>
+            </#if>
+        </#list>
+
+    </table>
+
+    <br/>
+
+    <!-- Page Break if there are more chunks -->
+    <#if lineBatch?has_next>
+        <pbr/>
+    </#if>
+    </#list>
+
+<#else>
+
+    <table>
+        <tr>
+            <td align="center" font-size="14pt">
+                Record Not Available
+            </td>
+        </tr>
+    </table>
+
+</#if>
+
+</body>
+</pdf>

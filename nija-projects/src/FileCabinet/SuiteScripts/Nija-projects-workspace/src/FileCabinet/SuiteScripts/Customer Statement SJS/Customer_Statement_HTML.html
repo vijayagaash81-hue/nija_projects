@@ -1,0 +1,460 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdfset>
+<pdf>
+<head>
+    <style type="text/css">
+        
+        /* Overall Page Setup */
+        @page {
+            size: A3 landscape;
+            margin: 10mm;
+        }
+
+        /* Base Typography */
+        body {
+            font-size: 7pt;
+            color: #333333;
+            font-family: "Helvetica", sans-serif;
+        }
+
+        /* Reusable Table Classes */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .border-table {
+            table-layout: fixed;
+        }
+        .border-table th {
+            background-color: #EFF4F8;
+            font-size: 9pt;
+            font-weight: bold;
+            color: #333333;
+            border: 0.5pt solid #cccccc;
+            padding: 8px 4px;
+        }
+        .border-table td {
+            font-size: 8pt;
+            padding: 8px 4px;
+            border-bottom: 1.5pt dotted #007FFF;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+        .no-border-table td {
+            padding: 2px;
+        }
+
+        /* Transaction Table Styling */
+        .trx-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1pt solid #007FFF;
+            white-space: normal;
+        }
+        .trx-table th {
+            height:50px;
+            background-color: #EFF4F8;
+            font-size: 5.5pt;
+            font-weight: 900;
+            color: #000000;
+            padding: 4px 3px;
+            border-bottom: 1.5pt solid #007FFF;
+            border-right: 0.5pt solid #007FFF;
+            white-space: normal;
+        }
+        .trx-table th:last-child {
+            border-right: none;
+        }
+        .trx-table td {
+            font-size: 8pt;
+            padding: 10px 4px;
+            border-bottom: 1.5pt dotted #007FFF;
+            border-right: none;
+        }
+        .trx-table td:last-child {
+            border-right: none;
+        }
+        
+        /* Formatting Utilities */
+        .bold { font-weight: bold; }
+        .right { text-align: right; }
+        .center { text-align: center; }
+        .left { text-align: left; }
+        .gray-bg { background-color: #EFF4F8; }
+        .avoid-break { page-break-inside: avoid; }
+
+        /* Specific Sections */
+        .report-title {
+            font-size: 15pt;
+            font-weight: bold;
+            color: #111111;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 2px;
+        }
+        .report-subtitle {
+            font-size: 10pt;
+            text-align: center;
+            color: #555555;
+            margin-bottom: 10px;
+        }
+        .section-header {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #333333;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #cccccc;
+            padding-bottom: 2px;
+        }
+        
+        /* Summary Box */
+        .summary-box-wrapper {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .summary-box {
+            width: 300px;
+            float: right;
+            border-collapse: collapse;
+        }
+        .summary-box td {
+            border: 0.5pt solid #cccccc;
+            padding: 8px 5px;
+            font-size: 9pt;
+        }
+        .summary-box .highlight {
+            font-size: 10pt;
+            font-weight: bold;
+            background-color: #f2f2f2;
+        }
+    </style>
+    
+    <macrolist>
+        <macro id="nlheader">
+            <table width="100%">
+                <tr>
+                    <td align="left" style="width: 25%; vertical-align: top;">
+                        <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=3184&amp;c=12075805&amp;h=1MVh8Bau7BNfPT9WHXFVU1CpQcE5a_A_UU1hk2yOET8CDCWG" style="width: 150px; height: 110px; padding-top:-30px; box-shadow: 4px 4px 6px #888888;" />
+                    </td>
+                    <td align="center" style="width: 50%;">
+                        <table align="center" style="font-size:8pt; font-weight:bold; line-height:12px;">
+                            <tr>
+                                <td colspan="3" align="center" style="font-size:12pt; font-weight:bold; padding-bottom:6px;">
+                                    ${customData.subsidiaryName!'SJS ENERSOL LLC'}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" style="padding: 0;">Website</td>
+                                <td align="center" style="padding: 0 5px;">:</td>
+                                <td align="left" style="padding: 0;">www.sjsenersol.com</td>
+                            </tr>
+                            <tr>
+                                <td align="left" style="padding: 0;">Email</td>
+                                <td align="center" style="padding: 0 5px;">:</td>
+                                <td align="left" style="padding: 0;">info@sjsengg.ae</td>
+                            </tr>
+                            <tr>
+                                <td align="left" style="padding: 0;">Phone No</td>
+                                <td align="center" style="padding: 0 5px;">:</td>
+                                <td align="left" style="padding: 0;">06-7452213</td>
+                            </tr>
+                            <tr>
+                                <td align="left" style="padding: 0;">P.O BOX</td>
+                                <td align="center" style="padding: 0 5px;">:</td>
+                                <td align="left" style="padding: 0;">3975</td>
+                            </tr>
+                            <tr>
+                                <td align="left" style="padding: 0;">TRN</td>
+                                <td align="center" style="padding: 0 5px;">:</td>
+                                <td align="left" style="padding: 0;">100342054200003</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 25%;"></td>
+                </tr>
+            </table>
+        </macro>
+        <macro id="nlfooter">
+            <table style="width: 100%; border-top: 0.7pt solid #007FFF; padding-top: 5px;">
+                <tr>
+                    <td align="left" style="font-size: 8pt; color: #666666;">Page <pagenumber/> of <totalpages/></td>
+                    <td align="right" style="font-size: 8pt; color: #666666;">Printed By: Netsuite | Printed On : ${.now?string("h:mm:ssa d/M/yyyy")}</td>
+                </tr>
+            </table>
+        </macro>
+    </macrolist>
+</head>
+<body size="A4-landscape" font="Helvetica" header="nlheader" header-height="90pt" footer="nlfooter" footer-height="20pt">
+
+    <p align="center" class="report-title">BP Outstanding Report</p>
+    
+    <table class="no-border-table" style="width: 100%; margin-bottom: 10px;">
+        <tr>
+            <td align="left" style="width: 33%; font-size: 8pt; color: #555555;"><b>BP Type :</b> ${customData.bpType}</td>
+            <td align="center" style="width: 34%; font-size: 8pt; color: #555555;"><b>As On</b> ${customData.asOnDate} <b>for Subsidiary :</b> ${customData.division}</td>
+            <td align="right" style="width: 33%; font-size: 8pt; color: #555555;"><b>Based On :</b> ${customData.basedOn}</td>
+        </tr>
+    </table>
+
+    <!-- 2. Customer Information Section -->
+    <table class="no-border-table" style="margin-bottom: 15px; width: 100%; border: 1pt solid #007FFF;">
+        <tr>
+            <!-- Left Side: Client Info -->
+            <td style="width: 60%; vertical-align: top; padding: 5px;">
+                <table class="no-border-table" style="width: 100%; white-space:nowrap;">
+                    <tr>
+                        <td style="width: 15%; text-align: left; font-size: 8pt;" class="bold">Client Name</td>
+                        <td style="width: 2%; text-align: center; font-size: 8pt;">:</td>
+                        <td style="width: 83%; text-align: left; font-size: 8pt;">${customData.customerName}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left; vertical-align: top; font-size: 8pt;" class="bold">Add</td>
+                        <td style="text-align: center; vertical-align: top; font-size: 8pt;">:</td>
+                        <td style="text-align: left; font-size: 8pt;">${customData.customerAddress}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left; font-size: 8pt;" class="bold">TEL</td>
+                        <td style="text-align: center; font-size: 8pt;">:</td>
+                        <td style="text-align: left; font-size: 8pt;">${customData.customerPhone} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="bold" style="font-size: 8pt;">FAX :</span> ${customData.customerFax}</td>
+                    </tr>
+                </table>
+            </td>
+            <!-- Spacer -->
+            <td style="width: 5%;"></td>
+            <!-- Right Side: Account Info -->
+            <td style="width: 35%; vertical-align: top; padding: 5px;">
+                <table class="no-border-table" style="width: 100%;">
+                    <tr>
+                        <td style="width: 45%; text-align: left; font-size: 8pt;" class="bold">Sales Employee</td>
+                        <td style="width: 5%; text-align: center; font-size: 8pt;">:</td>
+                        <td style="width: 50%; text-align: left; font-size: 8pt;">${customData.salesRep}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left; font-size: 8pt;" class="bold">Credit Limit</td>
+                        <td style="text-align: center; font-size: 8pt;">:</td>
+                        <td style="text-align: left; font-size: 8pt;">${customData.currency} ${customData.creditLimit}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left; font-size: 8pt;" class="bold">Terms of Payment</td>
+                        <td style="text-align: center; font-size: 8pt;">:</td>
+                        <td style="text-align: left; font-size: 8pt;">${customData.paymentTerms}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    
+    <!-- 3. Main Outstanding Transactions Table -->
+<table class="trx-table" style="table-layout: fixed; width: 100%;padding-top:-10px;">
+   
+    <thead>
+        <tr style="height:20px;border-bottom: 0.7pt solid #007FF5;">
+            <th align="center" style="width: 11%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Doc No</th>
+            <th align="center" style="width: 7%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Posting Date</th>
+            <th align="center" style="width: 7%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Due Date</th>
+            <th align="center" style="width: 8%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">TRX Type</th>
+            <th align="center" style="width: 9%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">LPO/REF No</th>
+            <th align="center" style="width: 6%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">D.N NO</th>
+            <th align="center" style="width: 9%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Debit</th>
+            <th align="center" style="width: 9%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Credit</th>
+            <th align="center" style="width: 9%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Open Amount</th>
+            <th align="center" style="width: 10%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Cumulative<br/>Balance</th>
+            <th align="center" style="width: 6%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">PDC Amount</th>
+            <th align="center" style="width: 5%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Due Days</th>
+            <th align="center" style="width: 4%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">PDC Maturity<br/>Days</th>
+        </tr>
+    </thead>
+    <tbody>
+        <#list customData.transactions as tx>
+        <tr style="border-bottom: 1px dotted #007FFF;">
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.docNo}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.postDate}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.dueDate}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.trxType}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.refNo}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.dnNo!""}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.debit}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.credit}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.open}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.cumBal}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.pdc}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.dueDays}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.maturityDays}</td>
+        </tr>
+        </#list>
+        
+        <!-- Totals Row -->
+        <tr>
+            <td colspan="6" align="right" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">Totals:</td>
+            <td align="center" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">${customData.totalDebit}</td>
+            <td align="center" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">${customData.totalCredit}</td>
+            <td align="center" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">${customData.totalOpen}</td>
+            <td align="center" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">${customData.totalCumBal}</td>
+            <td align="center" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">${customData.totalPdc}</td>
+            <td colspan="2" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;"></td>
+        </tr>
+    </tbody>
+</table>
+    
+    <!-- 4. Statement Summary Section -->
+    <table class="no-border-table" style="width: 100%; margin-top: 15px; margin-bottom: 15px; background-color: #EFF4F8; border-collapse: collapse;">
+        <tr>
+            <td colspan="2" style="font-size: 10pt; font-weight: bold; border-top: 1.5pt solid #007FFF; border-bottom: 0.7pt solid #007FFF; padding: 10px 4px;">
+                Statement Summary :
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 4px; width: 25%; font-weight: bold; font-size: 8pt;">Total Outstanding Balance (A)</td>
+            <td style="padding: 10px 4px; width: 75%; font-weight: bold; font-size: 8pt;">: AED ${customData.outstandingBal}</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 4px; font-weight: bold; font-size: 8pt;">PDC On Hand (B)</td>
+            <td style="padding: 10px 4px; font-weight: bold; font-size: 8pt;">: AED ${customData.pdcOnHand}</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 4px; font-weight: bold; font-size: 8pt;">Net Balance (A-B)</td>
+            <td style="padding: 10px 4px; font-weight: bold; font-size: 8pt;">: AED ${customData.netBalance}</td>
+        </tr>
+    </table>
+
+    <!-- 6. Post Dated Cheque Details Section -->
+    <pbr />
+    <div class="avoid-break">
+        <table class="trx-table" style="table-layout: fixed; width: 100%; margin-top: 10px;">
+            <thead>
+                <tr>
+                    <td colspan="7" style="font-size: 10pt; font-weight: bold; border-top: 1.5pt solid #007FFF; border-bottom: 0.7pt solid #007FFF; padding: 10px 4px; background-color: #EFF4F8;">
+                        Post Dated Cheque Details :
+                    </td>
+                </tr>
+                <tr style="height:20px;border-bottom: 0.7pt solid #007FF5;">
+                    <th align="center" style="width: 15%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Payment<br/>Number</th>
+                    <th align="center" style="width: 15%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Cheque<br/>Received Date</th>
+                    <th align="center" style="width: 12%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Cheque<br/>Number</th>
+                    <th align="center" style="width: 15%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Cheque<br/>Date</th>
+                    <th align="center" style="width: 18%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Customer<br/>Bank Name</th>
+                    <th align="center" style="width: 15%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Cheque<br/>Amount(AED)</th>
+                    <th align="center" style="width: 10%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <#list customData.pdcs as pdc>
+                <tr style="border-bottom: 1px dotted #007FFF;">
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${pdc.payNo}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${pdc.recDate}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${pdc.chqNo}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${pdc.chqDate}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${pdc.bank}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${pdc.amt?string("#,##0.00")}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${pdc.remarks}</td>
+                </tr>
+                </#list>
+                <#if customData.pdcs?size == 0>
+                <tr style="border-bottom: 1px dotted #007FFF;">
+                    <td colspan="7" align="center" style="font-size: 7pt; padding: 5px 2px;">No Post Dated Cheques available.</td>
+                </tr>
+                </#if>
+                <tr>
+                    <td colspan="5" align="right" style="border-top: none; border-bottom: 1pt solid #007FFF; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">Total:</td>
+                    <td align="center" style="border-top: none; border-bottom: 1pt solid #007FFF; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">${customData.totalPdcAmt}</td>
+                    <td style="border-top: none; border-bottom: 1pt solid #007FFF; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="margin-top: 8px; font-size: 8pt; line-height: 12pt; color: #333333;">
+            <span class="bold">Note:</span><br/>
+            * Postdated cheques are not considered as actual payments until they are realized<br/>
+            * Credit Limit is calculated based on open invoices and postdated cheques are not included
+        </div>
+    </div>
+
+    <!-- 8. Aging Summary Section -->
+    <div class="avoid-break">
+        <table class="trx-table" style="table-layout: fixed; width: 100%; margin-top: 10px;">
+            <thead>
+                <tr>
+                    <td colspan="10" style="font-size: 10pt; font-weight: bold; border-top: 1.5pt solid #007FFF; border-bottom: 0.7pt solid #007FFF; padding: 10px 4px; background-color: #EFF4F8;">
+                        Aging Summary :
+                    </td>
+                </tr>
+                <tr style="height:20px;border-bottom: 0.7pt solid #007FF5;">
+                    <th align="center" style="width: 10%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Due<br/>Amount</th>
+                    <th align="center" style="width: 10%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">On A/C<br/>Pmt</th>
+                    <th align="center" style="width: 10%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Balance<br/>Amt</th>
+                    <th align="center" style="width: 8%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">180+</th>
+                    <th align="center" style="width: 9%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">151-180</th>
+                    <th align="center" style="width: 9%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">121-150</th>
+                    <th align="center" style="width: 9%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">91-120</th>
+                    <th align="center" style="width: 8%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">61-90</th>
+                    <th align="center" style="width: 8%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">0-60</th>
+                    <th align="center" style="width: 19%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">PDC<br/>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-bottom: 1px dotted #007FFF;">
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${customData.agingDue}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${customData.agingOnAcct}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px; font-weight: bold;">${customData.agingBal}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${customData.aging180}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${customData.aging151}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${customData.aging121}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${customData.aging91}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${customData.aging61}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${customData.aging0}</td>
+                    <td align="center" style="font-size: 7pt; padding: 5px 2px;">${customData.agingPdc}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Notes & Bank Details Sections -->
+    <div class="avoid-break" style="margin-top: 15px;">
+        <!-- 9. Bank Details Section -->
+        <table class="no-border-table" style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+            <tr>
+                <td colspan="2" style="font-size: 10pt; font-weight: bold; border-top: 1.5pt solid #007FFF; border-bottom: 0.7pt solid #007FFF; padding: 10px 4px; background-color: #EFF4F8;">
+                    Bank Details :
+                </td>
+            </tr>
+            <tr>
+                <td class="bold" style="padding: 4px; width: 35%; font-size: 8pt;">Account Name</td>
+                <td style="padding: 4px; width: 65%; font-size: 8pt;">: ${customData.bankAcctName}</td>
+            </tr>
+            <tr>
+                <td class="bold" style="padding: 4px; font-size: 8pt;">Bank</td>
+                <td style="padding: 4px; font-size: 8pt;">: ${customData.bankName}</td>
+            </tr>
+            <tr>
+                <td class="bold" style="padding: 4px; font-size: 8pt;">Account Number</td>
+                <td style="padding: 4px; font-size: 8pt;">: ${customData.bankAcctNo}</td>
+            </tr>
+            <tr>
+                <td class="bold" style="padding: 4px; font-size: 8pt;">IBAN Number</td>
+                <td style="padding: 4px; font-size: 8pt;">: ${customData.bankIban}</td>
+            </tr>
+            <tr>
+                <td class="bold" style="padding: 4px; font-size: 8pt;">Branch</td>
+                <td style="padding: 4px; font-size: 8pt;">: ${customData.bankBranch}</td>
+            </tr>
+            <tr>
+                <td class="bold" style="padding: 4px; font-size: 8pt;">Swift Code</td>
+                <td style="padding: 4px; font-size: 8pt;">: ${customData.bankSwift}</td>
+            </tr>
+        </table>
+
+        <!-- 7. Notes Section -->
+        <#if customData.extraNote?has_content>
+            <div class="section-header" style="margin-top: 0;">Notes</div>
+            <ul style="margin: 0; padding-left: 20px; font-size: 8pt; line-height: 1.5;">
+                <li>${customData.extraNote}</li>
+            </ul>
+        </#if>
+    </div>
+
+</body>
+</pdf>
+</pdfset>

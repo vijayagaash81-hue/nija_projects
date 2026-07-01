@@ -106,10 +106,10 @@
                 <td class="border" style="border-left: none;" align="center">${item_index + 1 + (itemBatch?index * 25)}</td>
                 <td class="border">
                     ${item.custrecord_njt_packing_list_det_item}
-                    <#if item.custrecord_njt_packing_list_det_desc?has_content><br/><span style="font-size:8pt; color:#444444;">${item.custrecord_njt_packing_list_det_desc}</span></#if>
                 </td>
-                <td class="border" align="center">${item.custrecord_njt_packing_list_det_package!""}</td>
-                <td class="border" align="center">${item.custrecord_njt_packing_list_det_unit}</td>
+                
+                <td class="border" align="center">${item.custrecord1298!""}</td>
+                <td class="border" align="center">${item.custrecord_njt_packing_list_det_unit!""}</td>
                 <td class="border" align="right">${item.custrecord_njt_packing_list_det_bqty!""}</td>
                 <td class="border" align="right">${item.custrecord_njt_packing_list_det_tbox!""}</td>
                 <td class="border" style="border-right: none;" align="right">${item.custrecord_njt_packing_list_det_tqty!""}</td>
@@ -131,19 +131,19 @@
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr>
                         <td style="font-weight: bold; font-size: 9pt; width: 50%; padding: 4px 10px; border-bottom: 0.2px solid black;">TOTAL NUMBER OF BOXES</td>
-                        <td style="width: 50%; padding: 4px; border-left: 0.2px solid black; border-bottom: 0.2px solid black;">${record.custrecord_njt_packing_list_tota_box!""}</td>
+                        <td style="width: 50%; padding: 4px; border-left: 0.2px solid black; border-bottom: 0.2px solid black;">${record.custrecord1293!""}</td>
                     </tr>
                     <tr>
                         <td style="font-weight: bold; font-size: 9pt; padding: 4px 10px; border-bottom: 0.2px solid black;">TOTAL NUMBER OF PALLET</td>
-                        <td style="padding: 4px; border-left: 0.2px solid black; border-bottom: 0.2px solid black;">${record.custrecord_njt_packing_pallete!""}</td>
+                        <td style="padding: 4px; border-left: 0.2px solid black; border-bottom: 0.2px solid black;">${record.custrecord1294!""}</td>
                     </tr>
                     <tr>
                         <td style="font-weight: bold; font-size: 9pt; padding: 4px 10px; border-bottom: 0.2px solid black;">TOTAL NET WEIGHT</td>
-                        <td style="padding: 4px; border-left: 0.2px solid black; border-bottom: 0.2px solid black;">${record.custrecord_njt_total_net_weight!""}</td>
+                        <td style="padding: 4px; border-left: 0.2px solid black; border-bottom: 0.2px solid black;">${record.custrecord_ntj_packing_list_totalwght!""}</td>
                     </tr>
                     <tr>
                         <td style="font-weight: bold; font-size: 9pt; padding: 4px 10px;">TOTAL GROSS WEIGHT</td>
-                        <td style="padding: 4px; border-left: 0.2px solid black;">${record.custrecord_njt_total_gross_weight!""}</td>
+                        <td style="padding: 4px; border-left: 0.2px solid black;">${record.custrecord_ntj_packing_list_totalwght!""}</td>
                     </tr>
                 </table>
             </td>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf xmlns:pdf="http://big.faceless.org/pdf" version="1.1">
+  <head>
+    <link name="NotoSans" type="font" subtype="truetype"
+          src="NetSuiteFonts/NotoSans-Regular.ttf"
+          src-bold="NetSuiteFonts/NotoSans-Bold.ttf"
+          src-italic="NetSuiteFonts/NotoSans-Italic.ttf"
+          src-bolditalic="NetSuiteFonts/NotoSans-BoldItalic.ttf"
+          bytes="2"/>
+    <style type="text/css">
+      body {
+        font-family: NotoSans;
+        font-size: 9.5pt;
+        color: #000000;
+        line-height: 140%;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      .company {
+        font-size: 13pt;
+        font-weight: bold;
+        color: #2b5d75;
+        text-align: center;
+        margin-bottom: 2px;
+      }
+      .form-title {
+        font-size: 10.5pt;
+        font-weight: bold;
+        color: #5b8da5;
+        text-align: center;
+      }
+      .bold {
+        font-weight: bold;
+      }
+      .italic {
+        font-style: italic;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      td {
+        padding: 4px;
+        vertical-align: middle;
+      }
+      .details-table td {
+        padding: 6px 0px;
+        font-size: 10pt;
+      }
+      .controlled {
+        color: #b9d5ee;
+        font-size: 24pt;
+        font-weight: bold;
+        opacity: 0.6;
+      }
+      .line-spaced {
+        border-bottom: 0.5pt solid #888888;
+        height: 16px;
+        margin-top: 6px;
+      }
+    </style>
+    <macrolist>
+      <macro id="nlfooter">
+        <table width="100%">
+          <tr>
+            <td width="60%" align="left" style="font-size: 7.5pt; color: #555555; line-height: 10px; valign: bottom;">
+              <p>Document Code: HRD/HR42/2024</p>
+              <p>Issue No. 7</p>
+              <p>Effective date 07.11.2024</p>
+            </td>
+            <td width="40%" align="right" valign="bottom">
+              <p class="controlled">CONTROLLED</p>
+            </td>
+          </tr>
+        </table>
+      </macro>
+    </macrolist>
+  </head>
+  <body size="A4" padding="12mm 15mm 12mm 15mm" footer="nlfooter" footer-height="12mm">
+    <!-- Header Section -->
+    <table width="100%" style="margin-bottom: 10px; border-bottom: 1px solid #cccccc; padding-bottom: 6px;">
+      <tr>
+        <td width="20%" valign="middle" align="left">
+          <#if data.logoUrl?has_content>
+            <img src="${data.logoUrl?xml}" width="80" height="40" />
+          <#else>
+            <p style="font-weight: bold; font-size: 14pt; color: #2b5d75;">LOGO</p>
+          </#if>
+        </td>
+        <td width="80%" align="center" valign="middle">
+          <p class="company">${data.companyName?xml}</p>
+          <p class="form-title">Employment Contract Renewal Notice – Staff (HR42)</p>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Main Content Section -->
+    <table class="details-table" style="margin-bottom: 8px; margin-top: 5px;">
+      <tr>
+        <td width="15%"><span class="bold">Date:</span></td>
+        <td width="85%" style="border-bottom: 0.5pt solid #000000;">${data.printDate?xml}</td>
+      </tr>
+      <tr>
+        <td><span class="bold">To:</span></td>
+        <td style="border-bottom: 0.5pt solid #000000;"><span class="bold">Mr. /M S.</span> &nbsp; ${data.employeeName?xml}</td>
+      </tr>
+      <tr>
+        <td><span class="bold">ID No:</span></td>
+        <td style="border-bottom: 0.5pt solid #000000;">${data.employeeCode?xml}</td>
+      </tr>
+      <tr>
+        <td><span class="bold">Department:</span></td>
+        <td style="border-bottom: 0.5pt solid #000000;">${data.department?xml}</td>
+      </tr>
+      <tr>
+        <td><span class="bold">Sub:</span></td>
+        <td><span class="bold">Contract Renewal (${data.workPermitRange?xml})</span></td>
+      </tr>
+    </table>
+
+    <div style="border-top: 1px solid #000000; width: 100%; margin-top: 8px; margin-bottom: 12px; font-size: 1px;">&nbsp;</div>
+
+    <p style="text-align: justify; margin-bottom: 8px; font-size: 10pt;">
+      We would like to confirm that your Work Permit is due for renewal as mentioned in the subject and also we are glad to inform that the Company appreciates and acknowledges your service contribution during your tenure.
+    </p>
+    <p style="text-align: justify; margin-bottom: 8px; font-size: 10pt;">
+      Please specify your willingness to continue your services for next 02 years or to proceed for visa cancellation /Final Exit.
+    </p>
+    <p style="text-align: justify; margin-bottom: 15px; font-size: 10pt;">
+      Kindly confirm with your signature.
+    </p>
+
+    <!-- Signatures for Willingness -->
+    <table width="100%" style="margin-bottom: 12px; font-size: 9.5pt;">
+      <tr>
+        <td width="35%" class="bold" valign="bottom">Contract Renewal</td>
+        <td width="35%" style="border-bottom: 0.5pt solid #000000;" valign="bottom">&nbsp;</td>
+        <td width="10%" align="center" class="bold" valign="bottom">Date:</td>
+        <td width="20%" style="border-bottom: 0.5pt solid #000000;" valign="bottom">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="4" style="font-size: 7.5pt; color: #555555; padding-top: 1px; padding-bottom: 10px;">Signature for Contract Renewal</td>
+      </tr>
+      <tr>
+        <td class="bold" valign="bottom">Cancellation / Exit</td>
+        <td style="border-bottom: 0.5pt solid #000000;" valign="bottom">&nbsp;</td>
+        <td align="center" class="bold" valign="bottom">Date:</td>
+        <td style="border-bottom: 0.5pt solid #000000;" valign="bottom">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="4" style="font-size: 7.5pt; color: #555555; padding-top: 1px; padding-bottom: 10px;">Signature for Contract cancellation</td>
+      </tr>
+    </table>
+
+    <!-- Reason for Non-Renewal -->
+    <p class="bold" style="font-size: 10pt; margin-bottom: 2px;">Reason for Non-Renewal:</p>
+    <table width="100%" style="margin-bottom: 15px;">
+      <tr><td class="line-spaced" style="height: 12px;">&nbsp;</td></tr>
+      <tr><td class="line-spaced" style="height: 12px;">&nbsp;</td></tr>
+      <tr><td class="line-spaced" style="height: 12px;">&nbsp;</td></tr>
+    </table>
+
+    <!-- HR Sign-off -->
+    <table width="100%" style="font-size: 10pt; margin-top: 10px;">
+      <tr>
+        <td width="55%" valign="top">
+          <p>For,</p>
+          <p class="bold" style="margin-top: 2px;">Al Najma Al Fareeda Int'l Group</p>
+          <p class="italic" style="margin-top: 25px; text-decoration: overline;">HR Manager</p>
+        </td>
+        <td width="45%" valign="bottom" align="right" style="font-size: 8.5pt; color: #555555; padding-bottom: 2px;">
+          <p>Cc: Employee File/HOD/GOM/CEO/MD</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</pdf>

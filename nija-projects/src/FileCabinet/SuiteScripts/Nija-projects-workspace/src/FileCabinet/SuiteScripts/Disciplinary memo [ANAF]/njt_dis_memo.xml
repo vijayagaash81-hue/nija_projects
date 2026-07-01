@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+
+<head>
+
+<style type="text/css">
+
+    *{
+        font-family: Helvetica;
+    }
+
+    body{
+        font-size:10pt;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+    .company{
+        font-size:15pt;
+        font-weight:bold;
+        text-align:center;
+        padding-bottom: 10px;
+    }
+
+    .memo{
+        font-size:13pt;
+        font-weight:bold;
+        text-align:center;
+    }
+
+    .bold{
+        font-weight:bold;
+    }
+
+    .small{
+        font-size:8pt;
+    }
+
+    .historytable{
+        border:1px solid black;
+        border-collapse:collapse;
+    }
+
+    .historytable td{
+        border:1px solid black;
+        padding:6px;
+    }
+
+    .gray{
+        background-color:#bdbdbd;
+        text-align:center;
+        font-weight:bold;
+    }
+
+    .content{
+        line-height:18px;
+        font-size:11pt;
+        text-align:justify;
+    }
+
+    .content p {
+        margin-bottom: 15px;
+    }
+
+    .line{
+        border-top:1px solid black;
+    }
+
+    .signature{
+        border-top:1px solid black;
+        width:180px;
+        margin-top: 30px;
+        margin-bottom: 5px;
+    }
+
+    .controlled{
+        color:#bfbfbf;
+        font-size:36pt;
+        font-weight:bold;
+    }
+
+</style>
+
+<macrolist>
+<macro id="nlfooter">
+<table width="100%">
+
+<tr>
+
+<td width="60%" valign="top">
+
+<p>For,</p>
+
+<p class="bold" style="margin-top: 10px;">Al Najma Al Fareeda Int&apos;l Group</p>
+
+<div class="signature"></div>
+
+<p>(Human Resources Department)</p>
+
+<p class="bold" style="margin-top: 10px;">Read and Accepted by</p>
+
+<p class="small" style="margin-top: 10px;">Cc: Employee File/HOD/Accounts/GOM/CEO/MD</p>
+
+<p class="small" style="margin-top: 10px;">Document Code: ${record.name!""}</p>
+
+<p class="small">Issue No. 3</p>
+
+<p class="small">Effective date: <#if record.custrecord_dm_effective_date?has_content>${record.custrecord_dm_effective_date}<#else>07.11.2024</#if></p>
+
+</td>
+
+<td width="40%" align="center" valign="bottom">
+
+<p class="controlled">CONTROLLED</p>
+
+</td>
+
+</tr>
+
+</table>
+</macro>
+</macrolist>
+</head>
+
+<body size="A4" padding="25" footer="nlfooter" footer-height="250px">
+
+<!-- TOP HEADER -->
+
+<table width="100%">
+
+<tr>
+
+<td width="15%" valign="top">
+&nbsp;
+</td>
+
+<td width="70%" align="center">
+
+<p class="company">
+<#if record.custrecord_dm_subsidiary?has_content>
+${record.custrecord_dm_subsidiary}
+<#else>
+Al Najma Al Fareeda Bldg. Cleaning &amp; Pest Control
+</#if>
+</p>
+
+<p class="memo">
+DISCIPLINARY MEMO(HR40)
+</p>
+
+</td>
+
+<td width="15%">&nbsp;</td>
+
+</tr>
+
+</table>
+
+<br/><br/>
+
+<!-- DETAILS -->
+
+<table width="100%">
+
+<tr>
+
+<td width="55%" valign="top">
+
+<table width="100%">
+
+<tr>
+<td width="25%" class="bold">Date :</td>
+<td>${record.custrecord_dm_document_date!""}</td>
+</tr>
+
+<tr>
+<td class="bold">To :</td>
+<td>${record.custrecord_dm_employee!""}</td>
+</tr>
+
+<tr>
+<td class="bold">Sub:</td>
+<td>${record.custrecord_dm_subsidiary!""}</td>
+</tr>
+
+<tr>
+<td class="bold">Disciplinary Memo Type :</td>
+<td>${record.custrecord_dm__memo_type!""}</td>
+</tr>
+
+</table>
+
+</td>
+
+<!-- RIGHT TABLE -->
+
+<td width="45%" valign="top">
+
+<div style="margin-bottom: 8px;"><span class="bold">Ref No :</span> ${record.name!""}</div>
+
+<table width="100%" class="historytable">
+
+<tr>
+<td colspan="2" class="gray" align="center" style="text-decoration: underline;">
+Violation History
+</td>
+</tr>
+
+<tr>
+<td>
+No of issued Memo&apos;s in the year:
+</td>
+
+<td align="center">
+0
+</td>
+</tr>
+
+<tr>
+<td>
+No of current code violation in the
+</td>
+
+<td align="center">
+${record.custrecord_dm_no_of_curnt_ce_violati!"0"}
+</td>
+</tr>
+
+<tr>
+<td>
+Total Black Points in the year:
+</td>
+
+<td>0</td>
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+<!-- VIOLATION -->
+
+<table width="100%" style="border-bottom: 1px solid black;">
+
+<tr>
+
+<td class="bold" style="padding-bottom: 10px;">
+Violation Code No : ${record.custrecord_dm_violation_code!""}
+</td>
+
+</tr>
+
+</table>
+
+<br/><br/>
+
+<!-- MAIN CONTENT -->
+
+<div class="content">
+
+<#if record.custrecord_dm_memocont_details?has_content>
+    <#assign processedOverstay = "${record.custrecord_dm_memocont_details}">
+    
+    <#assign leaveStartStr = "${record.custrecord_dm_from_date!record.custrecord_dm_to_date!\"\"}">
+    <#assign leaveEndStr = "${record.custrecord_dm_to_date!\"\"}">
+    <#assign reportingDateStr = "${record.custrecord_dm_rejoin_date!\"\"}">
+    <#assign delayDaysStr = "${customData.delayDays!\"0\"}">
+    
+    <#assign penaltyAmountStr = "${record.custrecord_dm_penalty_amount!\"0\"}">
+    <#assign penaltyAmountStr = penaltyAmountStr?replace("AED", "")?trim>
+    
+    <#assign processedOverstay = processedOverstay?replace("[[leave_start]]", leaveStartStr)>
+    <#assign processedOverstay = processedOverstay?replace("[[leave_end]]", leaveEndStr)>
+    <#assign processedOverstay = processedOverstay?replace("[[reporting_date]]", reportingDateStr)>
+    <#assign processedOverstay = processedOverstay?replace("[[delay_days]]", delayDaysStr)>
+    <#assign processedOverstay = processedOverstay?replace("[[penalty_amount]]", penaltyAmountStr)>
+    <p>${processedOverstay}</p>
+</#if>
+
+<#if record.custrecord_dm_other_memo_content?has_content>
+    <#assign processedOther = "${record.custrecord_dm_other_memo_content}">
+    
+    <#assign leaveStartStr = "${record.custrecord_dm_from_date!record.custrecord_dm_to_date!\"\"}">
+    <#assign leaveEndStr = "${record.custrecord_dm_to_date!\"\"}">
+    <#assign reportingDateStr = "${record.custrecord_dm_rejoin_date!\"\"}">
+    <#assign delayDaysStr = "${customData.delayDays!\"0\"}">
+    
+    <#assign penaltyAmountStr = "${record.custrecord_dm_penalty_amount!\"0\"}">
+    <#assign penaltyAmountStr = penaltyAmountStr?replace("AED", "")?trim>
+    
+    <#assign processedOther = processedOther?replace("[[leave_start]]", leaveStartStr)>
+    <#assign processedOther = processedOther?replace("[[leave_end]]", leaveEndStr)>
+    <#assign processedOther = processedOther?replace("[[reporting_date]]", reportingDateStr)>
+    <#assign processedOther = processedOther?replace("[[delay_days]]", delayDaysStr)>
+    <#assign processedOther = processedOther?replace("[[penalty_amount]]", penaltyAmountStr)>
+    <p>${processedOther}</p>
+</#if>
+
+<#if record.custrecord_dm_penalty_amount?has_content && record.custrecord_dm_penalty_amount != "0" && record.custrecord_dm_penalty_amount != "0.00" && !record.custrecord_dm_memocont_details?has_content && !record.custrecord_dm_other_memo_content?has_content>
+<p>As a result of this noncompliance, you shall be liable to pay a fine amount of ${record.custrecord_dm_penalty_amount} which will be deducted from your next salary.</p>
+</#if>
+
+<#if record.custrecord_dm_remarks?has_content>
+<p class="bold" style="margin-top: 10px;">Remarks:</p>
+<p>${record.custrecord_dm_remarks}</p>
+</#if>
+
+<#if !record.custrecord_dm_memocont_details?has_content && !record.custrecord_dm_other_memo_content?has_content && !record.custrecord_dm_remarks?has_content>
+<p>It has been observed that you have failed to report to the duty on the agreed date after your ANNUAL
+LEAVE completion which was approved from 18-02-2026 to 18-04-2026. You have reported to duty
+on 12-05-2026 with 24 days&apos; delay in joining. This is not at all acceptable to the management and HR
+as it is against our policy.</p>
+
+<p>As a result of this noncompliance, you shall be liable to pay a fine amount of AED 300 which will be
+deducted from your next salary.</p>
+
+<p>Henceforth HRD Strictly instructs you to adhere to our company leaves policy.</p>
+</#if>
+
+</div>
+
+</body>
+</pdf>

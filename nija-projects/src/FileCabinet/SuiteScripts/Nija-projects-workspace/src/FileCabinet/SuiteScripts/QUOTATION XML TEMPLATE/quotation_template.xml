@@ -64,20 +64,20 @@
 </style>
 <macrolist>
     <macro id="quoteFooter">
-        <table style="width: 100%; background-color: #2e5190; margin-bottom: 30px;">
+        <table style="width: 90%; background-color: #2E3060; margin-bottom: 10px; margin-left:45px;">
             <tr>
-                <td style="height: 6px; padding: 0;"></td>
+                <td style="height: 2px; padding: 0;"></td>
             </tr>
         </table>
-        <table style="width: 100%; font-size: 9pt;">
+        <table style="width: 100%; font-size: 9pt;margin-left:25px;">
             <tr>
-                <td style="width: 22%; text-align: center; border-top: 1px solid #000; padding-top: 5px;">Prepared By</td>
+                <td style="width: 22%; text-align: center;  padding-top: 5px;">Prepared By</td>
                 <td style="width: 4%;"></td>
-                <td style="width: 22%; text-align: center; border-top: 1px solid #000; padding-top: 5px;">Accounts Approval</td>
+                <td style="width: 22%; text-align: center;  padding-top: 5px;">Accounts Approval</td>
                 <td style="width: 4%;"></td>
-                <td style="width: 22%; text-align: center; border-top: 1px solid #000; padding-top: 5px;">Check &amp; Approved By</td>
+                <td style="width: 22%; text-align: center;  padding-top: 5px;">Check &amp; Approved By</td>
                 <td style="width: 4%;"></td>
-                <td style="width: 22%; text-align: center; border-top: 1px solid #000; padding-top: 5px;">Acknowledge By</td>
+                <td style="width: 22%; text-align: center;  padding-top: 5px;">Acknowledge By</td>
             </tr>
         </table>
     </macro>
@@ -98,11 +98,11 @@
             </td>
         </tr>
         <tr>
-            <td style="font-size:10pt; line-height:14px; padding-top:6px;">
-                <span>Vendor's Name:</span><br/>
-                <b>${record.custrecord_njt_pq_vendor}</b><br/>
-                ${record.custrecord_njt_pq_vendor}<br/>
-                Phone: ${companyInformation.phone}
+            <td style="font-size:10pt; line-height:25px; padding-top:6px;">
+                <span style="padding-bottom:10pt;font-size:14pt;">Vendor's Name:</span><br/>
+                <b style="padding-bottom:10pt;">${record.custrecord_njt_pq_vendor}</b><br/>
+                ${customData.vendorAddress}<br/>
+                <span style="padding-top:10pt;">Phone: ${customData.vendorPhone}</span>
             </td>
         </tr>
     </table>

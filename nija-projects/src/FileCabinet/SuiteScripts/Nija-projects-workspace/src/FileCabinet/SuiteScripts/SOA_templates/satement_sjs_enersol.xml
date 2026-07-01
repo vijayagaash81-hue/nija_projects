@@ -1,0 +1,241 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+<style>
+/* Base */
+html, body {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 9pt;
+	color: #000;
+}
+
+/* Header */
+.header {
+	width: 100%;
+	border-top: 6px solid #2E75B6; /* blue top bar like the image */
+	padding-top: 8px;
+}
+.header-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.logo-cell {
+	width: 18%;
+	vertical-align: top;
+}
+.company-cell {
+	width: 62%;
+	text-align: center;
+	vertical-align: top;
+}
+.meta-cell {
+	width: 20%;
+	text-align: right;
+	vertical-align: top;
+}
+.company-name {
+	font-size: 14pt;
+	font-weight: bold;
+	color: #1f4e79;
+}
+.company-contact {
+	font-size: 8.5pt;
+	color: #333;
+	margin-top: 4px;
+}
+
+/* Title area */
+.doc-title {
+	margin-top: 8px;
+	background-color: #2E75B6;
+	color: white;
+	padding: 6px 10px;
+	font-weight: bold;
+	text-align: left;
+	font-size: 12pt;
+}
+
+/* Info block */
+.info-table {
+	width: 100%;
+	margin-top: 8px;
+	border-collapse: collapse;
+}
+.info-table td {
+	padding: 3px 6px;
+	vertical-align: top;
+}
+
+/* Transactions table */
+.tran-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+	font-size: 8.5pt;
+}
+.tran-table th {
+	background-color: #D9E7F9;
+	color: #083B66;
+	padding: 6px;
+	border: 1px solid #9BB7DD;
+	text-align: left;
+	font-weight: bold;
+}
+.tran-table td {
+	padding: 6px;
+	border: 1px solid #D1DCEB;
+}
+.tran-table .right {
+	text-align: right;
+}
+
+/* Summary */
+.summary-block {
+	margin-top: 12px;
+}
+.summary-table {
+	width: 360px;
+	float: right;
+	border-collapse: collapse;
+}
+.summary-table td {
+	border: 1px solid #D1DCEB;
+	padding: 6px;
+}
+.summary-table .label {
+	background-color: #D9E7F9;
+	font-weight: bold;
+	color: #083B66;
+}
+
+/* Footer */
+.footer {
+	margin-top: 30px;
+	font-size: 8pt;
+	color: #555;
+}
+
+/* Misc */
+.small { font-size: 8pt; color: #666; }
+.page-break { page-break-after: always; }
+</style>
+</head>
+<body>
+
+<!-- Header with logo left, centered company info and meta on right -->
+<div class="header">
+	<table class="header-table">
+		<tr>
+			<td class="logo-cell">
+				<img src="https://dummyimage.com/140x60/ffffff/2e75b6.png&amp;text=SJS" width="140" height="60"/>
+			</td>
+			<td class="company-cell">
+				<div class="company-name">SJS ENERSOL LLC</div>
+				<div class="company-contact">
+					Umm Al Quwain, United Arab Emirates &nbsp;|&nbsp; Tel: 06-7484392 &nbsp;|&nbsp; Fax: 06-7480531
+				</div>
+				<div class="small">Website: www.sjsenersol.com &nbsp; &nbsp; Email: info@sjsenersol.ae</div>
+			</td>
+			<td class="meta-cell">
+				<div style="font-size:10pt;font-weight:bold;">Report</div>
+				<div class="small">Printed: 08/05/2026</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div class="doc-title">BP Outstanding Report</div>
+
+<!-- Customer / Statement info -->
+<table class="info-table">
+	<tr>
+		<td><b>Client name:</b> ABC Trading LLC</td>
+		<td><b>Sales Rep:</b> Sales Employee</td>
+		<td style="text-align:right;"><b>Statement Date:</b> 08/05/2026</td>
+	</tr>
+	<tr>
+		<td><b>Address:</b> Umm Al Quwain</td>
+		<td><b>Currency:</b> AED</td>
+		<td style="text-align:right;"><b>Credit Limit:</b> 1,000,000.00</td>
+	</tr>
+</table>
+
+<!-- Transactions table (wider set of columns like the image) -->
+<table class="tran-table">
+	<thead>
+		<tr>
+			<th style="width:8%">Doc Date</th>
+			<th style="width:10%">Posting Date</th>
+			<th style="width:8%">Due Date</th>
+			<th style="width:12%">Document No</th>
+			<th style="width:12%">D/N/Ref No</th>
+			<th style="width:8%">Debit</th>
+			<th style="width:8%">Credit</th>
+			<th style="width:8%">Open Amount</th>
+			<th style="width:8%">Balance</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>01/04/2026</td>
+			<td>01/04/2026</td>
+			<td>30/04/2026</td>
+			<td>INV-1001</td>
+			<td>INV-REF-001</td>
+			<td class="right">10,000.00</td>
+			<td class="right">0.00</td>
+			<td class="right">10,000.00</td>
+			<td class="right">10,000.00</td>
+		</tr>
+		<tr>
+			<td>05/04/2026</td>
+			<td>05/04/2026</td>
+			<td>-</td>
+			<td>PAY-1001</td>
+			<td>PAY-REF-001</td>
+			<td class="right">0.00</td>
+			<td class="right">2,500.00</td>
+			<td class="right">0.00</td>
+			<td class="right">7,500.00</td>
+		</tr>
+		<tr>
+			<td>10/04/2026</td>
+			<td>10/04/2026</td>
+			<td>10/05/2026</td>
+			<td>INV-1002</td>
+			<td>INV-REF-002</td>
+			<td class="right">5,000.00</td>
+			<td class="right">0.00</td>
+			<td class="right">5,000.00</td>
+			<td class="right">12,500.00</td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- Summary block -->
+<div class="summary-block">
+	<table class="summary-table">
+		<tr>
+			<td class="label">Total Outstanding Balance (A)</td>
+			<td class="right">AED 12,500.00</td>
+		</tr>
+		<tr>
+			<td class="label">PDC On Hold (B)</td>
+			<td class="right">AED 0.00</td>
+		</tr>
+		<tr>
+			<td class="label">Net Balance (A-B)</td>
+			<td class="right">AED 12,500.00</td>
+		</tr>
+	</table>
+</div>
+
+<div style="clear:both"></div>
+
+<div class="footer">
+	This is a system generated BP Outstanding Report. Page 1 of 1.
+</div>
+
+</body>
+</pdf>

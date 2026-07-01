@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SJS ENERSOL Project Summary Report</title>
+    <style>
+    /* Google Font Inter */
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+    
+    body {
+      font-family: "Inter", -apple-system, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Premium Modern Header */
+    .header {
+      background: #0f172a;
+      color: #fff;
+      padding: 16px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    }
+    .header-logo {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #f8fafc;
+    }
+    .header-logo span {
+      color: #10b981;
+    }
+    .header-right select {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      margin-left: 8px;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .header-right select:hover {
+      border-color: #475569;
+    }
+    
+    /* Executive Minimalist KPI Bar */
+    .metrics-bar {
+      display: flex;
+      gap: 16px;
+      padding: 24px 28px;
+      background: #ffffff;
+      border-bottom: 1px solid #f1f5f9;
+      overflow-x: auto;
+    }
+    .metric-card {
+      flex: 1;
+      min-width: 160px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+    .metric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+      border-color: #cbd5e1;
+    }
+    .metric-card.lpo-val-card { border-left: 4px solid #2563eb; }
+    .metric-card.revenue-val-card { border-left: 4px solid #0284c7; }
+    .metric-card.expenses-val-card { border-left: 4px solid #7c3aed; }
+    .metric-card.gross-profit-val-card { border-left: 4px solid #10b981; }
+    .metric-card.admin-val-card { border-left: 4px solid #ea580c; }
+    .metric-card.net-profit-val-card { border-left: 4px solid #0891b2; }
+    .metric-card.margin-val-card { border-left: 4px solid #0d9488; }
+    
+    .metric-val {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+    .metric-lbl {
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    /* Modern Control Toolbar */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 28px;
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .period-badge {
+      background: #f1f5f9;
+      color: #475569;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .search-wrap {
+      display: inline-block;
+      margin-left: 16px;
+    }
+    #projSearch {
+      padding: 8px 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      width: 280px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s;
+      background-color: #f8fafc;
+    }
+    #projSearch:focus {
+      background-color: #ffffff;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    .btn-export {
+      padding: 8px 16px;
+      border: 1px solid #10b981;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #10b981;
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-export:hover {
+      background: #10b981;
+      color: #ffffff;
+      box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.15);
+    }
+    
+    /* Tabular Reporting Grid */
+    .table-container {
+      margin: 24px 28px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    }
+    .table-scroll {
+      overflow: auto;
+      max-height: 60vh;
+    }
+    /* Premium Scrollbar */
+    .table-scroll::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .table-scroll::-webkit-scrollbar-track {
+      background: #f8fafc;
+    }
+    .table-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 99px;
+    }
+    .table-scroll::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      table-layout: fixed;
+    }
+    thead th {
+      background: #f8fafc !important;
+      color: #475569 !important;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 14px 16px;
+      border-right: 1px solid #e2e8f0;
+      border-bottom: 2px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      transition: background-color 0.2s;
+    }
+    thead th:hover {
+      background-color: #f1f5f9 !important;
+    }
+    .sticky-col {
+      position: sticky;
+      background: #ffffff;
+      z-index: 40;
+      border-right: 1px solid #e2e8f0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    thead .sticky-col {
+      background: #f8fafc !important;
+      color: #475569 !important;
+      z-index: 110;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .sno-col { left: 0; width: 60px; text-align: center; }
+    .code-col { left: 60px; width: 110px; text-align: center; }
+    .cell-data {
+      font-size: 13px;
+      color: #334155;
+      padding: 12px 16px;
+      border-right: 1px solid #f1f5f9;
+      border-bottom: 1px solid #f1f5f9;
+      text-align: center;
+      vertical-align: middle;
+    }
+    tbody tr:hover td {
+      background-color: #f1f5f9 !important;
+    }
+    td.num, th.num { text-align: right; }
+    .num {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+    }
+    .prof-pos {
+      color: #10b981;
+      font-weight: 600;
+    }
+    .prof-neg {
+      color: #ef4444;
+      font-weight: 600;
+    }
+    
+    /* Row Highlights for performance visual cues */
+    tr.row-loss td {
+      background-color: #fef2f2;
+    }
+    tr.row-high-profit td {
+      background-color: #f0fdf4;
+    }
+    tr.total-row td {
+      border-bottom: 2px solid #cbd5e1;
+    }
+    
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-pos {
+      background: #dcfce7;
+      color: #15803d;
+    }
+    .badge-neg {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    .welcome-msg {
+      padding: 120px 20px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 15px;
+    }
+    </style>
+</head>
+<body>
+    <div class="header">
+      <div class="header-left"><div class="header-logo">■ <span>SJS ENERSOL</span></div></div>
+      <div class="header-right">
+        <select id="custpage_subsidiary" name="custpage_subsidiary" onchange="window.reloadReport()"><option value="">Select Subsidiary</option><option value="1" selected>SJS Enersol LLC</option></select>
+        <select id="custpage_year" name="custpage_year" onchange="window.reloadReport()"><option value="1" selected>2019</option></select>
+        <select id="custpage_month" name="custpage_month" onchange="window.reloadReport()"><option value="1" selected>January</option></select>
+      </div>
+    </div>
+    
+    <div class="metrics-bar">
+      <div class="metric-card lpo-val-card"><div class="metric-lbl">Total LPO Value</div><div class="metric-val lpo-val">$23,480,323.97</div></div>
+      <div class="metric-card revenue-val-card"><div class="metric-lbl">Total Revenue</div><div class="metric-val revenue-val">$12,891,730.66</div></div>
+      <div class="metric-card expenses-val-card"><div class="metric-lbl">Total Expenses</div><div class="metric-val expenses-val">$6,590,544.79</div></div>
+      <div class="metric-card gross-profit-val-card"><div class="metric-lbl">Gross Profit / (Loss)</div><div class="metric-val gross-profit-val">$6,301,185.87</div></div>
+      <div class="metric-card admin-val-card"><div class="metric-lbl">Total Admin Expenses</div><div class="metric-val admin-val">$2,632,581.40</div></div>
+      <div class="metric-card net-profit-val-card"><div class="metric-lbl">Net Profit / (Loss)</div><div class="metric-val net-profit-val">$3,668,604.47</div></div>
+      <div class="metric-card margin-val-card"><div class="metric-lbl">Net Margin</div><div class="metric-val margin-val">28%</div></div>
+    </div>
+    
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <span class="period-badge">PROJECT REPORT</span>
+        <div class="search-wrap"><input type="text" id="projSearch" placeholder="Search project, code or LPO..." oninput="window.filterProjectTable()" onkeyup="window.filterProjectTable()"></div>
+      </div>
+      <div class="toolbar-right"><button type="button" id="btnExport" class="btn-export" onclick="window.triggerExcelExport()">Export to CSV</button></div>
+    </div>
+    
+    <div class="table-container"><div class="table-scroll"><table id="projTable"><thead>
+    <tr>
+      <th id="th-sno" class="sticky-col sno-col" style="top:0; z-index:110; cursor:pointer;" onclick="window.sortTable('sno')">S.NO</th>
+      <th id="th-code" class="sticky-col code-col" style="top:0; z-index:110; cursor:pointer;" onclick="window.sortTable('code')">PROJECT CODES</th>
+      <th id="th-lpo" style="top:0; z-index:100; width:155px; text-align:left; cursor:pointer;" onclick="window.sortTable('lpo')">LPO #</th>
+      <th id="th-name" style="top:0; z-index:100; width:230px; text-align:left; cursor:pointer;" onclick="window.sortTable('name')">PROJECT NAME</th>
+      <th id="th-lpoValue" style="top:0; z-index:100; width:140px; text-align:right; cursor:pointer;" onclick="window.sortTable('lpoValue')">LPO VALUE</th>
+      <th id="th-revenue" style="top:0; z-index:100; width:140px; text-align:right; cursor:pointer;" onclick="window.sortTable('revenue')">REVENUE</th>
+      <th id="th-expenses" style="top:0; z-index:100; width:140px; text-align:right; cursor:pointer;" onclick="window.sortTable('expenses')">EXPENSES</th>
+      <th id="th-gross" style="top:0; z-index:100; width:150px; text-align:right; cursor:pointer;" onclick="window.sortTable('gross')">PROFIT / (LOSS)</th>
+      <th id="th-admin" style="top:0; z-index:100; width:140px; text-align:right; cursor:pointer;" onclick="window.sortTable('admin')">Admin Expenses</th>
+      <th id="th-net" style="top:0; z-index:100; width:150px; text-align:right; cursor:pointer;" onclick="window.sortTable('net')">Profit / (Loss)</th>
+      <th id="th-margin" style="top:0; z-index:100; width:130px; text-align:center; cursor:pointer;" onclick="window.sortTable('margin')">% of Profit / (loss)</th>
+    </tr>
+    </thead><tbody id="projBody">
+    <tr class="">
+      <td class="sticky-col sno-col cell-data">1</td>
+      <td class="sticky-col code-col cell-data">24549</td>
+      <td class="cell-data" style="text-align:left;">SH LLC PO 0111</td>
+      <td class="cell-data" style="text-align:left; font-weight:500;">GS INIMA</td>
+      <td class="cell-data num">$7,291,791.47</td>
+      <td class="cell-data num">$5,957,723.02</td>
+      <td class="cell-data num">$3,113,199.48</td>
+      <td class="cell-data num prof-pos">$2,844,523.54</td>
+      <td class="cell-data num">$1,216,650.22</td>
+      <td class="cell-data num prof-pos">$1,627,873.32</td>
+      <td class="cell-data" style="text-align:center;"><span class="badge badge-pos">27%</span></td>
+    </tr>
+    <tr class="">
+      <td class="sticky-col sno-col cell-data">2</td>
+      <td class="sticky-col code-col cell-data">24557</td>
+      <td class="cell-data" style="text-align:left;">PR2401689</td>
+      <td class="cell-data" style="text-align:left; font-weight:500;">ACCIONA EGYPT</td>
+      <td class="cell-data num">$8,376,720.00</td>
+      <td class="cell-data num">$881,700.00</td>
+      <td class="cell-data num">$386,835.23</td>
+      <td class="cell-data num prof-pos">$494,864.77</td>
+      <td class="cell-data num">$180,055.45</td>
+      <td class="cell-data num prof-pos">$314,809.32</td>
+      <td class="cell-data" style="text-align:center;"><span class="badge badge-pos">36%</span></td>
+    </tr>
+    <tr class="row-loss">
+      <td class="sticky-col sno-col cell-data">3</td>
+      <td class="sticky-col code-col cell-data">25590</td>
+      <td class="cell-data" style="text-align:left;">1022437</td>
+      <td class="cell-data" style="text-align:left; font-weight:500;">GENERAL RUBBER</td>
+      <td class="cell-data num">$37,537.92</td>
+      <td class="cell-data num">$37,537.92</td>
+      <td class="cell-data num">$37,537.00</td>
+      <td class="cell-data num prof-pos">$0.92</td>
+      <td class="cell-data num">$7,665.77</td>
+      <td class="cell-data num prof-neg">-$7,664.85</td>
+      <td class="cell-data" style="text-align:center;"><span class="badge badge-neg">-20%</span></td>
+    </tr>
+    <tr class="">
+      <td class="sticky-col sno-col cell-data">4</td>
+      <td class="sticky-col code-col cell-data">25589</td>
+      <td class="cell-data" style="text-align:left;">1022435</td>
+      <td class="cell-data" style="text-align:left; font-weight:500;">GENERAL RUBBER</td>
+      <td class="cell-data num">$313,609.10</td>
+      <td class="cell-data num">$313,609.10</td>
+      <td class="cell-data num">$221,526.17</td>
+      <td class="cell-data num prof-pos">$92,082.93</td>
+      <td class="cell-data num">$64,013.36</td>
+      <td class="cell-data num prof-pos">$28,069.57</td>
+      <td class="cell-data" style="text-align:center;"><span class="badge badge-pos">9%</span></td>
+    </tr>
+    <tr class="total-row">
+      <td class="sticky-col sno-col cell-data" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">TOTAL</td>
+      <td class="sticky-col code-col cell-data" style="background:#f8fafc; border-top: 2px solid #cbd5e1;"></td>
+      <td class="cell-data" style="background:#f8fafc; border-top: 2px solid #cbd5e1;"></td>
+      <td class="cell-data" style="background:#f8fafc; border-top: 2px solid #cbd5e1;"></td>
+      <td class="cell-data num" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">$16,019,658.49</td>
+      <td class="cell-data num" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">$7,190,570.04</td>
+      <td class="cell-data num" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">$3,759,097.88</td>
+      <td class="cell-data num prof-pos" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">$3,431,472.16</td>
+      <td class="cell-data num" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">$1,468,384.80</td>
+      <td class="cell-data num prof-pos" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">$1,963,087.36</td>
+      <td class="cell-data" style="text-align:center; background:#f8fafc; border-top: 2px solid #cbd5e1;"><span class="badge badge-pos" style="font-weight:700;">27%</span></td>
+    </tr>
+    </tbody></table></div></div>
+    
+    <script>
+    window.projectData = [
+      {"sno":1,"code":"24549","lpo":"SH LLC PO 0111","name":"GS INIMA","lpoValue":7291791.47,"revenue":5957723.02,"expenses":3113199.48,"admin":1216650.22},
+      {"sno":2,"code":"24557","lpo":"PR2401689","name":"ACCIONA EGYPT","lpoValue":8376720.00,"revenue":881700.00,"expenses":386835.23,"admin":180055.45},
+      {"sno":3,"code":"25590","lpo":"1022437","name":"GENERAL RUBBER","lpoValue":37537.92,"revenue":37537.92,"expenses":37537.00,"admin":7665.77},
+      {"sno":4,"code":"25589","lpo":"1022435","name":"GENERAL RUBBER","lpoValue":313609.10,"revenue":313609.10,"expenses":221526.17,"admin":64013.36}
+    ];
+    window.currentSort = { col: null, desc: false };
+    
+    window.formatCurrency = function(val) {
+      var sign = val < 0 ? "-" : "";
+      var absVal = Math.abs(val);
+      return sign + "$" + absVal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+    };
+    
+    window.formatPercentage = function(val) {
+      return (val * 100).toFixed(0) + "%";
+    };
+    
+    window.setMetricText = function(selector, text) {
+      var elem = document.querySelector(selector);
+      if (elem) elem.innerText = text;
+    };
+    
+    window.renderProjectTable = function(rows) {
+      var tbody = document.getElementById("projBody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+      var totals = { lpo:0, rev:0, exp:0, gross:0, admin:0, net:0 };
+      
+      rows.forEach(function(row) {
+        var grossProfit = row.revenue - row.expenses;
+        var netProfit = grossProfit - row.admin;
+        var margin = row.revenue > 0 ? (netProfit / row.revenue) : 0;
+        
+        totals.lpo += row.lpoValue;
+        totals.rev += row.revenue;
+        totals.exp += row.expenses;
+        totals.gross += grossProfit;
+        totals.admin += row.admin;
+        totals.net += netProfit;
+        
+        var grossClass = grossProfit >= 0 ? "prof-pos" : "prof-neg";
+        var netClass = netProfit >= 0 ? "prof-pos" : "prof-neg";
+        var badgeClass = margin >= 0 ? "badge-pos" : "badge-neg";
+        
+        var rowClass = "";
+        if (netProfit < 0) {
+          rowClass = "row-loss";
+        } else if (margin >= 0.3) {
+          rowClass = "row-high-profit";
+        }
+        
+        var tr = document.createElement("tr");
+        if (rowClass) tr.className = rowClass;
+        tr.innerHTML = 
+          '<td class="sticky-col sno-col cell-data">' + row.sno + '</td>' +
+          '<td class="sticky-col code-col cell-data">' + row.code + '</td>' +
+          '<td class="cell-data" style="text-align:left;">' + row.lpo + '</td>' +
+          '<td class="cell-data" style="text-align:left; font-weight:500;">' + row.name + '</td>' +
+          '<td class="cell-data num">' + window.formatCurrency(row.lpoValue) + '</td>' +
+          '<td class="cell-data num">' + window.formatCurrency(row.revenue) + '</td>' +
+          '<td class="cell-data num">' + window.formatCurrency(row.expenses) + '</td>' +
+          '<td class="cell-data num ' + grossClass + '">' + window.formatCurrency(grossProfit) + '</td>' +
+          '<td class="cell-data num">' + window.formatCurrency(row.admin) + '</td>' +
+          '<td class="cell-data num ' + netClass + '">' + window.formatCurrency(netProfit) + '</td>' +
+          '<td class="cell-data" style="text-align:center;"><span class="badge ' + badgeClass + '">' + window.formatPercentage(margin) + '</span></td>';
+        tbody.appendChild(tr);
+      });
+      
+      // Table Summary/Total Row at the bottom
+      var overallMargin = totals.rev > 0 ? (totals.net / totals.rev) : 0;
+      var trTotal = document.createElement("tr");
+      trTotal.className = "total-row";
+      trTotal.innerHTML = 
+        '<td class="sticky-col sno-col cell-data" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">TOTAL</td>' +
+        '<td class="sticky-col code-col cell-data" style="background:#f8fafc; border-top: 2px solid #cbd5e1;"></td>' +
+        '<td class="cell-data" style="background:#f8fafc; border-top: 2px solid #cbd5e1;"></td>' +
+        '<td class="cell-data" style="background:#f8fafc; border-top: 2px solid #cbd5e1;"></td>' +
+        '<td class="cell-data num" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">' + window.formatCurrency(totals.lpo) + '</td>' +
+        '<td class="cell-data num" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">' + window.formatCurrency(totals.rev) + '</td>' +
+        '<td class="cell-data num" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">' + window.formatCurrency(totals.exp) + '</td>' +
+        '<td class="cell-data num ' + (totals.gross >= 0 ? "prof-pos" : "prof-neg") + '" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">' + window.formatCurrency(totals.gross) + '</td>' +
+        '<td class="cell-data num" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">' + window.formatCurrency(totals.admin) + '</td>' +
+        '<td class="cell-data num ' + (totals.net >= 0 ? "prof-pos" : "prof-neg") + '" style="font-weight:700; background:#f8fafc; border-top: 2px solid #cbd5e1;">' + window.formatCurrency(totals.net) + '</td>' +
+        '<td class="cell-data" style="text-align:center; background:#f8fafc; border-top: 2px solid #cbd5e1;"><span class="badge ' + (overallMargin >= 0 ? "badge-pos" : "badge-neg") + '" style="font-weight:700;">' + window.formatPercentage(overallMargin) + '</span></td>';
+      tbody.appendChild(trTotal);
+      
+      window.setMetricText(".metric-card .lpo-val", window.formatCurrency(totals.lpo));
+      window.setMetricText(".metric-card .revenue-val", window.formatCurrency(totals.rev));
+      window.setMetricText(".metric-card .expenses-val", window.formatCurrency(totals.exp));
+      window.setMetricText(".metric-card .gross-profit-val", window.formatCurrency(totals.gross));
+      window.setMetricText(".metric-card .admin-val", window.formatCurrency(totals.admin));
+      window.setMetricText(".metric-card .net-profit-val", window.formatCurrency(totals.net));
+      window.setMetricText(".metric-card .margin-val", window.formatPercentage(overallMargin));
+    };
+    
+    window.parseCurrency = function(str) {
+      if (!str) return 0;
+      var clean = str.replace(/[^0-9.-]/g, "");
+      var num = parseFloat(clean);
+      return isNaN(num) ? 0 : num;
+    };
+    
+    window.filterProjectTable = function() {
+      try {
+        var searchInput = document.getElementById("projSearch");
+        if (!searchInput) return;
+        var filter = searchInput.value.toUpperCase();
+        console.log("[DEBUG] filterProjectTable started. Filter:", filter);
+        var tbody = document.getElementById("projBody");
+        if (!tbody) { console.warn("[DEBUG] tbody projBody not found"); return; }
+        var trs = tbody.getElementsByTagName("tr");
+        var totals = { lpo: 0, rev: 0, exp: 0, gross: 0, admin: 0, net: 0 };
+        
+        for (var i = 0; i < trs.length; i++) {
+          var tr = trs[i];
+          if (tr.className === "total-row" || tr.classList.contains("total-row")) continue;
+          var txt = tr.innerText || tr.textContent || "";
+          if (txt.toUpperCase().indexOf(filter) > -1) {
+            tr.style.display = "";
+            totals.lpo += window.parseCurrency(tr.cells[4] ? tr.cells[4].innerText : "");
+            totals.rev += window.parseCurrency(tr.cells[5] ? tr.cells[5].innerText : "");
+            totals.exp += window.parseCurrency(tr.cells[6] ? tr.cells[6].innerText : "");
+            totals.gross += window.parseCurrency(tr.cells[7] ? tr.cells[7].innerText : "");
+            totals.admin += window.parseCurrency(tr.cells[8] ? tr.cells[8].innerText : "");
+            totals.net += window.parseCurrency(tr.cells[9] ? tr.cells[9].innerText : "");
+          } else {
+            tr.style.display = "none";
+          }
+        }
+        
+        var overallMargin = totals.rev > 0 ? (totals.net / totals.rev) : 0;
+        window.setMetricText(".metric-card .lpo-val", window.formatCurrency(totals.lpo));
+        window.setMetricText(".metric-card .revenue-val", window.formatCurrency(totals.rev));
+        window.setMetricText(".metric-card .expenses-val", window.formatCurrency(totals.exp));
+        window.setMetricText(".metric-card .gross-profit-val", window.formatCurrency(totals.gross));
+        window.setMetricText(".metric-card .admin-val", window.formatCurrency(totals.admin));
+        window.setMetricText(".metric-card .net-profit-val", window.formatCurrency(totals.net));
+        window.setMetricText(".metric-card .margin-val", window.formatPercentage(overallMargin));
+        
+        var totalRow = tbody.querySelector("tr.total-row");
+        if (totalRow) {
+          if (totalRow.cells[4]) totalRow.cells[4].innerText = window.formatCurrency(totals.lpo);
+          if (totalRow.cells[5]) totalRow.cells[5].innerText = window.formatCurrency(totals.rev);
+          if (totalRow.cells[6]) totalRow.cells[6].innerText = window.formatCurrency(totals.exp);
+          if (totalRow.cells[7]) totalRow.cells[7].innerText = window.formatCurrency(totals.gross);
+          if (totalRow.cells[8]) totalRow.cells[8].innerText = window.formatCurrency(totals.admin);
+          if (totalRow.cells[9]) totalRow.cells[9].innerText = window.formatCurrency(totals.net);
+          var badge = totalRow.cells[10] ? totalRow.cells[10].querySelector(".badge") : null;
+          if (badge) {
+            badge.innerText = window.formatPercentage(overallMargin);
+            badge.className = "badge " + (overallMargin >= 0 ? "badge-pos" : "badge-neg");
+          }
+        }
+        console.log("[DEBUG] filterProjectTable completed. Totals calculated:", totals);
+      } catch (err) {
+        console.error("[DEBUG] Error in filterProjectTable:", err);
+      }
+    };
+    
+    window.sortTable = function(colName) {
+      if (window.currentSort.col === colName) {
+        window.currentSort.desc = !window.currentSort.desc;
+      } else {
+        window.currentSort.col = colName;
+        window.currentSort.desc = false;
+      }
+      window.updateSortHeaders();
+      window.sortRows(window.projectData, colName, window.currentSort.desc);
+      window.filterProjectTable();
+    };
+    
+    window.sortRows = function(arr, col, desc) {
+      arr.sort(function(a, b) {
+        var valA = window.getSortValue(a, col);
+        var valB = window.getSortValue(b, col);
+        if (valA === valB) return 0;
+        var cmp = valA > valB ? 1 : -1;
+        return desc ? -cmp : cmp;
+      });
+      window.renderProjectTable(arr);
+    };
+    
+    window.getSortValue = function(row, col) {
+      if (col === "gross") return row.revenue - row.expenses;
+      if (col === "net") return (row.revenue - row.expenses) - row.admin;
+      if (col === "margin") return row.revenue > 0 ? (((row.revenue - row.expenses) - row.admin) / row.revenue) : 0;
+      return row[col];
+    };
+    
+    window.updateSortHeaders = function() {
+      var headers = { sno: "S.NO", code: "PROJECT CODES", lpo: "LPO #", name: "PROJECT NAME", lpoValue: "LPO VALUE", revenue: "REVENUE", expenses: "EXPENSES", gross: "PROFIT / (LOSS)", admin: "Admin Expenses", net: "Profit / (Loss)", margin: "% of Profit / (loss)" };
+      for (var key in headers) {
+        var elem = document.getElementById("th-" + key);
+        if (elem) {
+          var text = headers[key];
+          if (window.currentSort.col === key) {
+            text += window.currentSort.desc ? " ▾" : " ▴";
+          }
+          elem.innerText = text;
+        }
+      }
+    };
+    
+    window.triggerExcelExport = function() {
+      var scriptId = "customscript_sl_njt_projsumrep";
+      var deployId = "customdeploy_sl_njt_projsumrep";
+      var subEl = document.getElementById("custpage_subsidiary");
+      var yearEl = document.getElementById("custpage_year");
+      var monthEl = document.getElementById("custpage_month");
+      var sub = subEl ? subEl.value : "";
+      var month = monthEl ? monthEl.value : "";
+      var year = yearEl ? yearEl.value : "";
+      var exportUrl = "/app/site/hosting/scriptlet.nl?script=" + scriptId + "&deploy=" + deployId + "&custpage_subsidiary=" + sub + "&custpage_month=" + month + "&custpage_year=" + year + "&custpage_export=T";
+      window.open(exportUrl, "_blank");
+    };
+     
+    window.reloadReport = function() {
+      var subEl = document.getElementById("custpage_subsidiary");
+      var yearEl = document.getElementById("custpage_year");
+      var monthEl = document.getElementById("custpage_month");
+      var sub = subEl ? subEl.value : "";
+      var year = yearEl ? yearEl.value : "";
+      var month = monthEl ? monthEl.value : "";
+      var scriptId = "customscript_sl_njt_projsumrep";
+      var deployId = "customdeploy_sl_njt_projsumrep";
+      var url = "/app/site/hosting/scriptlet.nl?script=" + scriptId + "&deploy=" + deployId;
+      if (sub) url += "&custpage_subsidiary=" + sub;
+      if (year) url += "&custpage_year=" + year;
+      if (month) url += "&custpage_month=" + month;
+      window.location.href = url;
+    };
+    </script>
+</body>
+</html>

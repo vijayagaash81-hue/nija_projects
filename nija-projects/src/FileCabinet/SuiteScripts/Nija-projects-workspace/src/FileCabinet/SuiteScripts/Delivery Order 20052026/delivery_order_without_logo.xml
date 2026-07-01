@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+    <style type="text/css">
+        table {
+            font-family: Arial, sans-serif;
+            font-size: 9pt;
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .do-title {
+            font-size: 24pt;
+            font-weight: bold;
+            font-style: italic;
+            text-decoration: underline;
+            padding-bottom: 10pt;
+        }
+        .company-name {
+            font-size: 11pt;
+            font-weight: bold;
+            font-style: italic;
+        }
+        .company-info {
+            font-size: 10pt;
+            font-style: italic;
+        }
+        .meta-label {
+            font-weight: bold;
+            font-style: italic;
+            width: 80pt;
+        }
+        .meta-value {
+            font-style: normal;
+        }
+        /* Item Table Styles */
+        .item-table {
+            border-right: none;
+            border: 0.5pt solid black;
+            margin-top: 5pt;
+        
+        }
+        .item-table th {
+            border-bottom: 0.5pt solid black;
+            border-right: 0.5pt solid black;
+            padding: 4pt;
+            font-weight: normal;
+            font-size: 11pt;
+        }
+        .item-table td {
+            border-right: 0.5pt solid black;
+            padding: 6pt 4pt;
+            vertical-align: top;
+        }
+        .last-col {
+            border-right: none !important;
+        }
+        .note-section {
+            margin-top: 15pt;
+            font-size: 10pt;
+        }
+    </style>
+</head>
+<body padding="0.5in 0.5in 0.5in 0.5in" size="A4">
+
+    <!-- 1. HEADER TITLE -->
+    <table border="0">
+        <tr>
+            <td class="do-title" align="center">Delivery Order</td>
+        </tr>
+    </table>
+
+    <!-- 2. COMPANY & METADATA SECTION -->
+    <table border="0">
+        <tr>
+            <!-- Left Side: Company Details -->
+            <td width="65%" style="vertical-align: top;">
+                <table border="0">
+                    <tr><td class="company-name">Factory Of Arabian International Co For Steel Structures</td></tr>
+                    <tr><td class="company-info">P.O.Box : 41017 Jeddah Makkah Province SA, SAUDI ARABIA</td></tr>
+                    <tr>
+                        <td class="company-info">
+                            <table border="0">
+                                <tr>
+                                    <td width="30pt">Tel:</td>
+                                    <td width="100pt">+966 12 591 0999</td>
+                                    <td width="30pt">Fax:</td>
+                                    <td>&#160;</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            <!-- Right Side: Order Details -->
+            <td width="35%" style="vertical-align: top;">
+                <table border="0">
+                    <tr>
+                        <td class="meta-label">Date:</td>
+                        <td class="meta-value">${record.trandate}</td>
+                    </tr>
+                    <tr>
+                        <td class="meta-label">DO No.:</td>
+                        <td class="meta-value">${record.createdfrom.tranid}</td>
+                    </tr>
+                    <tr>
+                        <td class="meta-label" style="vertical-align: top;">Order No:</td>
+                        <td class="meta-value">${record.createdfrom.otherrefnum}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- 3. ITEMS TABLE -->
+    <table class="item-table">
+        <thead>
+            <tr>
+                <th width="8%" align="left">S. No.</th>
+                <th width="62%" align="left">Description</th>
+                <th width="10%" align="left">Units</th>
+                <th width="20%" align="right" class="last-col">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list record.item as item>
+            <tr>
+                <td align="center"><i>${item_index + 1}</i></td>
+                <td align="left"><i>${item.description}</i></td>
+                <td align="left"><i>${item.units}</i></td>
+                <td align="right" class="last-col"><i>${item.quantity?string(",##0.00")}</i></td>
+            </tr>
+            </#list>
+            
+            <!-- Spacer rows to maintain table structure height if needed -->
+            <#if (record.item?size < 10)>
+            <tr>
+                <td height="200pt">&#160;</td>
+                <td>&#160;</td>
+                <td>&#160;</td>
+                <td class="last-col">&#160;</td>
+            </tr>
+            </#if>
+        </tbody>
+    </table>
+
+    <!-- 4. FOOTER NOTE -->
+    <table border="0" class="note-section">
+        <tr>
+            <td>Note: Any shortfalls or rejections after 7days of supply are not acceptable.</td>
+        </tr>
+    </table>
+
+</body>
+</pdf>

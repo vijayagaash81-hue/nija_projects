@@ -2,6 +2,12 @@
 <!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
 <pdf xmlns:pdf="http://big.faceless.org/pdf" version="1.1">
 <head>
+<link name="NotoSans" type="font" subtype="truetype"
+      src="NetSuiteFonts/NotoSans-Regular.ttf"
+      src-bold="NetSuiteFonts/NotoSans-Bold.ttf"
+      src-italic="NetSuiteFonts/NotoSans-Italic.ttf"
+      src-bolditalic="NetSuiteFonts/NotoSans-BoldItalic.ttf"
+      bytes="2"/>
     <macrolist>
         <macro id="nlheader">
             <table class="border" style="border-bottom:1pt solid black;">
@@ -26,7 +32,7 @@
         </macro>
     </macrolist>
     <style>
-        body { font-family: Helvetica; font-size: 9pt; }
+        body { font-family: NotoSans; font-size: 9pt; }
         p { margin: 0; padding: 0; }
 
         .title {
@@ -47,9 +53,34 @@
         .center { text-align: center; }
         .left { text-align: left; }
         .bold { font-weight: bold; }
+        .custom-checkbox {
+        width: 12px;
+        height: 12px;
+        margin: 0;
+        vertical-align: middle;
+  }
+ .checkbox {
+    cursor: pointer;
+  }
+.check div, .voucher1 div, .voucher2 div {
+            position: relative;
+            overflow: hidden;
+            font-size: 8pt;
+            font-family: Helvetica;
+            padding: 0;
+        }
+        .check {
+            top: -11pt;
+            height: 250pt;
+            width: 612pt;
+        }
 
         table { width: 100%; border-collapse: collapse; margin-top: -0.5pt; }
         td { padding: 8px; }
+        
+        .inline-table { width: auto; margin: 0; padding: 0; }
+        .inline-table td { padding: 0; border: none; vertical-align: middle; }
+        .center .inline-table { margin: 0 auto; }
     </style>
 </head>
 
@@ -68,9 +99,15 @@
 <!-- TYPE -->
 <table class="border">
     <tr>
-        <td class="border center" width="33%">Internal NCR: <#if (record.custrecord_njt_non_con_type_of_ncr!"")?string == "Internal NCR">Yes<#else>No</#if></td>
-        <td class="border center" width="34%">Supplier NCR: <#if (record.custrecord_njt_non_con_type_of_ncr!"")?string == "Supplier NCR">Yes<#else>No</#if></td>
-        <td class="border center" width="33%">Customer NCR: <#if (record.custrecord_njt_non_con_type_of_ncr!"")?string == "Customer NCR">Yes<#else>No</#if></td>
+        <td class="border center" width="33%">
+            <table class="inline-table"><tr><td>Internal NCR:&nbsp;</td><td><#if (record.custrecord_njt_non_con_type_of_ncr!"")?string == "Internal NCR"><input name="chk_internal" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_internal" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
+        <td class="border center" width="34%">
+            <table class="inline-table"><tr><td>Supplier NCR:&nbsp;</td><td><#if (record.custrecord_njt_non_con_type_of_ncr!"")?string == "Supplier NCR"><input name="chk_supplier" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_supplier" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
+        <td class="border center" width="33%">
+            <table class="inline-table"><tr><td>Customer NCR:&nbsp;</td><td><#if (record.custrecord_njt_non_con_type_of_ncr!"")?string == "Customer NCR"><input name="chk_customer" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_customer" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
     </tr>
 </table>
 
@@ -78,15 +115,15 @@
 <table class="border">
     <tr>
         <td class="border" width="50%">Name: ${record.custrecord_njt_non_con_name!}</td>
-        <td class="border" width="50%">Vendor/Supplier: ${record.vendor!}</td>
+        <td class="border" width="50%">Vendor/Supplier: ${record.custrecord_njt_non_con_vendor!}</td>
     </tr>
     <tr>
         <td class="border">Position: ${record.custrecord_njt_non_con_position!}</td>
-        <td class="border">Customer: ${record.customer!}</td>
+        <td class="border">Customer: ${record.custrecord_njt_non_con_customer!}</td>
     </tr>
     <tr>
         <td class="border">Part Number/Drawing Number: ${record.custrecord_njt_non_con_part_number!}</td>
-        <td class="border">Contract/Purchase Order Ref: ${record.poNumber!}</td>
+        <td class="border">Contract/Purchase Order Ref: ${record.custrecord_njt_non_con_por!}</td>
     </tr>
 </table>
 
@@ -94,7 +131,7 @@
 <table class="border">
     <tr>
         <td class="border" width="50%">Total order Qty: ${record.custrecord_njt_non_con_toqty!}</td>
-        <td class="border" width="50%">Rejected: ${record.rejectedQty!}</td>
+        <td class="border" width="50%">Rejected: ${record.custrecord_njt_non_con_rejected!}</td>
     </tr>
 </table>
 
@@ -104,8 +141,12 @@
         <td class="border bold" colspan="2">Report Type (tick one box):</td>
     </tr>
     <tr>
-        <td class="border" width="50%">Non-Conformance/Corrective Action: <#if record.custrecord_njt_non_con_correct_action!false>Yes<#else>No</#if></td>
-        <td class="border" width="50%">Opportunity for Improvement/Preventative Action: <#if record.custrecord_njt_non_con_improvement_pre!false>Yes<#else>No</#if></td>
+        <td class="border" width="50%">
+            <table class="inline-table"><tr><td>Non-Conformance/Corrective Action:&nbsp;</td><td><#if record.custrecord_njt_non_con_correct_action!false><input name="chk_corrective" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_corrective" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
+        <td class="border" width="50%">
+            <table class="inline-table"><tr><td>Opportunity for Improvement/Preventative Action:&nbsp;</td><td><#if record.custrecord_njt_non_con_improvement_pre!false><input name="chk_preventative" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_preventative" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
     </tr>
 </table>
 
@@ -115,12 +156,20 @@
         <td class="border bold" colspan="2">Report Origin (tick one box):</td>
     </tr>
     <tr>
-        <td class="border" width="50%">Vendor/Supplier Feedback: <#if record.custrecord_njt_non_con_vendor_fee!false>Yes<#else>No</#if></td>
-        <td class="border" width="50%">In-house Inspection: <#if record.custrecord_njt_non_con_inhouse!false>Yes<#else>No</#if></td>
+        <td class="border" width="50%">
+            <table class="inline-table"><tr><td>Vendor/Supplier Feedback:&nbsp;</td><td><#if record.custrecord_njt_non_con_vendor_fee!false><input name="chk_vendor" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_vendor" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
+        <td class="border" width="50%">
+            <table class="inline-table"><tr><td>In-house Inspection:&nbsp;</td><td><#if record.custrecord_njt_non_con_inhouse!false><input name="chk_inhouse" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_inhouse" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
     </tr>
     <tr>
-        <td class="border">Customer Feedback: <#if record.custrecord_njt_non_con_customer_feed!false>Yes<#else>No</#if></td>
-        <td class="border">Audit Finding: <#if record.custrecord_njt_non_con_audit_finding!false>Yes<#else>No</#if></td>
+        <td class="border">
+            <table class="inline-table"><tr><td>Customer Feedback:&nbsp;</td><td><#if record.custrecord_njt_non_con_customer_feed!false><input name="chk_cust_feed" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_cust_feed" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
+        <td class="border">
+            <table class="inline-table"><tr><td>Audit Finding:&nbsp;</td><td><#if record.custrecord_njt_non_con_audit_finding!false><input name="chk_audit" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_audit" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
     </tr>
 </table>
 
@@ -130,15 +179,15 @@
         <td class="border bold">Description of Non-Conformity:</td>
     </tr>
     <tr>
-        <td class="border" height="400px">${record.custrecord_njt_non_con_description_con!}</td>
+        <td class="border" style="min-height:250px;">${record.custrecord_njt_non_con_description_con!}</td>
     </tr>
 </table>
 
 <!-- SIGN -->
 <table class="border" style="border-bottom:1pt solid black;">
     <tr>
-        <td class="border" width="50%">Originators Signature: ${record.originatorSignature!}</td>
-        <td class="border" width="50%">Date: ${record.originatorDate!}</td>
+        <td class="border" width="50%">Originators Signature: ${record.custrecord_njt_non_con_originsigp1!}</td>
+        <td class="border" width="50%">Date: ${record.custrecord_njt_non_con_orip1date!}</td>
     </tr>
 </table>
 
@@ -170,8 +219,12 @@
         <td class="border bold" colspan="2">Non-Conformance Severity:</td>
     </tr>
     <tr>
-        <td class="border" width="50%">Cosmetic/Non-Critical: <#if record.custrecord_njt_non_con_cosmetic!false>Yes<#else>No</#if></td>
-        <td class="border" width="50%">Critical: <#if record.custrecord_njt_non_con_critical!false>Yes<#else>No</#if></td>
+        <td class="border" width="50%">
+            <table class="inline-table"><tr><td>Cosmetic/Non-Critical:&nbsp;</td><td><#if record.custrecord_njt_non_con_cosmetic!false><input name="chk_cosmetic" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_cosmetic" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
+        <td class="border" width="50%">
+            <table class="inline-table"><tr><td>Critical:&nbsp;</td><td><#if record.custrecord_njt_non_con_critical!false><input name="chk_critical" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_critical" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
     </tr>
 </table>
 
@@ -181,12 +234,20 @@
         <td class="border bold" colspan="2">Disposition:</td>
     </tr>
     <tr>
-        <td class="border" width="50%">Use-as-is: <#if record.custrecord_njt_non_con_use_as_is!false>Yes<#else>No</#if></td>
-        <td class="border" width="50%">Rework: <#if record.custrecord_njt_non_con_rework!false>Yes<#else>No</#if></td>
+        <td class="border" width="50%">
+            <table class="inline-table"><tr><td>Use-as-is:&nbsp;</td><td><#if record.custrecord_njt_non_con_use_as_is!false><input name="chk_useasis" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_useasis" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
+        <td class="border" width="50%">
+            <table class="inline-table"><tr><td>Rework:&nbsp;</td><td><#if record.custrecord_njt_non_con_rework!false><input name="chk_rework" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_rework" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
     </tr>
     <tr>
-        <td class="border">Reject/Return to Supplier: <#if record.custrecord_njt_non_con_reject!false>Yes<#else>No</#if></td>
-        <td class="border">Scrap: <#if record.custrecord_njt_non_con_scrap!false>Yes<#else>No</#if></td>
+        <td class="border">
+            <table class="inline-table"><tr><td>Reject/Return to Supplier:&nbsp;</td><td><#if record.custrecord_njt_non_con_reject!false><input name="chk_reject" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_reject" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
+        <td class="border">
+            <table class="inline-table"><tr><td>Scrap:&nbsp;</td><td><#if record.custrecord_njt_non_con_scrap!false><input name="chk_scrap" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" /><#else><input name="chk_scrap" class="custom-checkbox" type="checkbox" readonly="readonly" /></#if></td></tr></table>
+        </td>
     </tr>
 </table>
 
@@ -202,8 +263,8 @@
 
 <table class="border" style="border-bottom:1pt solid black;">
     <tr>
-        <td class="border" width="50%">Managers Signature: ${record.managerSignature!}</td>
-        <td class="border" width="50%">Date: ${record.managerDate!}</td>
+        <td class="border" width="50%">Managers Signature: ${record.custrecord_njt_non_con_mansigp2!}</td>
+        <td class="border" width="50%">Date: ${record.custrecord_njt_non_con_mngsigp2date!}</td>
     </tr>
 </table>
 
@@ -229,16 +290,16 @@
 
 <table class="border" style="border-bottom:1pt solid black;">
     <tr>
-        <td class="border" width="50%">Managers Signature: ${record.closureManagerSignature!}</td>
-        <td class="border" width="50%">Date: ${record.closureManagerDate!}</td>
+        <td class="border" width="50%">Managers Signature: ${record.custrecord_njt_non_con_mngsigp2rm!}</td>
+        <td class="border" width="50%">Date: ${record.custrecord_njt_non_con_mngsigp2daterm!}</td>
     </tr>
     <tr>
-        <td class="border">Originators: ${record.closureOriginator!}</td>
-        <td class="border">Date: ${record.closureOriginatorDate!}</td>
+        <td class="border">Originators: ${record.custrecord_njt_non_con_rmori!}</td>
+        <td class="border">Date: ${record.custrecord_njt_non_con_rmoridate!}</td>
     </tr>
     <tr>
-        <td class="border">QA Signature: ${record.closureQASignature!}</td>
-        <td class="border">Date: ${record.closureQADate!}</td>
+        <td class="border">QA Signature: ${record.custrecord_njt_non_con_qasig!}</td>
+        <td class="border">Date: ${record.custrecord_njt_non_con_qasigdate!}</td>
     </tr>
 </table>
 

@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail Follow-up Tracker</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for Dashboard Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Firebase SDKs (using ES modules) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, orderBy, query, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // TODO: Replace with your Firebase project configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJ098x3ySfGhvmRHP_ziE5rYznKSZ8X4E",
+            authDomain: "email-tracker-8eb24.firebaseapp.com",
+            projectId: "email-tracker-8eb24",
+            storageBucket: "email-tracker-8eb24.firebasestorage.app",
+            messagingSenderId: "248454661336",
+            appId: "1:248454661336:web:ab99193b69d16b3f9283ad"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        // Secondary app specifically for creating users without logging the admin out
+        const secondaryApp = initializeApp(firebaseConfig, "SecondaryApp");
+        const secondaryAuth = getAuth(secondaryApp);
+
+        // TODO: Replace with your deployed Google Apps Script Web App URL
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzsYtR0IYg829jJj6-kMAaAJG8suQcIL2j8aeIwDV1WmbBML7tHeUOoD4n0EG8zT6ah/exec";
+
+        // ---- Authentication State Observer ----
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                switchView('dashboard-view');
+                loadFollowUps(); // Load data only when logged in
+                loadUsers();     // Load admin user list
+            } else {
+                document.getElementById('app-container').style.display = 'none';
+                document.getElementById('login-container').style.display = 'flex';
+            }
+        });
+
+        // ---- Navigation & Auth Logic ----
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                e.target.reset();
+            } catch (error) {
+                alert('Login Failed: ' + error.message);
+            }
+        });
+
+        document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('newEmail').value;
+            const password = document.getElementById('newPassword').value;
+            const role = document.getElementById('newRole').value;
+            const btn = e.target.querySelector('button');
+            
+            btn.disabled = true;
+            btn.textContent = "Creating User...";
+            
+            try {
+                // 1. Create user in Firebase Auth using the secondary instance
+                await createUserWithEmailAndPassword(secondaryAuth, email, password);
+                await signOut(secondaryAuth); // Immediately sign out the secondary instance
+                
+                // 2. Save user metadata to Firestore
+                await addDoc(collection(db, "users"), { email, role, status: 'Active' });
+                
+                alert('New user successfully provisioned!');
+                e.target.reset();
+                loadUsers(); // Refresh the user list UI
+            } catch (error) {
+                alert('Failed to create user: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Create User Account";
+            }
+        });
+
+        function switchView(viewId) {
+            document.querySelectorAll('.page-view').forEach(view => {
+                view.style.display = 'none';
+            });
+            document.getElementById(viewId).style.display = 'block';
+        }
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = e.currentTarget.getAttribute('data-target');
+                
+                if(target === 'logout') {
+                    signOut(auth);
+                    return;
+                }
+
+                document.querySelectorAll('.sidebar-nav .nav-item').forEach(nav => nav.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                switchView(target + '-view');
+            });
+        });
+
+        // Handle Form Submission
+        document.getElementById('followUpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const status = document.getElementById('status');
+            
+            btn.disabled = true;
+            status.textContent = "Processing...";
+            status.className = "status processing";
+
+            try {
+                const editId = document.getElementById('editRecordId').value;
+                const existingFileUrl = document.getElementById('existingFileUrl').value;
+                const clientEmail = document.getElementById('clientEmail').value;
+                const ccEmails = document.getElementById('ccEmails').value;
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value;
+                const fileInput = document.getElementById('attachment');
+                
+                let fileUrl = existingFileUrl || null;
+
+                // 1. Upload file to Google Drive if a file is selected
+                if (fileInput.files.length > 0) {
+                    status.textContent = "Uploading attachment to Google Drive...";
+                    const file = fileInput.files[0];
+                    const base64Data = await toBase64(file);
+                    
+                    const payload = {
+                        fileName: file.name,
+                        mimeType: file.type || "application/octet-stream",
+                        fileData: base64Data.split(',')[1] // Strip the data:image/png;base64, header
+                    };
+
+                    const response = await fetch(GAS_WEB_APP_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "text/plain;charset=utf-8"
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                        fileUrl = result.url;
+                    } else {
+                        throw new Error(result.message || "Google Drive upload failed.");
+                    }
+                }
+
+                const recordData = {
+                    clientEmail,
+                    ccEmails,
+                    subject,
+                    message,
+                    fileUrl,
+                    timestamp: new Date().toISOString() // Updates to current time
+                };
+
+                // 2. Save complete record to Firebase Firestore
+                if (editId) {
+                    status.textContent = "Updating record...";
+                    await updateDoc(doc(db, "followups", editId), recordData);
+                    status.textContent = "Follow-up updated successfully!";
+                } else {
+                    status.textContent = "Saving record to database...";
+                    await addDoc(collection(db, "followups"), recordData);
+                    status.textContent = "Follow-up saved successfully!";
+                }
+                status.className = "status success";
+                document.getElementById('followUpForm').reset();
+                document.getElementById('editRecordId').value = '';
+                document.getElementById('existingFileUrl').value = '';
+                document.getElementById('submitBtn').textContent = "Save Follow-up";
+                loadFollowUps(); // Refresh the list UI
+
+            } catch (error) {
+                console.error(error);
+                status.textContent = "Error: " + error.message;
+                status.className = "status error";
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // Helper function to convert a file to base64 string
+        function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Fetch and render existing follow-ups from Firestore
+        window.loadedFollowUps = {};
+
+        async function loadFollowUps() {
+            const list = document.getElementById('followUpList');
+            const recentList = document.getElementById('recentList');
+            list.innerHTML = "<p>Loading history...</p>";
+            if(recentList) recentList.innerHTML = "<p>Loading...</p>";
+            
+            try {
+                const q = query(collection(db, "followups"), orderBy("timestamp", "desc"));
+                const querySnapshot = await getDocs(q);
+                list.innerHTML = "";
+                if(recentList) recentList.innerHTML = "";
+                
+                // Update mock stat
+                document.getElementById('stat-total').textContent = querySnapshot.size;
+                
+                // Update Activity Chart
+                updateChart(querySnapshot.docs);
+                
+                window.threadData = {}; // Clear thread data
+                let count = 0;
+                querySnapshot.forEach((doc) => {
+                    window.loadedFollowUps[doc.id] = doc.data();
+                    const data = doc.data();
+                    
+                    // Group for threads by Client + Base Subject
+                    const baseSubject = (data.subject || 'No Subject').replace(/^(re:\s*|fwd:\s*)+/ig, '').trim();
+                    const clientEmail = data.clientEmail || 'Unknown Client';
+                    const threadKey = `${clientEmail}|${baseSubject}`;
+                    
+                    if (!window.threadData[threadKey]) {
+                        window.threadData[threadKey] = {
+                            client: clientEmail,
+                            baseSubject: baseSubject,
+                            messages: []
+                        }
+                    }
+                    window.threadData[threadKey].messages.push({ id: doc.id, ...data });
+                    
+                    const avatarLetter = (data.clientEmail || '?').charAt(0).toUpperCase();
+                    
+                    const actionButtons = `
+                        <div style="display: flex; gap: 8px; margin-top: 16px;">
+                            <button type="button" class="btn-reply" 
+                                data-email="${data.clientEmail || ''}" 
+                                data-cc="${data.ccEmails || ''}" 
+                                data-subject="${(data.subject || '').replace(/"/g, '&quot;')}" 
+                                onclick="replyTo(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
+                                Reply
+                            </button>
+                            <button type="button" class="btn-edit"
+                                onclick="editFollowUp('${doc.id}')">
+                                Edit
+                            </button>
+                            <button type="button" class="btn-delete"
+                                onclick="deleteFollowUp('${doc.id}')">
+                                Delete
+                            </button>
+                            ${data.fileUrl ? `<a href="${data.fileUrl}" target="_blank" class="attachment-link">View Attachment</a>` : ''}
+                        </div>
+                    `;
+
+                    const cardHtml = `
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <div class="avatar">${avatarLetter}</div>
+                                <div>
+                                    <h3>${data.subject}</h3>
+                                    <div class="meta-info">
+                                        <span class="tag tag-blue">To: ${data.clientEmail}</span>
+                                        ${data.ccEmails ? `<span class="tag tag-gray">CC: ${data.ccEmails}</span>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="date-badge">${new Date(data.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                        </div>
+                        <p class="message-body">${data.message}</p>
+                        ${actionButtons}
+                    `;
+
+                    const div = document.createElement('div');
+                    div.className = "follow-up-card";
+                    div.innerHTML = cardHtml;
+                    list.appendChild(div);
+
+                    if (recentList && count < 3) {
+                        const recentDiv = document.createElement('div');
+                        recentDiv.className = "follow-up-card";
+                        recentDiv.innerHTML = cardHtml;
+                        recentList.appendChild(recentDiv);
+                    }
+                    count++;
+                });
+                
+                renderThreadList();
+            } catch (error) {
+                console.error("Error loading data:", error);
+                list.innerHTML = "<p style='color:red;'>Failed to load follow-ups. Ensure Firestore rules allow reading.</p>";
+                if(recentList) recentList.innerHTML = "<p style='color:red;'>Error loading.</p>";
+            }
+        }
+
+        // Fetch and render existing users from Firestore
+        async function loadUsers() {
+            const list = document.getElementById('dynamicUserList');
+            if (!list) return;
+            list.innerHTML = "<p>Loading users...</p>";
+            try {
+                const q = query(collection(db, "users"));
+                const querySnapshot = await getDocs(q);
+                list.innerHTML = "";
+                
+                if (querySnapshot.empty) {
+                    list.innerHTML = "<p style='color:var(--text-muted);'>No users found in database.</p>";
+                    return;
+                }
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    list.innerHTML += `
+                        <div class="follow-up-card" style="display: flex; justify-content: space-between; align-items: center; padding: 15px;">
+                            <div>
+                                <h3 style="margin-bottom: 4px; font-size: 1rem;">${data.email}</h3>
+                                <p style="margin: 0; font-size: 0.8rem;">Role: ${data.role === 'admin' ? 'Administrator' : 'Standard User'}</p>
+                            </div>
+                            <span style="background: var(--primary-light); color: var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; border: 1px solid var(--primary);">${data.status || 'Active'}</span>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error loading users:", error);
+                list.innerHTML = "<p style='color:red;'>Failed to load users.</p>";
+            }
+        }
+        
+        // ---- Dynamic Greeting ----
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting = "Good evening";
+            if (hour < 12) greeting = "Good morning";
+            else if (hour < 18) greeting = "Good afternoon";
+            document.getElementById('greeting').textContent = greeting + ", Admin!";
+        }
+
+        // ---- Activity Chart Logic ----
+        let activityChart;
+        function updateChart(docs) {
+            const ctx = document.getElementById('activityChart');
+            if (!ctx) return;
+
+            const counts = {};
+            const today = new Date();
+            // Initialize last 7 days
+            for (let i = 6; i >= 0; i--) {
+                let d = new Date(today);
+                d.setDate(d.getDate() - i);
+                counts[d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })] = 0;
+            }
+
+            docs.forEach(doc => {
+                const data = doc.data();
+                if (data.timestamp) {
+                    const d = new Date(data.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    if (counts[d] !== undefined) counts[d]++;
+                }
+            });
+
+            if (activityChart) activityChart.destroy();
+            
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+
+            activityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Object.keys(counts),
+                    datasets: [{
+                        label: 'Follow-ups Sent',
+                        data: Object.values(counts),
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#0f172a',
+                        pointBorderColor: '#3b82f6',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+        }
+
+        // ---- Extra Functionality: Reply to Follow-up ----
+        window.replyTo = function(btn) {
+            const email = btn.getAttribute('data-email');
+            const cc = btn.getAttribute('data-cc');
+            const subject = btn.getAttribute('data-subject');
+            
+            document.getElementById('clientEmail').value = email || '';
+            document.getElementById('ccEmails').value = cc || '';
+            document.getElementById('subject').value = subject.startsWith('Re:') ? subject : 'Re: ' + subject;
+            
+            // Navigate to the Log page
+            document.querySelector('[data-target="log"]').click();
+            
+            // Focus the message box
+            window.scrollTo(0, 0);
+            document.getElementById('message').focus();
+        };
+
+        window.editFollowUp = function(id) {
+            const data = window.loadedFollowUps[id];
+            if (!data) return;
+            
+            document.getElementById('editRecordId').value = id;
+            document.getElementById('clientEmail').value = data.clientEmail || '';
+            document.getElementById('ccEmails').value = data.ccEmails || '';
+            document.getElementById('subject').value = data.subject || '';
+            document.getElementById('message').value = data.message || '';
+            document.getElementById('existingFileUrl').value = data.fileUrl || '';
+            
+            document.getElementById('submitBtn').textContent = "Update Follow-up";
+            
+            document.querySelector('[data-target="log"]').click();
+            window.scrollTo(0, 0);
+        };
+
+        window.deleteFollowUp = async function(id) {
+            if (confirm("Are you sure you want to delete this follow-up?")) {
+                try {
+                    await deleteDoc(doc(db, "followups", id));
+                    loadFollowUps(); // Refresh the list
+                } catch (error) {
+                    alert("Error deleting: " + error.message);
+                }
+            }
+        };
+
+        function renderThreadList() {
+            const list = document.getElementById('threadClientList');
+            if (!list) return;
+            list.innerHTML = '';
+            
+            const threadKeys = Object.keys(window.threadData || {});
+            if (threadKeys.length === 0) {
+                list.innerHTML = '<div style="color: var(--text-muted); padding: 10px;">No threads found.</div>';
+                return;
+            }
+
+            // Sort threads so the ones with the most recent messages appear at the top
+            threadKeys.sort((a, b) => {
+                const latestA = Math.max(...window.threadData[a].messages.map(m => new Date(m.timestamp).getTime() || 0));
+                const latestB = Math.max(...window.threadData[b].messages.map(m => new Date(m.timestamp).getTime() || 0));
+                return latestB - latestA;
+            });
+
+            threadKeys.forEach(key => {
+                const thread = window.threadData[key];
+                const div = document.createElement('div');
+                div.className = 'thread-client-item';
+                div.innerHTML = `
+                    <div style="font-weight: 600; font-size: 0.9rem; word-break: break-word; color: var(--text-main);">${thread.baseSubject}</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; word-break: break-all;">${thread.client}</div>
+                    <div style="font-size: 0.75rem; color: var(--primary); margin-top: 6px; font-weight: 500;">${thread.messages.length} message(s)</div>
+                `;
+                div.onclick = function() {
+                    document.querySelectorAll('.thread-client-item').forEach(el => el.classList.remove('active'));
+                    this.classList.add('active');
+                    viewThread(key);
+                };
+                list.appendChild(div);
+            });
+        }
+
+        window.viewThread = function(threadKey) {
+            const thread = window.threadData[threadKey];
+            const messages = thread.messages;
+            const container = document.getElementById('threadMessageList');
+            container.innerHTML = `<h3 style="margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; color: var(--text-main);">${thread.baseSubject} <br><span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 400;">With: ${thread.client}</span></h3>`;
+            
+            // sort messages by timestamp ascending for thread view (oldest first)
+            const sortedMessages = [...messages].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            
+            sortedMessages.forEach(msg => {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'thread-message';
+                msgDiv.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <strong style="color: var(--primary); font-size: 1rem;">${msg.subject}</strong>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">${new Date(msg.timestamp).toLocaleString()}</span>
+                    </div>
+                    <div style="white-space: pre-wrap; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 12px; border-left: 3px solid var(--primary-light); border-radius: 6px;">${msg.message}</div>
+                    ${msg.fileUrl ? `<div style="margin-top: 12px;"><a href="${msg.fileUrl}" target="_blank" class="attachment-link">View Attachment</a></div>` : ''}
+                `;
+                container.appendChild(msgDiv);
+            });
+        };
+
+        // ---- Extra Functionality: Search & Clear ----
+        document.getElementById('historySearch').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('#followUpList .follow-up-card');
+            cards.forEach(card => {
+                card.style.display = card.innerText.toLowerCase().includes(term) ? 'block' : 'none';
+            });
+        });
+
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            document.getElementById('followUpForm').reset();
+            document.getElementById('editRecordId').value = '';
+            document.getElementById('existingFileUrl').value = '';
+            document.getElementById('submitBtn').textContent = "Save Follow-up";
+            document.getElementById('status').textContent = "";
+        });
+        
+        // Initialize UI elements
+        updateGreeting();
+    </script>
+
+    <style>
+        :root {
+            --bg-dark: #000000;
+            --bg-card: #0a0e17;
+            --border-color: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #0066cc;
+            --primary-hover: #0052a3;
+            --primary-light: rgba(0, 102, 204, 0.1);
+            --sidebar-bg: #03060c;
+            --success: #238636;
+            --error: #da3633;
+            --warning: #d29922;
+            --glass-bg: rgba(25, 30, 45, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at 10% 0%, #1e3a8a 0%, #000000 50%, #0f172a 100%); background-attachment: fixed; color: var(--text-main); margin: 0; display: flex; min-height: 100vh; }
+        
+        /* --- Login View --- */
+        .login-wrapper { display: flex; justify-content: center; align-items: center; min-height: 100vh; width: 100%; }
+        .login-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 40px; border-radius: 20px; border: 1px solid var(--glass-border); width: 100%; max-width: 400px; box-shadow: var(--glass-shadow); }
+        .login-header { text-align: center; margin-bottom: 30px; }
+        .login-header h2 { border-bottom: none; padding-bottom: 0; margin-bottom: 8px; font-size: 1.5rem; }
+
+        /* --- Sidebar --- */
+        .sidebar { width: 260px; background: rgba(10, 15, 25, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-right: 1px solid var(--glass-border); display: flex; flex-direction: column; box-shadow: 4px 0 24px rgba(0,0,0,0.2); z-index: 10;}
+        .sidebar-brand { padding: 24px; font-size: 1.25rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border-color); }
+        .sidebar-nav { padding: 24px 16px; flex: 1; }
+        .nav-section { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin: 20px 0 10px 12px; }
+        .sidebar-nav a { color: var(--text-muted); text-decoration: none; padding: 12px 16px; display: flex; align-items: center; gap: 12px; border-radius: 8px; margin-bottom: 4px; font-weight: 500; transition: all 0.2s ease; border-left: 3px solid transparent; }
+        .sidebar-nav a:hover { background-color: rgba(255,255,255,0.05); color: var(--text-main); }
+        .sidebar-nav a.active { background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, transparent 100%); color: var(--text-main); border-left: 3px solid var(--primary); border-radius: 0 8px 8px 0; }
+        
+        .sidebar-footer { padding: 16px; border-top: 1px solid var(--border-color); }
+        .sidebar-footer a { color: var(--text-muted); text-decoration: none; padding: 12px; display: flex; align-items: center; gap: 12px; border-radius: 8px; transition: all 0.2s ease; font-weight: 500; }
+        .sidebar-footer a:hover { background-color: rgba(218, 54, 51, 0.1); color: var(--error); }
+
+        /* --- Main Content --- */
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        .main-header h1 { margin: 0; font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em; }
+        .main-header p { margin: 6px 0 0 0; color: var(--text-muted); font-size: 1.05rem; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px; }
+        .stat-card { background: linear-gradient(145deg, rgba(25, 30, 45, 0.6), rgba(10, 15, 25, 0.8)); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 30px; border-radius: 20px; border: 1px solid var(--glass-border); border-top: 1px solid rgba(255,255,255,0.12); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease; }
+        .stat-card:hover { transform: translateY(-6px); box-shadow: 0 16px 50px rgba(0, 102, 204, 0.25); border-color: rgba(255,255,255,0.2); }
+        .stat-title { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+        .stat-value { font-size: 2.8rem; font-weight: 800; background: linear-gradient(to right, #60a5fa, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
+        
+        /* Special colors for specific stats */
+        #stat-clients { background: linear-gradient(to right, #34d399, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        #stat-pending { background: linear-gradient(to right, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .content-grid { display: grid; grid-template-columns: 1fr; gap: 32px; margin-top: 32px; max-width: 800px; }
+        .dashboard-grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 32px; margin-top: 32px; }
+        
+        .form-section, .list-section, .chart-section { background: linear-gradient(180deg, rgba(25, 30, 45, 0.4), rgba(15, 20, 30, 0.6)); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 32px; border-radius: 20px; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
+        .full-width { grid-column: 1 / -1; }
+        h2 { margin-top: 0; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 16px; font-size: 1.25rem; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .form-row .form-group { margin-bottom: 0; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-muted); font-size: 0.875rem; }
+        input[type="text"], input[type="email"], input[type="password"], textarea, select {
+            width: 100%; padding: 12px; background-color: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); border-radius: 8px; font-family: inherit; color: var(--text-main); font-size: 0.95rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        input[type="file"] { color: var(--text-muted); }
+        input::file-selector-button {
+            background-color: rgba(255, 255, 255, 0.1); color: var(--text-main); border: 1px solid var(--glass-border); padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: background-color 0.2s;
+        }
+        input::file-selector-button:hover { background-color: #334155; }
+
+        textarea { height: 120px; resize: vertical; }
+        
+        .btn-primary { padding: 12px 20px; background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; font-weight: 600; width: 100%; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 12px var(--primary-light); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 102, 204, 0.4); }
+        .btn-primary:disabled { background: #4B5563; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-secondary { padding: 12px 20px; background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid var(--glass-border); border-radius: 8px; cursor: pointer; font-size: 0.95rem; font-weight: 600; width: 100%; transition: background 0.3s; }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
+        
+        .status { margin-top: 15px; font-weight: bold; text-align: center; }
+        .status.processing { color: var(--warning); }
+        .status.success { color: var(--success); }
+        .status.error { color: var(--error); }
+
+        /* --- Follow-up List --- */
+        .follow-up-card { border: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 24px; border-radius: 12px; margin-bottom: 16px; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
+        .follow-up-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .card-title-group { display: flex; align-items: center; gap: 14px; }
+        .avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; flex-shrink: 0; box-shadow: 0 4px 10px var(--primary-light); }
+        .follow-up-card h3 { margin-top: 0; margin-bottom: 8px; color: var(--text-main); font-size: 1.1rem; }
+        .meta-info { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+        .tag-blue { background-color: var(--primary-light); color: var(--primary); border: 1px solid rgba(0, 102, 204, 0.3); }
+        .tag-gray { background-color: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--glass-border); }
+        .date-badge { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 6px 10px; border-radius: 6px; border: 1px solid var(--glass-border); }
+        .message-body { background: rgba(0,0,0,0.2); padding: 16px; border-left: 3px solid var(--primary-light); border-radius: 6px; color: var(--text-muted); margin-top: 16px; white-space: pre-wrap; font-size: 0.9rem; line-height: 1.5; }
+        .attachment-link { display: inline-block; color: #fff; background: var(--primary); padding: 6px 12px; text-decoration: none; border-radius: 6px; font-size: 0.875rem; font-weight: 500; border: 1px solid var(--primary-hover); transition: background 0.2s; }
+        .attachment-link:hover { background: var(--primary-hover); }
+        .btn-reply { display: inline-block; color: var(--text-main); background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 6px; font-size: 0.875rem; font-weight: 500; border: 1px solid var(--glass-border); cursor: pointer; transition: background 0.2s; }
+        .btn-reply:hover { background: rgba(255,255,255,0.15); }
+        .btn-edit { display: inline-block; color: #3b82f6; background: rgba(59, 130, 246, 0.1); padding: 6px 12px; border-radius: 6px; font-size: 0.875rem; font-weight: 500; border: 1px solid rgba(59, 130, 246, 0.3); cursor: pointer; transition: background 0.2s; }
+        .btn-edit:hover { background: rgba(59, 130, 246, 0.2); }
+        .btn-delete { display: inline-block; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 6px 12px; border-radius: 6px; font-size: 0.875rem; font-weight: 500; border: 1px solid rgba(239, 68, 68, 0.3); cursor: pointer; transition: background 0.2s; }
+        .btn-delete:hover { background: rgba(239, 68, 68, 0.2); }
+        
+        .view-all-link { display: inline-block; margin-top: 16px; color: var(--primary); text-decoration: none; font-size: 0.875rem; font-weight: 500; }
+        .view-all-link:hover { text-decoration: underline; }
+
+        /* Threads View */
+        .thread-layout { display: grid; grid-template-columns: 320px 1fr; gap: 24px; height: 650px; }
+        .thread-client-item { padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; margin-bottom: 4px; }
+        .thread-client-item:hover { background: rgba(255, 255, 255, 0.05); }
+        .thread-client-item.active { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); }
+        .thread-message { background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); padding: 20px; border-radius: 12px; transition: transform 0.2s; }
+        .thread-message:hover { border-color: rgba(59, 130, 246, 0.3); }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .list-section { margin-top: 32px; }
+            .form-row { grid-template-columns: 1fr; }
+            .card-header { flex-direction: column; gap: 12px; }
+            .thread-layout { grid-template-columns: 1fr; height: auto; }
+            #threadClientList { max-height: 250px; overflow-y: auto; }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN PAGE -->
+    <div id="login-container" class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>MailTracker Admin</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Sign in to access your dashboard</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="admin@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top: 10px;">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APPLICATION -->
+    <div id="app-container" style="display: none; width: 100%;">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                MailTracker
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">Main Menu</div>
+                <a href="#" class="nav-item active" data-target="dashboard">
+                    Dashboard
+                </a>
+                <a href="#" class="nav-item" data-target="log">
+                    Log Follow-up
+                </a>
+                <a href="#" class="nav-item" data-target="history">
+                    History
+                </a>
+                <a href="#" class="nav-item" data-target="threads">
+                    Threads
+                </a>
+                
+                <div class="nav-section">Administration</div>
+                <a href="#" class="nav-item" data-target="admin">
+                    Users & Roles
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" data-target="logout">
+                    Sign Out
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <!-- DASHBOARD PAGE -->
+            <div id="dashboard-view" class="page-view">
+                <header class="main-header">
+                    <h1 id="greeting">Welcome!</h1>
+                    <p>Here is your MailTracker overview for today.</p>
+                </header>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">Total Sent</div>
+                        <div class="stat-value" id="stat-total">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Active Clients</div>
+                        <div class="stat-value" id="stat-clients">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Pending Replies</div>
+                        <div class="stat-value" id="stat-pending">0</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <section class="chart-section">
+                        <h2>Activity Over Time (Last 7 Days)</h2>
+                        <div style="position: relative; height: 350px; width: 100%; margin-top: 20px;">
+                            <canvas id="activityChart"></canvas>
+                        </div>
+                    </section>
+
+                    <section class="list-section">
+                        <h2>Recent Activity</h2>
+                        <div id="recentList">
+                            <!-- Recent follow-ups load here -->
+                        </div>
+                        <a href="#" class="view-all-link" onclick="document.querySelector('[data-target=\'history\']').click(); return false;">View All History &rarr;</a>
+                    </section>
+                </div>
+            </div>
+
+            <!-- LOG FOLLOW-UP PAGE -->
+            <div id="log-view" class="page-view" style="display: none;">
+                <header class="main-header">
+                    <h1>Log Follow-up</h1>
+                    <p>Record a new communication with a client.</p>
+                </header>
+                <div class="content-grid">
+                    <section class="form-section full-width">
+                        <h2>Log a New Follow-up</h2>
+                        <form id="followUpForm">
+                            <input type="hidden" id="editRecordId">
+                            <input type="hidden" id="existingFileUrl">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="clientEmail">Client Email</label>
+                                    <input type="email" id="clientEmail" placeholder="client@company.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ccEmails">CC Email(s)</label>
+                                    <input type="text" id="ccEmails" placeholder="cc1@domain.com, cc2@domain.com">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <input type="text" id="subject" placeholder="Follow up regarding..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message / Notes</label>
+                                <textarea id="message" placeholder="Details about the email sent..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="attachment">Attachment (Screenshot/Document)</label>
+                                <input type="file" id="attachment" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx,.txt">
+                            </div>
+                            <div style="display: flex; gap: 12px; margin-top: 10px;">
+                                <button type="submit" id="submitBtn" class="btn-primary">Save Follow-up</button>
+                                <button type="button" id="clearBtn" class="btn-secondary">Clear</button>
+                            </div>
+                            <div id="status" class="status"></div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+
+            <!-- HISTORY PAGE -->
+            <div id="history-view" class="page-view" style="display: none;">
+                <header class="main-header">
+                    <h1>Follow-up History</h1>
+                    <p>Complete log of all communications sent to clients.</p>
+                    <div style="margin-top: 20px;">
+                        <input type="text" id="historySearch" placeholder="Search by email, subject, or contents..." style="max-width: 500px;">
+                    </div>
+                </header>
+                <section class="list-section full-width" style="margin-top: 24px;">
+                    <div id="followUpList" style="max-height: none;">
+                        <!-- All follow-ups load here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- THREADS PAGE -->
+            <div id="threads-view" class="page-view" style="display: none;">
+                <header class="main-header">
+                    <h1>Email Threads</h1>
+                    <p>View communication history grouped by subject and client.</p>
+                </header>
+                <div class="content-grid" style="margin-top: 24px; max-width: 1200px;">
+                    <div class="thread-layout">
+                        <!-- Thread List (Left Pane) -->
+                        <div class="list-section" style="overflow-y: auto; padding: 16px; margin-top: 0;">
+                            <h3 style="margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; color: var(--text-main);">Conversations</h3>
+                            <div id="threadClientList" style="display: flex; flex-direction: column; gap: 4px;">
+                                <!-- Client list loads here -->
+                            </div>
+                        </div>
+                        <!-- Thread Messages (Right Pane) -->
+                        <div class="list-section" style="overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; margin-top: 0;" id="threadMessageList">
+                            <div style="color: var(--text-muted); text-align: center; margin-top: 40px;">Select a conversation to view the thread</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN PAGE -->
+            <div id="admin-view" class="page-view" style="display: none;">
+                <header class="main-header">
+                    <h1>User Administration</h1>
+                    <p>Manage access to the MailTracker application.</p>
+                </header>
+
+                <div class="content-grid" style="margin-top: 24px;">
+                    <section class="form-section">
+                        <h2>Add New User</h2>
+                        <form id="addUserForm">
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="newEmail" placeholder="newuser@company.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Temporary Password</label>
+                                <input type="password" id="newPassword" placeholder="••••••••" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Role</label>
+                                <select id="newRole" required>
+                                    <option value="user">Standard User</option>
+                                    <option value="admin">Administrator</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-primary">Create User Account</button>
+                        </form>
+                    </section>
+
+                    <section class="list-section">
+                        <h2>System Users</h2>
+                        <div class="user-list" id="dynamicUserList" style="margin-top: 15px;">
+                            <!-- Users will load here dynamically -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

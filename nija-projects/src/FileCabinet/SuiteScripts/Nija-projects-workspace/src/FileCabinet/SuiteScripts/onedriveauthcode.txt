@@ -1,0 +1,6 @@
+https://login.microsoftonline.com/3d31c78f-ea3e-4f51-a2b1-f8b2ff9e2963/oauth2/v2.0/authorize?
+client_id=1a85a71c-9ef5-4828-bf81-d486b265977d
+&response_type=code
+&redirect_uri=http://localhost
+&response_mode=query
+&scope=offline_access%20Files.ReadWrite

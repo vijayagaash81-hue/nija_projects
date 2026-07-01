@@ -1,0 +1,299 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+
+<pdf>
+<head>
+    <style type="text/css">
+
+        * {
+            font-family: sans-serif;
+        }
+
+        body {
+            font-size: 10pt;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .border {
+            border: 1px solid black;
+        }
+
+        .title {
+            font-size: 20pt;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .company {
+            text-align: center;
+            font-size: 12pt;
+            font-weight: bold;
+        }
+
+        .subcompany {
+            text-align: center;
+            font-size: 10pt;
+        }
+
+        .field-label {
+            font-weight: bold;
+            width: 35%;
+        }
+
+        .details td {
+            padding: 4px;
+        }
+
+        .line-table th {
+            border: 1px solid black;
+            padding: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .line-table td {
+            border: 1px solid black;
+            padding: 5px;
+            height: 18px;
+        }
+
+        .signature-table {
+            margin-top: 50px;
+        }
+
+        .signature-table td {
+            text-align: center;
+            border-top: 1px solid black;
+            padding-top: 5px;
+            font-weight: bold;
+        }
+
+        .total-box {
+            border: 1px solid black;
+            height: 20px;
+            width: 120px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+
+<body size="A4">
+
+    <!-- Default to an empty row if no apply lines exist to prevent breaking -->
+    <#assign applyLines = customApply.lines?has_content?then(customApply.lines, [{}])>
+    <!-- PAGINATION LOGIC: 5 ITEMS PER PAGE -->
+    <#list applyLines?chunk(5) as applyBatch>
+
+    <!-- Main Wrapper for Full Border -->
+    <table class="border">
+        <!-- Company Header Row -->
+        <tr>
+            <td colspan="2" align="center" style="text-align: center; padding: 5px;">
+                <p align="center" style="margin: 0px; padding: 0px;">
+                    <span class="company">${record.subsidiary?upper_case}</span><br/>
+                    <span class="subcompany">${customApply.subsidiaryAddress?replace('\n', '<br/>')}</span>
+                    <#if customApply.subsidiaryPhone?has_content><br/><span class="subcompany">Tel: ${customApply.subsidiaryPhone}</span></#if>
+                </p>
+            </td>
+        </tr>
+
+        <!-- Empty Row -->
+        <tr>
+            <td colspan="2" style="height: 10px; border-top: 1px solid black; border-bottom: 1px solid black;"></td>
+        </tr>
+
+        <!-- Title Row -->
+        <tr>
+            <td colspan="2" align="center" class="title" style="border-bottom: 1px solid black;">
+                Receipt Voucher
+            </td>
+        </tr>
+
+        <!-- Details Row -->
+        <tr>
+            <td width="50%" valign="top" style="padding: 4px; white-space:nowrap;">
+                <table>
+                    <tr>
+                        <td class="field-label">Voucher No:</td>
+                        <td>${record.transactionnumber}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Bank Name:</td>
+                        <td>${customApply.bankName!""}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Received From:</td>
+                        <td>${(record.customer!"")?replace("^([A-Z0-9_-]+)\\s+", "", "r")}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Narration:</td>
+                        <td>${record.memo!""}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Amount in Words:</td>
+                        <td>${customApply.totalWords!""}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Currency:</td>
+                        <td>${record.currency!""}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Total Amount:</td>
+                        <td><#if record.total?has_content>${record.total?string("#,##0.00")}</#if></td>
+                    </tr>
+                </table>
+            </td>
+            <td width="50%" valign="top" style="padding: 4px;">
+                <table>
+                    <tr>
+                        <td class="field-label">Voucher Date:</td>
+                        <td>${record.trandate}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Cheque Date:</td>
+                        <td>${record.custbody_njt_payment_chqdt!""}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Payment Mode:</td>
+                        <td>${record.paymentoption!""}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Cheque No:</td>
+                        <td>${record.checknumber!""}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Online Reference No:</td>
+                        <td>${record.custbody_njt_orn!""}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Status:</td>
+                        <td>${record.status!""}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Cheque Issue Status:</td>
+                        <td>${record.custbody_njt_ciscp!""}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field-label">Division:</td>
+                        <td>${record.class!""}</td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Cheque Details -->
+
+    <b>Cheque Details:</b><br/>
+
+    <table class="line-table">
+
+        <tr>
+            <th width="8%">S.No</th>
+            <th width="22%">Document No</th>
+            <th width="25%">Project Code</th>
+            <th width="25%">Invoice No</th>
+            <th width="20%">Amount</th>
+        </tr>
+
+        <#list applyBatch as apply>
+
+        <tr>
+            <td align="center"><#if apply.refnum?? || apply.doc?? || apply.transactionnumber??>${apply_index + 1 + (applyBatch?index * 5)}</#if></td>
+            <td>${apply.transactionnumber!""}</td>
+            <td>${apply.cseg_njt_seg_proj!""}</td>
+            <td>${apply.doc!""}</td>
+            <td align="right"><#if apply.amount?has_content>${apply.amount?string("#,##0.00")}</#if></td>
+        </tr>
+
+        </#list>
+
+        <!-- Fill empty rows to maintain consistent table height -->
+        <#if applyBatch?size lt 5>
+            <#list 1..(5 - applyBatch?size) as i>
+            <tr>
+                <td>&nbsp;</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </#list>
+        </#if>
+
+        <!-- Total Row shows only on the last page -->
+        <#if !applyBatch?has_next>
+        <tr>
+            <td colspan="4" align="right"><b>Total</b></td>
+            <td align="right"><b><#if record.total?has_content>${record.total?string("#,##0.00")}</#if></b></td>
+        </tr>
+        </#if>
+
+    </table>
+   <br/>
+    <#if !applyBatch?has_next>
+    <!-- Cheque Copy Image -->
+
+    <table>
+        <tr>
+            <td>
+                <b>Cheque Copy:</b>
+            </td>
+        </tr>
+
+        <tr>
+            <td align="left">
+    <#if record.custbody8?has_content && record.custbody8@url?has_content>
+    <img src="${record.custbody8@url}" 
+         style="width:650px;height:220px;object-fit:contain;"/>
+</#if>
+</td>
+        </tr>
+    </table>
+
+    <br/><br/><br/>
+
+    <!-- Signature Section -->
+
+    <table class="signature-table">
+
+        <tr>
+            <td width="20%" align="center">Prepared By</td>
+            <td width="20%" align="center">Accounts Manager</td>
+            <td width="20%" align="center">Division Head</td>
+            <td width="20%" align="center">M.D</td>
+            <td width="20%" align="center">Received By</td>
+        </tr>
+
+    </table>
+    </#if>
+
+    <!-- Page Break if there are more chunks -->
+    <#if applyBatch?has_next>
+        <pbr/>
+    </#if>
+    </#list>
+
+</body>
+</pdf>

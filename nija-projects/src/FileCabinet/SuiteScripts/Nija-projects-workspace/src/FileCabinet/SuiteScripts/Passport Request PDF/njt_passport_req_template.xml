@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf xmlns:pdf="http://big.faceless.org/pdf" version="1.1">
+  <head>
+    <link name="NotoSans" type="font" subtype="truetype"
+          src="NetSuiteFonts/NotoSans-Regular.ttf"
+          src-bold="NetSuiteFonts/NotoSans-Bold.ttf"
+          src-italic="NetSuiteFonts/NotoSans-Italic.ttf"
+          src-bolditalic="NetSuiteFonts/NotoSans-BoldItalic.ttf"
+          bytes="2"/>
+    <style type="text/css">
+      body {
+        font-family: NotoSans;
+        font-size: 8.5pt;
+        color: #000000;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      .company {
+        font-size: 13pt;
+        font-weight: bold;
+        color: #0b4c68;
+        text-align: center;
+        margin-bottom: 2px;
+      }
+      .form-title {
+        font-size: 11pt;
+        font-weight: bold;
+        color: #3b7a94;
+        text-align: center;
+      }
+      .border {
+        border: 0.5pt solid #000000;
+        border-bottom: none;
+      }
+      .center {
+        text-align: center;
+      }
+      .bold {
+        font-weight: bold;
+      }
+      .label {
+        font-weight: bold;
+        background-color: #f2f2f2;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: -0.5pt;
+      }
+      td {
+        padding: 6px;
+        height: 24px;
+        vertical-align: middle;
+      }
+      .custom-checkbox {
+        width: 12px;
+        height: 12px;
+        margin: 0;
+        vertical-align: middle;
+      }
+      .inline-table {
+        width: auto;
+        margin: 0;
+        padding: 0;
+      }
+      .inline-table td {
+        padding: 0;
+        border: none;
+        vertical-align: middle;
+      }
+      .controlled {
+        color: #b9d5ee;
+        font-size: 24pt;
+        font-weight: bold;
+        opacity: 0.7;
+      }
+    </style>
+    <macrolist>
+      <macro id="nlfooter">
+        <table width="100%">
+          <tr>
+            <td width="60%" align="left" style="font-size: 7pt; color: #555555; line-height: 9px; valign: bottom;">
+              <p>Document Code: HRD/HR19/2024</p>
+              <p>Issue No. 8</p>
+              <p>Effective date 07.11.2024</p>
+            </td>
+            <td width="40%" align="right" valign="bottom">
+              <p class="controlled">CONTROLLED</p>
+            </td>
+          </tr>
+        </table>
+      </macro>
+    </macrolist>
+  </head>
+  <body size="A4" padding="15mm 15mm 15mm 15mm" footer="nlfooter" footer-height="12mm">
+    <!-- Header Block -->
+    <table width="100%" style="margin-bottom: 10px;">
+      <tr>
+        <td width="20%" valign="middle" align="left">
+          <#if data.logoUrl?has_content>
+            <img src="${data.logoUrl?xml}" width="80" height="40" />
+          <#else>
+            <p style="font-weight: bold; font-size: 14pt; color: #0b4c68;">LOGO</p>
+          </#if>
+        </td>
+        <td width="80%" align="center" valign="middle">
+          <p class="company">Al Najma Al Fareeda International Group</p>
+          <p class="form-title">Documents Release Form (HR19)</p>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Section 1: Employee Details -->
+    <table class="border">
+      <tr>
+        <td class="border label" width="18%">Name</td>
+        <td class="border value" width="32%">${data.employeeName?xml}</td>
+        <td class="border label" width="18%">Employee No.</td>
+        <td class="border value" width="32%">${data.employeeCode?xml}</td>
+      </tr>
+      <tr>
+        <td class="border label">Job Title</td>
+        <td class="border value">${data.jobTitle?xml}</td>
+        <td class="border label">Department</td>
+        <td class="border value">${data.department?xml}</td>
+      </tr>
+      <tr>
+        <td class="border label">Passport No.</td>
+        <td class="border value">${data.passportNo?xml}</td>
+        <td class="border label">Site Name</td>
+        <td class="border value">${data.siteName?xml}</td>
+      </tr>
+    </table>
+
+    <!-- Section 2: Reason for Release Header -->
+    <table class="border">
+      <tr>
+        <td class="border bold" style="background-color: #ffffff; padding: 6px;">
+          Reason for Release:
+        </td>
+      </tr>
+    </table>
+
+    <!-- Section 3: Checkboxes -->
+    <table class="border">
+      <#if data.purposes?has_content>
+        <#list data.purposes?chunk(3) as row>
+          <tr>
+            <#list row as p>
+              <td class="border" width="33%">
+                <table class="inline-table">
+                  <tr>
+                    <td>
+                      <input name="chk_${p.id}"
+                             class="custom-checkbox"
+                             type="checkbox"
+                             <#if p.checked?string == "true" || p.checked?string == "T" || p.checked?string == "yes">checked="checked"</#if>
+                             readonly="readonly"/>
+                    </td>
+                    <td style="padding-left: 5px;">
+                      <#if p.name?lower_case?contains("others")>
+                        <span style="text-decoration: underline;">Others</span> please specify
+                      <#else>
+                        ${p.name?xml}
+                      </#if>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </#list>
+            <#if row?size &lt; 3>
+              <#list 1..(3 - row?size) as x>
+                <td class="border" width="33%">&nbsp;</td>
+              </#list>
+            </#if>
+          </tr>
+        </#list>
+      <#else>
+        <tr>
+          <td class="border" colspan="3" align="center" style="font-size: 8.5pt; color: #555555; padding: 10px;">
+            No purpose options found.
+          </td>
+        </tr>
+      </#if>
+    </table>
+
+    <!-- Section 4: Dates of Release/Return -->
+    <table class="border">
+      <tr>
+        <td class="border label" width="18%">Date of Release:</td>
+        <td class="border value" width="32%">${data.dateOfRelease?xml}</td>
+        <td class="border label" width="18%">Date of Return:</td>
+        <td class="border value" width="32%">${data.dateOfReturn?xml}</td>
+      </tr>
+    </table>
+
+    <!-- Declaration -->
+    <table class="border">
+      <tr>
+        <td class="border" style="font-size: 7.5pt; text-align: justify; line-height: 11px;">
+          <b><u>Declaration:</u></b> I certify that I have received my Emirates Card / Passport and take the responsibility for any mishandling or replacement costs if it is damaged.
+        </td>
+      </tr>
+    </table>
+
+    <!-- Employee Sign-off Section -->
+    <table class="border">
+      <tr>
+        <td class="border" width="60%" valign="top" style="height: 105px; padding-top: 10px; padding-bottom: 10px;">
+          <p style="margin-bottom: 35px; font-weight: bold;">EMPLOYEE SIGNATURE: ___________________________</p>
+          <p style="font-weight: bold;">Date: ___________________________</p>
+        </td>
+        <td class="border" width="40%" valign="top" style="padding-top: 10px; padding-bottom: 10px; line-height: 16px;">
+          <p style="margin-bottom: 12px; font-weight: bold;">EMPLOYEE CONTACT NO.</p>
+          <p style="margin-bottom: 10px;">1. _________________________________</p>
+          <p>2. _________________________________</p>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Section Title: Guarantor -->
+    <table class="border">
+      <tr>
+        <td class="border center bold" align="center" style="background-color: #b9d5ee; font-size: 8.5pt;">
+          GUARANTOR (Only required in case of emergency leave)
+        </td>
+      </tr>
+    </table>
+    
+    <!-- Guarantor Section Content -->
+    <table class="border">
+      <tr>
+        <td class="border" width="65%" valign="top" style="height: 115px; line-height: 18px; padding-top: 12px; padding-bottom: 12px;">
+          <p style="margin-bottom: 16px;"><b>EMPLOYEE NAME:</b> __________________________________________________</p>
+          <p style="margin-bottom: 16px;"><b>EMPLOYEE NO:</b> __________________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>DEPARTMENT:</b> ________________________</p>
+          <p><b>JOB TITLE:</b> _____________________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>SIGNATURE:</b> __________________________</p>
+        </td>
+        <td class="border" width="35%" valign="top" style="line-height: 18px; padding-top: 12px; padding-bottom: 12px;">
+          <p style="margin-bottom: 12px; font-weight: bold;">EMPLOYEE CONTACT NO.</p>
+          <p style="margin-bottom: 10px;">1. _________________________________</p>
+          <p>2. _________________________________</p>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Section Title: Office Use -->
+    <table class="border">
+      <tr>
+        <td class="border center bold" align="center" style="background-color: #b9d5ee; font-size: 8.5pt;">
+          FOR OFFICE USE ONLY
+        </td>
+      </tr>
+    </table>
+    
+    <!-- Office Use Content -->
+    <table class="border" style="border-bottom: 0.5pt solid #000000;">
+      <tr style="background-color: #d3e2f2;">
+        <td class="border center bold" width="33%" align="center" style="font-size: 7.5pt;">HEAD OF DEPARTMENT</td>
+        <td class="border center bold" width="34%" align="center" style="font-size: 7.5pt;">CHIEF EXECUTIVE OFFICER</td>
+        <td class="border center bold" width="33%" align="center" style="font-size: 7.5pt;">ISSUED BY HR DEPARTMENT</td>
+      </tr>
+      <tr>
+        <td class="border" valign="top" style="height: 110px; padding-top: 15px; padding-bottom: 15px;">
+          <p style="margin-bottom: 45px; font-weight: bold;">SIGNATURE:</p>
+          <p style="font-weight: bold;">Date:</p>
+        </td>
+        <td class="border" valign="top" style="padding-top: 15px; padding-bottom: 15px;">
+          <p style="margin-bottom: 45px; font-weight: bold;">SIGNATURE:</p>
+          <p style="font-weight: bold;">Date:</p>
+        </td>
+        <td class="border" valign="top" style="padding-top: 15px; padding-bottom: 15px;">
+          <p style="margin-bottom: 45px; font-weight: bold;">SIGNATURE:</p>
+          <p style="font-weight: bold;">Date:</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</pdf>

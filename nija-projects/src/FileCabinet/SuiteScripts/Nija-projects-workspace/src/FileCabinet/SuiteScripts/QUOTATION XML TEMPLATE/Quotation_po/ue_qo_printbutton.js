@@ -9,7 +9,7 @@ define(['N/ui/serverWidget'], function(serverWidget) {
 
             var form = context.form;
 
-            form.clientScriptModulePath = 'SuiteScript/Layouts/cl_qo_printbutton.js';
+            form.clientScriptModulePath = 'SuiteScripts/Layouts/cl_qo_printbutton.js';
 
             form.addButton({
                 id: 'custpage_print_pdf',

@@ -87,6 +87,11 @@ define(['N/file', 'N/render', 'N/record'], function(file, render, record) {
                 var vendorRec = record.load({ type: record.Type.VENDOR, id: vendorId });
                 
                 vendorAddress = vendorRec.getValue({ fieldId: 'defaultaddress' });
+                // Replace newline characters with HTML line breaks for PDF rendering
+                if (vendorAddress) {
+                    vendorAddress = vendorAddress.replace(/\n/g, '<br/>');
+                }
+
                 vendorPhone = vendorRec.getValue({ fieldId: 'phone' });
             } catch (e) {
                 // Fail silently if vendor cannot be loaded (e.g. deleted or permissions issue)

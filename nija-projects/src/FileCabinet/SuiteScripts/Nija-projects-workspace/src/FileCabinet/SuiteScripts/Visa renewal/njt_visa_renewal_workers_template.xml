@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf xmlns:pdf="http://big.faceless.org/pdf" version="1.1">
+  <head>
+    <link name="NotoSans" type="font" subtype="truetype"
+          src="NetSuiteFonts/NotoSans-Regular.ttf"
+          src-bold="NetSuiteFonts/NotoSans-Bold.ttf"
+          src-italic="NetSuiteFonts/NotoSans-Italic.ttf"
+          src-bolditalic="NetSuiteFonts/NotoSans-BoldItalic.ttf"
+          bytes="2"/>
+    <style type="text/css">
+      body {
+        font-family: NotoSans;
+        font-size: 8.5pt;
+        color: #000000;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      .company {
+        font-size: 13pt;
+        font-weight: bold;
+        color: #2b5d75;
+        text-align: center;
+        margin-bottom: 2px;
+      }
+      .form-title {
+        font-size: 10.5pt;
+        font-weight: bold;
+        color: #5b8da5;
+        text-align: center;
+      }
+      .main-table {
+        border: 1.5pt solid #000000;
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      .main-table td {
+        border: 0.5pt solid #000000;
+        padding: 6px 8px;
+        height: 24px;
+        vertical-align: middle;
+      }
+      .label-col {
+        font-weight: bold;
+      }
+      .controlled {
+        color: #b9d5ee;
+        font-size: 24pt;
+        font-weight: bold;
+        opacity: 0.6;
+      }
+      .sign-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .sign-table td {
+        border: none;
+        padding: 2px 0px;
+      }
+      .custom-checkbox {
+        width: 13px;
+        height: 13px;
+        margin: 0;
+        vertical-align: middle;
+      }
+    </style>
+    <macrolist>
+      <macro id="nlfooter">
+        <table width="100%">
+          <tr>
+            <td width="60%" align="left" style="font-size: 7.5pt; color: #555555; line-height: 10px; valign: bottom;">
+              <p>Document Code: HRD/HR42A/2024</p>
+              <p>Issue No. 6</p>
+              <p>Effective date 07.11.2024</p>
+            </td>
+            <td width="40%" align="right" valign="bottom">
+              <p class="controlled">CONTROLLED</p>
+            </td>
+          </tr>
+        </table>
+      </macro>
+    </macrolist>
+  </head>
+  <body size="A4" padding="15mm 15mm 15mm 15mm" footer="nlfooter" footer-height="15mm">
+    <!-- Header Section -->
+    <table width="100%" style="margin-bottom: 10px;">
+      <tr>
+        <td width="20%" valign="middle" align="left">
+          <#if data.logoUrl?has_content>
+            <img src="${data.logoUrl?xml}" width="80" height="40" />
+          <#else>
+            <p style="font-weight: bold; font-size: 14pt; color: #2b5d75;">LOGO</p>
+          </#if>
+        </td>
+        <td width="80%" align="center" valign="middle">
+          <p class="company">${data.companyName?xml}</p>
+          <p class="form-title">Employment Contract Renewal Notice – Workers (HR42A)</p>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Main Table Enclosure containing fields, text block, checkboxes, sign-offs -->
+    <table class="main-table">
+      <!-- Row 1: Work Permit Renewal & Date -->
+      <tr>
+        <td width="55%"><span class="label-col">Work Permit Renewal:</span> ${data.workPermitRange?xml}</td>
+        <td width="45%"><span class="label-col">Date:</span> ${data.printDate?xml}</td>
+      </tr>
+      <!-- Row 2: Name & ID No -->
+      <tr>
+        <td><span class="label-col">Name:</span> ${data.employeeName?xml}</td>
+        <td><span class="label-col">ID No:</span> ${data.employeeCode?xml}</td>
+      </tr>
+      <!-- Row 3: UID No & Supervisor -->
+      <tr>
+        <td><span class="label-col">UID No:</span> ${data.uidNo?xml}</td>
+        <td><span class="label-col">Supervisor:</span> ${data.supervisorName?xml}</td>
+      </tr>
+      <!-- Row 4: Designation & Department -->
+      <tr>
+        <td><span class="label-col">Designation:</span> ${data.designation?xml}</td>
+        <td><span class="label-col">Department:</span> ${data.department?xml}</td>
+      </tr>
+      <!-- Row 5: Labour Card No & Passport No -->
+      <tr>
+        <td><span class="label-col">Labour Card No:</span> ${data.labourCardNo?xml}</td>
+        <td><span class="label-col">Passport No:</span> ${data.passportNo?xml}</td>
+      </tr>
+      <!-- Row 6: Visa Expiry Date & Visa No -->
+      <tr>
+        <td><span class="label-col">Visa Expiry Date:</span> ${data.visaExpiryDate?xml}</td>
+        <td><span class="label-col">Visa No:</span> ${data.visaNo?xml}</td>
+      </tr>
+
+      <!-- Row 7: Text Block Notice -->
+      <tr>
+        <td colspan="2" style="padding: 15px 10px; text-align: justify; line-height: 140%;">
+          <p style="margin-bottom: 8px;">
+            As you are aware, your fixed-term Labour Contract is due to expire on <span class="bold">${data.contractExpiryDate}</span>. We would like, however, to offer you an extension to your Labour Contract for another fixed term, to run consecutively with your current Labor Contract and continuing until <span class="bold">${data.contractNewExpiryDate}</span>. This is to acknowledge that your performance is satisfactory and has met the policies of ANAF Group.
+          </p>
+          <p style="margin-bottom: 8px;">
+            The extended Labor Contract involves continuing in your current position. The terms and conditions of the extended Labor Contract will be identical to your current terms of employment, including the notice clause(s) contained in the original Labor Contract.
+          </p>
+          <p style="margin-bottom: 8px;">
+            If you are in agreement with this extension, please sign the enclosed copy of this letter to indicate your acceptance of the extension of your Labor Contract and return it to HR office on or before <span class="bold">${data.contractSignReturnDate}</span>.
+          </p>
+          <p>
+            We look forward to having you in our employment for a further period of time.
+          </p>
+        </td>
+      </tr>
+
+      <!-- Row 8: Checkbox Selection -->
+      <tr>
+        <td colspan="2" style="padding: 8px 10px;">
+          <table style="width: auto; border: none; margin: 0; padding: 0;">
+            <tr>
+              <td style="border: none; font-weight: bold; width: 80px; padding: 0; font-size: 8.5pt; vertical-align: middle;">Agreed for:</td>
+              <td style="border: none; width: 60px; padding: 0; font-size: 8.5pt; vertical-align: middle;">Renewal</td>
+              <td style="border: none; width: 25px; padding: 0; vertical-align: middle;">
+                <#if data.isRenewalChecked?string == "true">
+                  <input name="chk_renewal" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" />
+                <#else>
+                  <input name="chk_renewal" class="custom-checkbox" type="checkbox" readonly="readonly" />
+                </#if>
+              </td>
+              <td style="border: none; width: 30px; padding: 0;">&nbsp;</td>
+              <td style="border: none; width: 90px; padding: 0; font-size: 8.5pt; vertical-align: middle;">Cancellation</td>
+              <td style="border: none; width: 25px; padding: 0; vertical-align: middle;">
+                <#if data.isCancellationChecked?string == "true">
+                  <input name="chk_cancellation" class="custom-checkbox" type="checkbox" checked="checked" readonly="readonly" />
+                <#else>
+                  <input name="chk_cancellation" class="custom-checkbox" type="checkbox" readonly="readonly" />
+                </#if>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Row 9: Reason for Non Renewal -->
+      <tr>
+        <td colspan="2" style="padding: 8px 10px; height: 60px;" valign="top">
+          <span class="label-col">Reason for Non Renewal:</span>
+          <p style="margin-top: 15px;">&nbsp;</p>
+        </td>
+      </tr>
+
+      <!-- Row 10: Sign-off Section Split -->
+      <tr>
+        <!-- Left Side: Employee Sign-off & Thumb Impression -->
+        <td width="50%" valign="top" style="padding: 10px 8px; border-right: 0.5pt solid #000000;">
+          <p class="bold" style="margin-bottom: 12px; font-size: 9pt;">Read, Agreed &amp; Signed by:</p>
+          <table class="sign-table">
+            <tr>
+              <td width="30%">Full Name:</td>
+              <td width="70%" style="border-bottom: 0.5pt solid #000000;">&nbsp;</td>
+            </tr>
+            <tr height="15px"><td colspan="2"></td></tr>
+            <tr>
+              <td>Signature:</td>
+              <td style="border-bottom: 0.5pt solid #000000;">&nbsp;</td>
+            </tr>
+          </table>
+          
+          <p style="margin-top: 12px; margin-bottom: 4px;">Thumb Impression:</p>
+          <table width="150" height="75" style="border: 0.5pt solid #000000; margin-top: 2px;">
+            <tr><td>&nbsp;</td></tr>
+          </table>
+        </td>
+        
+        <!-- Right Side: Head of Department -->
+        <td width="50%" valign="top" style="padding: 10px 8px;" align="center">
+          <p class="bold" style="margin-top: 40px; text-decoration: underline; font-size: 9.5pt;">Head of Department</p>
+          
+          <p style="margin-top: 75px; width: 80%; border-top: 0.5pt solid #000000;"></p>
+          <p class="bold" style="font-size: 9pt; margin-top: 2px;">Signature</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</pdf>

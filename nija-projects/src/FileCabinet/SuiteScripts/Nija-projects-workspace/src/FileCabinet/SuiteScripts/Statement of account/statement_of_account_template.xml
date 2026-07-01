@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+    <style type="text/css">
+        body { 
+            font-family: "Times New Roman", serif; 
+            font-size: 10pt; 
+        }
+        .header { 
+            font-size: 16pt; 
+            font-weight: bold; 
+            text-align: center; 
+            padding-bottom: 20px; 
+        }
+        .info-table { 
+            width: 100%; 
+            margin-bottom: 20px; 
+        }
+        .info-table td { 
+            padding: 4px; 
+        }
+        .data-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+        .data-table th { 
+            background-color: #f2f2f2; 
+            font-weight: bold; 
+            border: 0.1pt solid #000000; 
+            padding: 5px; 
+            text-align: center;
+        }
+        .data-table td { 
+            border: 0.1pt solid #000000; 
+            padding: 5px; 
+        }
+        .text-right { 
+            text-align: right; 
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">${customData.title}</div>
+    <table class="info-table">
+        <tr>
+            <td style="width: 15%; font-weight: bold;">Entity:</td>
+            <td style="width: 35%;">${customData.entityName}</td>
+            <td style="width: 15%; font-weight: bold;">Date Range:</td>
+            <td style="width: 35%;">${customData.fromDate} to ${customData.toDate}</td>
+        </tr>
+    </table>
+    
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th style="width: 12%;">Date</th>
+                <th style="width: 15%;">Type</th>
+                <th style="width: 15%;">Document</th>
+                <th style="width: 22%;">Memo</th>
+                <th style="width: 12%;" class="text-right">Debit</th>
+                <th style="width: 12%;" class="text-right">Credit</th>
+                <th style="width: 12%;" class="text-right">Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list customData.transactions as txn>
+            <tr>
+                <td class="text-center">${txn.trandate}</td>
+                <td>${txn.type}</td>
+                <td>${txn.tranid}</td>
+                <td>${txn.memo}</td>
+                <td class="text-right">${txn.debit?string("#,##0.00")}</td>
+                <td class="text-right">${txn.credit?string("#,##0.00")}</td>
+                <td class="text-right">${txn.balance?string("#,##0.00")}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+</body>
+</pdf>

@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf xmlns:pdf="http://big.faceless.org/pdf" version="1.1">
+  <head>
+    <link name="NotoSans" type="font" subtype="truetype"
+          src="NetSuiteFonts/NotoSans-Regular.ttf"
+          src-bold="NetSuiteFonts/NotoSans-Bold.ttf"
+          src-italic="NetSuiteFonts/NotoSans-Italic.ttf"
+          src-bolditalic="NetSuiteFonts/NotoSans-BoldItalic.ttf"
+          bytes="2"/>
+    <style type="text/css">
+      body {
+        font-family: NotoSans;
+        font-size: 8pt;
+        color: #000000;
+        text-align: left;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      .company-name {
+        font-size: 13pt;
+        font-weight: bold;
+        color: #0b4c68;
+        text-align: center;
+      }
+      .form-title {
+        font-size: 11pt;
+        font-weight: bold;
+        color: #3b7a94;
+        text-align: center;
+        margin-top: 2px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: -0.5pt;
+      }
+      td {
+        padding: 5px 6px;
+        height: 20px;
+        vertical-align: middle;
+      }
+      .outer-container {
+        border: 1pt solid #000000;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      .bordered-table {
+        border: 0.5pt solid #000000;
+      }
+      .bordered-td {
+        border: 0.5pt solid #000000;
+      }
+      .label-cell {
+        font-weight: bold;
+        text-align: left;
+      }
+      .office-header {
+        background-color: #4f81bd;
+        color: #ffffff;
+        font-weight: bold;
+        text-align: center;
+        font-size: 9.5pt;
+        height: 22px;
+        border: 0.5pt solid #000000;
+      }
+      .column-title {
+        text-decoration: underline;
+        font-weight: bold;
+        font-size: 8.5pt;
+        text-align: center;
+      }
+      .controlled {
+        color: #b9d5ee;
+        font-size: 24pt;
+        font-weight: bold;
+        opacity: 0.7;
+      }
+      .custom-checkbox {
+        width: 11px;
+        height: 11px;
+        margin: 0;
+        vertical-align: middle;
+      }
+      .signature-underline {
+        border-bottom: 0.5pt solid #000000;
+        width: 120px;
+        display: inline-block;
+      }
+    </style>
+    <macrolist>
+      <macro id="nlfooter">
+        <table width="100%">
+          <tr>
+            <td width="60%" align="left" style="font-size: 7pt; color: #555555; line-height: 9px; valign: bottom;">
+              <p>Document Code: HRD/HR30/2024</p>
+              <p>Issue No. 7</p>
+              <p>Effective date 07.11.2024</p>
+            </td>
+            <td width="40%" align="right" valign="bottom">
+              <p class="controlled">CONTROLLED</p>
+            </td>
+          </tr>
+        </table>
+      </macro>
+    </macrolist>
+  </head>
+  <body size="A4" padding="10mm 12mm 10mm 12mm" footer="nlfooter" footer-height="12mm">
+    <#if data.transfers?has_content>
+      <#list data.transfers as t>
+        <#if t_index gt 0>
+          <p style="page-break-before: always;"></p>
+        </#if>
+        
+        <!-- Main Form Wrapper Table (Thick Border) -->
+        <table class="outer-container">
+          <tr>
+            <td style="padding: 0;">
+              
+              <!-- Header Section -->
+              <table width="100%" style="margin-bottom: 10px;">
+                <tr>
+                  <td width="20%" valign="middle" align="left">
+                    <#if data.logoUrl?has_content>
+                      <img src="${data.logoUrl?xml}" width="80" height="60" />
+                    <#else>
+                      <p style="font-weight: bold; font-size: 14pt; color: #0b4c68;">LOGO</p>
+                    </#if>
+                  </td>
+                  <td width="80%" align="center" valign="middle" style="padding-right: 20%;">
+                    <p class="company-name">Al Najma Al Fareeda International Group</p>
+                    <p class="form-title">Employee Transfer Form (HR30)</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Employee Details Grid (No borders) -->
+              <table style="width: 100%; margin-bottom: 10px; line-height: 14px;">
+                <tr>
+                  <td class="label-cell" width="20%">Employee Name:</td>
+                  <td width="30%">${t.employeeName?xml}</td>
+                  <td class="label-cell" width="18%">Employee No:</td>
+                  <td width="32%">${t.employeeCode?xml}</td>
+                </tr>
+                <tr>
+                  <td class="label-cell">Designation:</td>
+                  <td>${t.fromDesignation?xml}</td>
+                  <td class="label-cell">Department:</td>
+                  <td>${t.fromDepartment?xml}</td>
+                </tr>
+                <tr>
+                  <td class="label-cell">Transfer effective from:</td>
+                  <td>${t.date?xml}</td>
+                  <td class="label-cell">Transferred to (Dsg. /Dept):</td>
+                  <td>${t.toDesignation?xml} / ${t.toDepartment?xml}</td>
+                </tr>
+                <tr>
+                  <td class="label-cell">Supervisor Name (if applicable):</td>
+                  <td>${t.supervisorName?xml}</td>
+                  <td class="label-cell">Site Name (if applicable):</td>
+                  <td>${t.siteName?xml}</td>
+                </tr>
+
+                <!-- Reason for Transfer Checkboxes -->
+                <tr>
+                  <td colspan="4" style="padding: 6px 6px;">
+                    <table style="width: 100%; border: none;">
+                      <tr>
+                        <td width="20%" class="label-cell" style="padding: 0; border: none; height: auto;">Reason for transfer:</td>
+                        
+                        <#if data.reasons?has_content>
+                          <#list data.reasons as r>
+                            <td style="padding: 0 4px; border: none; height: auto; vertical-align: middle;">
+                              <table style="width: auto; border: none; margin: 0; padding: 0;">
+                                <tr>
+                                  <td style="padding: 0 4px 0 0; border: none; vertical-align: middle;">
+                                    <#if t.reasonId == r.id>
+                                      <input name="chk_${r.id}" type="checkbox" value="${r.id}" checked="checked" readonly="readonly" class="custom-checkbox"/>
+                                    <#else>
+                                      <input name="chk_${r.id}" type="checkbox" value="${r.id}" readonly="readonly" class="custom-checkbox"/>
+                                    </#if>
+                                  </td>
+                                  <td style="padding: 0; border: none; vertical-align: middle; white-space: nowrap;">${r.name?xml}</td>
+                                </tr>
+                              </table>
+                            </td>
+                          </#list>
+                        </#if>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Work Completed Line -->
+                <tr>
+                  <td colspan="4" style="padding: 6px 6px;">
+                    <table style="width: 100%;">
+                      <tr>
+                        <td width="40%" class="label-cell" style="padding: 0; border: none; height: auto;">
+                          WORK COMPLETED FOR THE PARTICULAR POST
+                        </td>
+                        <td width="60%" style="padding: 0; border: none; height: auto; border-bottom: 0.5pt solid #000000;">
+                          &nbsp;
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Employee Signature -->
+                <tr>
+                  <td colspan="2" style="height: 38px; vertical-align: bottom; padding-bottom: 8px;">
+                    <span class="label-cell">Employee's Signature:</span> ___________________________
+                  </td>
+                  <td colspan="2" style="height: 38px; vertical-align: bottom; padding-bottom: 8px;">
+                    <span class="label-cell">Date:</span> ___________________________
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Office Use Header Shaded -->
+              <table style="width: 100%; margin-top: 1px;">
+                <tr>
+                  <td class="office-header">FOR OFFICE USE ONLY</td>
+                </tr>
+              </table>
+
+              <!-- Office Use Table (Grid structure) -->
+              <table class="bordered-table" style="width: 100%;">
+                <!-- Row 1: Header titles -->
+                <tr>
+                  <td class="bordered-td" width="50%" align="center" style="height: 24px; vertical-align: middle;">
+                    <span class="column-title">Transfer Initiated By:</span>
+                  </td>
+                  <td class="bordered-td" width="50%" align="center" style="height: 24px; vertical-align: middle;">
+                    <span class="column-title">Transfer Accepted By:</span>
+                  </td>
+                </tr>
+                <!-- Row 2: Name -->
+                <tr>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Name: <span style="font-weight: normal; text-decoration: none;">${t.employeeName?xml}</span></p>
+                  </td>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Name: <span style="font-weight: normal; text-decoration: none;">${t.employeeName?xml}</span></p>
+                  </td>
+                </tr>
+                <!-- Row 3: Designation -->
+                <tr>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Designation: <span style="font-weight: normal; text-decoration: none;">${t.fromDesignation?xml}</span></p>
+                  </td>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Designation: <span style="font-weight: normal; text-decoration: none;">${t.toDesignation?xml}</span></p>
+                  </td>
+                </tr>
+                <!-- Row 4: Department -->
+                <tr>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Department: <span style="font-weight: normal; text-decoration: none;">${t.fromDepartment?xml}</span></p>
+                  </td>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Department: <span style="font-weight: normal; text-decoration: none;">${t.toDepartment?xml}</span></p>
+                  </td>
+                </tr>
+                <!-- Row 5: Date -->
+                <tr>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Date: <span style="font-weight: normal; text-decoration: none;">${t.date?xml}</span></p>
+                  </td>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Date: <span style="font-weight: normal; text-decoration: none;">${t.date?xml}</span></p>
+                  </td>
+                </tr>
+                <!-- Row 6: Signature -->
+                <tr>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Signature:</p>
+                  </td>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Signature:</p>
+                  </td>
+                </tr>
+                <!-- Row 7: Date of Initiative / Acceptance -->
+                <tr>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Date of Initiative: <span style="font-weight: normal; text-decoration: none;">${t.date?xml}</span></p>
+                  </td>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Date of Acceptance: <span style="font-weight: normal; text-decoration: none;">${t.date?xml}</span></p>
+                  </td>
+                </tr>
+                <!-- Row 8: Assignment Handover / Takeover -->
+                <tr>
+                  <td class="bordered-td" style="height: 36px; vertical-align: top; padding: 4px 6px; line-height: 11px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Assignment Handover to:</p>
+                    <p style="font-size: 7.5pt; font-weight: normal; color: #555555;">(Name &amp; ID No)</p>
+                  </td>
+                  <td class="bordered-td" style="height: 36px; vertical-align: top; padding: 4px 6px; line-height: 11px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Assignment Takeover from:</p>
+                    <p style="font-size: 7.5pt; font-weight: normal; color: #555555;">(Name &amp; ID No)</p>
+                  </td>
+                </tr>
+                <!-- Row 9: Handover Form Ref No -->
+                <tr>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Handover Form Reference No:</p>
+                  </td>
+                  <td class="bordered-td" style="height: 32px; vertical-align: top; padding: 4px 6px;">
+                    <p style="margin-bottom: 2px;" class="label-cell">Handover Form Reference No:</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Double Line Separator above Operations & HR -->
+              <table style="width: 100%; margin-top: 3px; margin-bottom: 3px;">
+                <tr>
+                  <td style="padding: 0; border-top: 0.5pt solid #000000; border-bottom: 0.5pt solid #000000; height: 3 px; font-size: 1px; line-height: 2px;"></td>
+                </tr>
+              </table>
+
+              <!-- Operations & HR Manager Verification -->
+              <table style="width: 100%;">
+                <tr>
+                  <!-- Verified by GOM -->
+                  <td width="50%" valign="top" style="padding: 4px 8px;">
+                    <p class="label-cell" style="text-decoration: underline; margin-bottom: 8px;">Verified by GOM (Operations)</p>
+                    <table style="width: 100%;">
+                      <tr>
+                        <td style="padding: 2px 0; border: none; height: auto;" class="label-cell" width="25%">Signature:</td>
+                        <td style="padding: 2px 0; border: none; height: auto; border-bottom: 0.5pt solid #cccccc;" width="75%">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 2px 0; border: none; height: auto;" class="label-cell">Date:</td>
+                        <td style="padding: 2px 0; border: none; height: auto; border-bottom: 0.5pt solid #cccccc;">&nbsp;</td>
+                      </tr>
+                    </table>
+                  </td>
+
+                  <!-- Reviewed by HR Manager -->
+                  <td width="50%" valign="top" style="padding: 4px 8px;">
+                    <p class="label-cell" style="text-decoration: underline; margin-bottom: 8px;">Reviewed by HR Manager:</p>
+                    <table style="width: 100%;">
+                      <tr>
+                        <td style="padding: 2px 0; border: none; height: auto;" class="label-cell" width="25%">Signature:</td>
+                        <td style="padding: 2px 0; border: none; height: auto; border-bottom: 0.5pt solid #cccccc;" width="75%">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 2px 0; border: none; height: auto;" class="label-cell">Date:</td>
+                        <td style="padding: 2px 0; border: none; height: auto; border-bottom: 0.5pt solid #cccccc;">&nbsp;</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Double Line Separator above CEO Approval -->
+              <table style="width: 100%; margin-top: 3px; margin-bottom: 3px;">
+                <tr>
+                  <td style="padding: 0; border-top: 0.5pt solid #000000; border-bottom: 0.5pt solid #000000; height: 3px; font-size: 1px; line-height: 1px;"></td>
+                </tr>
+              </table>
+
+              <!-- Approved by CEO -->
+              <table style="width: 100%; margin-bottom: 5px;">
+                <tr>
+                  <td style="padding: 4px 8px;">
+                    <p class="label-cell" style="text-decoration: underline; margin-bottom: 10px;">Approved by CEO:</p>
+                    <table style="width: 100%;">
+                      <tr>
+                        <td style="padding: 2px 0; border: none; height: auto;" class="label-cell" width="12%">Signature:</td>
+                        <td style="padding: 2px 0; border: none; height: auto; border-bottom: 0.5pt solid #cccccc;" width="38%">&nbsp;</td>
+                        <td width="5%">&nbsp;</td>
+                        <td style="padding: 2px 0; border: none; height: auto;" class="label-cell" width="8%">Date:</td>
+                        <td style="padding: 2px 0; border: none; height: auto; border-bottom: 0.5pt solid #cccccc;" width="37%">&nbsp;</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              
+            </td>
+          </tr>
+        </table>
+      </#list>
+    <#else>
+      <table style="width: 100%; border: 1pt solid #000000; padding: 20px;">
+        <tr>
+          <td align="center" style="font-size: 10pt; font-weight: bold; color: #ff0000;">
+            No status change detail records found for the printed record.
+          </td>
+        </tr>
+      </table>
+    </#if>
+  </body>
+</pdf>
