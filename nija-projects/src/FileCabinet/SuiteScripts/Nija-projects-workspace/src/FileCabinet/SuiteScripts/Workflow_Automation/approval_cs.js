@@ -178,11 +178,29 @@ define(['N/currentRecord', 'N/url'], (currentRecord, url) => {
 
         window.location.href = suiteletUrl;
     }
+    function resubmitForApproval() {
+
+        const rec = currentRecord.get();
+
+        const suiteletUrl = url.resolveScript({
+            scriptId: 'customscript_approval_engine_sl',
+            deploymentId: 'customdeploy_approval_engine_sl',
+            params: {
+                action: 'resubmit',
+                recordtype: rec.type,
+                recordid: rec.id,
+                mappings: getMappingsParam()
+            }
+        });
+
+        window.location.href = suiteletUrl;
+    }
     return {
         pageInit: pageInit,
         approvePO: approvePO,
         rejectPO: rejectPO,
-        submitForApproval: submitForApproval
+        submitForApproval: submitForApproval,
+        resubmitForApproval: resubmitForApproval
     };
 
 });

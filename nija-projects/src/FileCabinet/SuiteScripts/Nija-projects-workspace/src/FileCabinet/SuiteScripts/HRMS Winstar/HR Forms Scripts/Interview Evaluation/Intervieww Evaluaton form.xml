@@ -1,0 +1,545 @@
+<?xml version="1.0"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+
+<pdf>
+  <head>
+    <link name="NotoSans" type="font" subtype="truetype" src="${nsfont.NotoSans_Regular}" src-bold="${nsfont.NotoSans_Bold}" src-italic="${nsfont.NotoSans_Italic}" src-bolditalic="${nsfont.NotoSans_BoldItalic}" bytes="2" />
+    <#if .locale == "zh_CN">
+      <link name="NotoSansCJKsc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKsc_Regular}" src-bold="${nsfont.NotoSansCJKsc_Bold}" bytes="2" />
+      <#elseif .locale == "zh_TW">
+        <link name="NotoSansCJKtc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKtc_Regular}" src-bold="${nsfont.NotoSansCJKtc_Bold}" bytes="2" />
+        <#elseif .locale == "ja_JP">
+          <link name="NotoSansCJKjp" type="font" subtype="opentype" src="${nsfont.NotoSansCJKjp_Regular}" src-bold="${nsfont.NotoSansCJKjp_Bold}" bytes="2" />
+          <#elseif .locale == "ko_KR">
+            <link name="NotoSansCJKkr" type="font" subtype="opentype" src="${nsfont.NotoSansCJKkr_Regular}" src-bold="${nsfont.NotoSansCJKkr_Bold}" bytes="2" />
+            <#elseif .locale == "th_TH">
+              <link name="NotoSansThai" type="font" subtype="opentype" src="${nsfont.NotoSansThai_Regular}" src-bold="${nsfont.NotoSansThai_Bold}" bytes="2" />
+            </#if>
+            <macrolist>
+              <macro id="nlheader">
+
+
+
+
+              </macro>
+
+              <macro id="nlfooter">
+
+              </macro>
+              <macro id="watermark">
+            &nbsp;
+              </macro>
+            </macrolist>
+            <style type="text/css">* {
+              <#if .locale == "zh_CN">
+            font-family: NotoSans, NotoSansCJKsc, sans-serif;
+                <#elseif .locale == "zh_TW">
+            font-family: NotoSans, NotoSansCJKtc, sans-serif;
+                  <#elseif .locale == "ja_JP">
+            font-family: NotoSans, NotoSansCJKjp, sans-serif;
+                    <#elseif .locale == "ko_KR">
+            font-family: NotoSans, NotoSansCJKkr, sans-serif;
+                      <#elseif .locale == "th_TH">
+            font-family: NotoSans, NotoSansThai, sans-serif;
+                        <#else>
+            font-family: NotoSans, sans-serif;
+                        </#if>
+        }
+            table {
+                font-size: 9pt;
+                table-layout: fixed;
+            }
+ 
+ 
+            td {
+                padding: 4px 6px;
+            }
+ 
+            table.header td {
+                padding: 0;
+                font-size: 10pt;
+            }
+ 
+            table.footer td {
+                padding: 0;
+                font-size: 8pt;
+            }
+ 
+            table.body td {
+                padding-top: 2px;
+            }
+ 
+            span.title {
+                font-size: 28pt;
+            }
+ 
+            .nameandaddress {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+            }
+                      </style>
+                    </head>
+
+                    <body header="nlheader" header-height="1%" footer="nlfooter" footer-height="3%" padding="0.5in 0.5in 0.5in 0.5in" size="A4-LANDSCAPE">
+                      <table style="width:100%;font-size:15pt;font-family: 'Calibri', sans-serif;">
+                        <tr >
+                          <td style="width:20%;"></td>
+                          <td align='center' style="width:60%;margin-bottom:10px;">
+                            <b>Interview Evaluation Form</b>
+                          </td>
+                          <td style="width:20%;"></td>
+                        </tr>
+
+                      </table>
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;">
+                        <tr >
+                          <td style="width:15%;"><b>Name of Candidate</b></td>
+                          <td style="width:1%;"><b>:</b></td>
+                          <td style="width:34%;border-bottom:1px solid black;">{{CANDNAME}}</td>
+                          <td style="width:15%;"><b>Completed By</b></td>
+                          <td style="width:1%;"><b>:</b></td>
+                          <td style="width:34%;border-bottom:1px solid black;">{{COMPLETEDBY}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:15%;"><b>PositionTitle</b></td>
+                          <td style="width:1%;"><b>:</b></td>
+                          <td style="width:34%;border-bottom:1px solid black;">{{POSITTLE}}</td>
+                          <td style="width:15%;"><b>Interviewer(s)</b></td>
+                          <td style="width:1%;"><b>:</b></td>
+                          <td style="width:34%;border-bottom:1px solid black;">{{INTRVWR}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:15%;"><b>Department</b></td>
+                          <td style="width:1%;"><b>:</b></td>
+                          <td style="width:34%;border-bottom:1px solid black;">{{DEPTMNT}}</td>
+                          <td style="width:15%;"><b>Date of Interview</b></td>
+                          <td style="width:1%;"><b>:</b></td>
+                          <td style="width:34%;border-bottom:1px solid black;">{{DOFINT}}</td>
+                        </tr>
+                      </table>
+                      <table style="width:100%; font-size:11pt; font-family: 'Calibri', sans-serif; margin-top:20px; border-top:2px solid lightgrey;">
+                        <tr>
+                          <td style="width:100%;">
+          
+                          </td>
+
+                        </tr>
+                        <tr>
+                          <td style="width:100%;">
+          Purpose - This evaluation is to standardize the recording of information collected during an interview and assist in evaluating and comparing different applicants when interviews are completed. Interviewers are encouraged to use the "comments" section to support each applicant's rating. This form is to be completed during and/or immediately following the 
+         interview. Please attach additional sheets if needed.
+                          </td>
+
+                        </tr>
+                      </table>
+                      <table style="width:100%;font-size:11pt;font-family: 'Georgia', serif; font-style: italic;">
+                        <tr>
+                          <td align='left' style="width:100%;margin-top:20px;">
+                            <b> Rating Key - NS:</b> NOT SATISFACTORY; <b>S:</b> SATISFACTORY; <b>VS:</b> VERY SATISFACTORY; <b>NA:</b> NOT APPLICABLE
+                          </td>
+                        </tr>
+                      </table>
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif; margin-top:20px; border:1px solid black; border-collapse:collapse;">
+                        <tr style="background-color: #d3d3d3;">
+                          <td style="width:26%; border-right:1px solid black;border-bottom:1px solid black;">Criteria</td>
+                          <td style="width:42%; border-right:1px solid black;border-bottom:1px solid black;">Comments: (Be very specific; support your rating)</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">NS</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">S</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">VS</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">NA</td>
+                        </tr>
+                        <tr style="lien-height:25px;">
+                          <td style="width:26%; border-right:1px solid black;border-bottom:1px solid black;">
+                            <b>Experience</b>
+                            <br />
+(as it relates to the position)
+                          </td>
+                          <td style="width:42%; border-right:1px solid black;border-bottom:1px solid black;">{{COMMENT1}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NSa}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{Sa}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{VSa}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NAa}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:26%; border-right:1px solid black;border-bottom:1px solid black;">
+                            <b>Education/Training</b>
+                            <br />
+(relevant to position)</td>
+                          <td style="width:42%; border-right:1px solid black;border-bottom:1px solid black;">{{COMMENT2}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NSb}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{Sb}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{VSb}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NAb}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:26%; border-right:1px solid black;border-bottom:1px solid black;">
+                            <b>Communication Skills</b>
+                            <br />
+(written and verbal)</td>
+                          <td style="width:42%; border-right:1px solid black;border-bottom:1px solid black;">{{COMMENT3}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NSc}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{Sc}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{VSc}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NAc}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:26%; border-right:1px solid black;border-bottom:1px solid black;">
+                            <b>Interest in and knowledge of<br />
+ the position and NKU</b>
+                          </td>
+                          <td style="width:42%; border-right:1px solid black;border-bottom:1px solid black;">{{COMMENT4}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NSd}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{Sd}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{VSd}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NAd}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:26%; border-right:1px solid black;border-bottom:1px solid black;">
+                            <b>Presentation</b>
+                            <br />
+(promptness, neatness of <br />
+resume/application, appearance)</td>
+                          <td style="width:42%; border-right:1px solid black;border-bottom:1px solid black;">{{COMMENT5}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NSe}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{Se}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{VSe}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NAe}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:26%; border-right:1px solid black;border-bottom:1px solid black;">
+                            <b>Problem Solving Skills</b>
+                          </td>
+                          <td style="width:42%; border-right:1px solid black;border-bottom:1px solid black;">{{COMMENT6}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NSf}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{Sf}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{VSf}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NAf}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:26%; border-right:1px solid black;border-bottom:1px solid black;">
+                            <b>Computer Skills</b>
+                            <br />
+(consistent with those required to <br />
+perform the duties of the position)</td>
+                          <td style="width:42%; border-right:1px solid black;border-bottom:1px solid black;">{{COMMENT7}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NSg}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{Sg}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{VSg}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NAg}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:26%; border-right:1px solid black;border-bottom:1px solid black;">
+                            <b>Job Stability</b>
+                            <br />
+                          </td>
+                          <td style="width:42%; border-right:1px solid black;border-bottom:1px solid black;">{{COMMENT8}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NSh}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{Sh}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{VSh}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NAh}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:26%; border-right:1px solid black;border-bottom:1px solid black;">
+                            <b>Other Job Related Criteria</b>
+                            <br />
+(specify)</td>
+                          <td style="width:42%; border-right:1px solid black;border-bottom:1px solid black;">{{COMMENT9}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NSi}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{Si}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{VSi}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NAi}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:26%; border-right:1px solid black;border-bottom:1px solid black;">
+                            <b>Other Job Related Criteria</b>
+                            <br />
+(specify)</td>
+                          <td style="width:42%; border-right:1px solid black;border-bottom:1px solid black;">{{COMMENT10}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NSj}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{Sj}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{VSj}}</td>
+                          <td style="width:8%; border-right:1px solid black;border-bottom:1px solid black;">{{NAj}}</td>
+                        </tr>
+                      </table>
+                      <!-- empty table to add space -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:40%;">
+
+                          </td>
+                        </tr>
+                      </table>
+                      <!-- empty table end -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:100%;">
+                            <b> Please circle your responses to the following questions: </b>
+                          </td>
+                        </tr>
+                        <!--empty row to add space -->
+                        <tr>
+                          <td style="width:100%;">
+
+                          </td>
+                        </tr>
+                        <!-- empty row end -->
+                      </table>
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:4%;">1.</td>
+                          <td style="width:96%;">The applicant has the knowledge, skills, and abilities to perform the duties of this position: </td>
+                        </tr>
+                      </table>
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        {{TABLE1}}
+                      </table>
+                      <!-- empty table to add space -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:100%;">
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width:100%;">
+
+                          </td>
+                        </tr>
+                      </table>
+                      <!-- empty table end -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:4%;">2.</td>
+                          <td style="width:96%;">The applicant views this position with excitement and enthusiasm:</td>
+                        </tr>
+                      </table>
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+
+                        {{TABLE2}}
+                      </table>
+                      <!-- empty table to add space -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:100%;">
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width:100%;">
+
+                          </td>
+                        </tr>
+                      </table>
+                      <!-- empty table end -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:4%;">3.</td>
+                          <td style="width:96%;">The applicant has the appropriate level of experience necessary for this position: </td>
+                        </tr>
+                      </table>
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+
+                       {{TABLE3}}
+                      </table>
+                      <!-- empty table to add space -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:100%;">
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width:100%;">
+
+                          </td>
+                        </tr>
+                      </table>
+                      <!-- empty table end -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:4%;">4.</td>
+                          <td style="width:96%;">The applicant displayed the ability to participate effectively in a team environment and motivate and lead the staff (if applicable):</td>
+                        </tr>
+                      </table>
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+
+                       {{TABLE4}}
+                      </table>
+                      <!-- empty table to add space -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:100%;">
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width:100%;">
+
+                          </td>
+                        </tr>
+                      </table>
+                      <!-- empty table end -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:4%;">5.</td>
+                          <td style="width:96%;">The applicant displayed ability to communicate well with all constituents. </td>
+                        </tr>
+                      </table>
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+
+                       {{TABLE5}}
+                      </table>
+                      <!-- empty table to add space -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:100%;">
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width:100%;">
+
+                          </td>
+                        </tr>
+                      </table>
+                      <!-- empty table end -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:4%;">6.</td>
+                          <td style="width:96%;">The applicant should be included in the final list of recommended applicants: </td>
+                        </tr>
+                      </table>
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+
+                       {{TABLE6}}
+                      </table>
+
+                      <!-- empty table to add space -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:40%;">
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%;">
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%;">
+
+                          </td>
+                        </tr>
+                         <tr>
+                          <td style="width:40%;">
+
+                          </td>
+                        </tr>
+                      </table>
+                      <!-- empty table end -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:40%;">
+                            <b>Candidate’s Strengths:</b>
+                          </td>
+                          <td style="width:20%;;"></td>
+                          <td style="width:40%;">
+                            <b>Candidates Weaknesses:</b>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%;"></td>
+                          <td style="width:20%;;"></td>
+                          <td style="width:40%;"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%;">{{STRENGTH}}</td>
+                          <td style="width:20%;;"></td>
+                          <td style="width:40%;">{{WEAKNESS}}</td>
+                        </tr>
+                        <!-- <tr>
+                          <td style="width:40%;"></td>
+                          <td style="width:20%;;"></td>
+                          <td style="width:40%;"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%;border-bottom:1px solid black;"></td>
+                          <td style="width:20%;;"></td>
+                          <td style="width:40%;border-bottom:1px solid black;"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%;"></td>
+                          <td style="width:20%;;"></td>
+                          <td style="width:40%;"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%;border-bottom:1px solid black;"></td>
+                          <td style="width:20%;;"></td>
+                          <td style="width:40%;border-bottom:1px solid black;"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%;"></td>
+                          <td style="width:20%;;"></td>
+                          <td style="width:40%;"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%;border-bottom:1px solid black;"></td>
+                          <td style="width:20%;;"></td>
+                          <td style="width:40%;border-bottom:1px solid black;"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%;"></td>
+                          <td style="width:20%;;"></td>
+                          <td style="width:40%;"></td>
+                        </tr> -->
+                      </table>
+                      <!-- empty table to add space -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:40%;">
+
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%;">
+                                         
+                          </td>
+                        </tr>
+                         <tr>
+                          <td style="width:40%;">
+                                         
+                          </td>
+                        </tr>
+                      </table>
+                      <!-- empty table end -->
+                      <table style="width:100%;font-size:11pt;font-family: 'Calibri', sans-serif;;">
+                        <tr>
+                          <td style="width:100%;">
+                            <b>Please provide any additional comments you have about this candidate:</b>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width:100%;"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:100%;"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:100%;">{{ADDITIONAL}}</td>
+                        </tr>
+                        <tr>
+                          <td style="width:100%;"></td>
+                        </tr>
+                        <!-- <tr>
+                          <td style="width:100%;;border-bottom:1px solid black;"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:100%;"></td>
+                        </tr> -->
+                      </table>
+
+                    </body>
+                  </pdf>
+ 

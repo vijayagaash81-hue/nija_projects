@@ -63,6 +63,14 @@ define(['N/record', 'N/search', 'N/redirect', 'N/runtime', 'N/email'], (
                     mappings
                 );
 
+            } else if (action === 'resubmit') {
+
+                processResubmit(
+                    rec,
+                    approvalSetup,
+                    mappings
+                );
+
             } else if (action === 'approve') {
 
                 processApproval(
@@ -173,6 +181,114 @@ define(['N/record', 'N/search', 'N/redirect', 'N/runtime', 'N/email'], (
         }
 
         rec.save();
+    }
+
+    function processResubmit(
+        rec,
+        approvalSetup,
+        mappings
+    ) {
+
+        var detailSearch = search.create({
+            type: 'customrecord_approval_setup_detail',
+            filters: [
+                ['custrecord_asd_parent', 'anyof', approvalSetup],
+                'AND',
+                ['custrecord_asd_level', 'equalto', '1']
+            ],
+            columns: [
+                'custrecord_asd_type',
+                'custrecord_asd_employee',
+                'custrecord_asd_role'
+            ]
+        });
+
+        var result = detailSearch.run().getRange({
+            start: 0,
+            end: 1
+        });
+
+        if (!result.length) {
+            log.error('Resubmit Error', 'No Level 1 Approver configured for setup ID ' + approvalSetup);
+            return;
+        }
+
+        var approvalType =
+            result[0].getText(
+                'custrecord_asd_type'
+            );
+
+        var approverId =
+            result[0].getValue(
+                'custrecord_asd_employee'
+            );
+
+        var roleId =
+            result[0].getValue(
+                'custrecord_asd_role'
+            );
+
+        // Reset current level back to 1
+        rec.setValue({
+            fieldId: mappings.current_level,
+            value: 1
+        });
+
+        // Set status to Pending Approval (1)
+        rec.setValue({
+            fieldId: mappings.status,
+            value: 1
+        });
+
+        // Clear Rejection Reason
+        if (mappings.rejection_reason) {
+            rec.setValue({
+                fieldId: mappings.rejection_reason,
+                value: ''
+            });
+        }
+
+        // Assign Level 1 approver/role
+        if (approvalType === 'Employee') {
+
+            rec.setValue({
+                fieldId: mappings.next_approver,
+                value: approverId
+            });
+
+            rec.setValue({
+                fieldId: mappings.next_approver_role,
+                value: null
+            });
+
+        } else {
+
+            rec.setValue({
+                fieldId: mappings.next_approver,
+                value: null
+            });
+
+            rec.setValue({
+                fieldId: mappings.next_approver_role,
+                value: roleId
+            });
+
+        }
+
+        // Save the record
+        rec.save();
+
+        // Record history as 'Resubmitted' (Action: 3)
+        createApprovalHistory({
+            recordId: rec.id,
+            recordType: rec.type,
+            approvalSetup: approvalSetup,
+            level: 1,
+            action: 3, // Submitted
+            employee: runtime.getCurrentUser().id,
+            role: runtime.getCurrentUser().role,
+            comments: 'Resubmitted for approval after rejection.'
+        });
     }
 
     function processApproval(

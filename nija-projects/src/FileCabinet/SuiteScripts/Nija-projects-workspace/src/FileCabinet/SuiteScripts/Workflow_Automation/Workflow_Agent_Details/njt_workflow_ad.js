@@ -40,7 +40,7 @@ define(['N/search', 'N/record', 'N/log', 'N/runtime', 'N/email'], (search, recor
                 '<p>Thank you</p>'
         },
         additional_approved_values: {
-            'custrecord_noc_hrmsapprovalstatus': 2 // Approved
+            'custrecord_contract_active': true // Approved
         },
         additional_rejected_values: {
             'custrecord_noc_hrmsapprovalstatus': 3 // Rejected
@@ -58,6 +58,34 @@ define(['N/search', 'N/record', 'N/log', 'N/runtime', 'N/email'], (search, recor
             var rec = context.newRecord;
             var form = context.form;
 
+            var isCancel = !!rec.getValue('custrecordnjt_agent_agreementcancel');
+            var dynamicMappings = JSON.parse(JSON.stringify(FIELD_MAPPINGS));
+
+            if (isCancel) {
+                dynamicMappings.additional_approved_values = {
+                    'custrecord_contract_termination': true,
+                    'custrecord_contract_active': false
+                };
+                dynamicMappings.email_template_approved = {
+                    title: 'Contract Agreement Termination',
+                    subject: 'Contract Agreement Termination - {tranid}',
+                    body: '<p>Dear {custrecord_approval_requestor_ad},</p>' +
+                        '<p>Your Contract Agreement Termination is approved.</p>' +
+                        '<p>Employee Name: {custrecord_approval_requestor_ad}<br />' +
+                        'Department: {custrecord_department}</p>' +
+                        '<p>Thank you</p>'
+                };
+                dynamicMappings.email_template_rejected = {
+                    title: 'Contract Agreement Termination',
+                    subject: 'Contract Agreement Termination - {tranid}',
+                    body: '<p>Dear {custrecord_approval_requestor_ad},</p>' +
+                        '<p>Your Contract Agreement Termination is Rejected.</p>' +
+                        '<p>Employee Name: {custrecord_approval_requestor_ad}<br />' +
+                        'Department: {custrecord_department}</p>' +
+                        '<p>Thank you</p>'
+                };
+            }
+
             // Inject field mappings for the client script to read
             var mappingField = form.addField({
                 id: 'custpage_approval_mappings',
@@ -66,7 +94,7 @@ define(['N/search', 'N/record', 'N/log', 'N/runtime', 'N/email'], (search, recor
             });
             mappingField.defaultValue =
                 '<script>' +
-                '  window.approvalFieldMappings = ' + JSON.stringify(FIELD_MAPPINGS) + ';' +
+                '  window.approvalFieldMappings = ' + JSON.stringify(dynamicMappings) + ';' +
                 '</script>';
 
             var currentUser = runtime.getCurrentUser().id;
@@ -257,6 +285,36 @@ define(['N/search', 'N/record', 'N/log', 'N/runtime', 'N/email'], (search, recor
             }
             if (
                 approvalSetup &&
+                Number(currentUser) === Number(requestor)
+                &&
+                approvalStatus === 'Rejected'
+            ) {
+                var allowResubmission = false;
+                try {
+                    var lookupSetup = search.lookupFields({
+                        type: 'customrecord_approval_setup',
+                        id: approvalSetup,
+                        columns: ['custrecord_as_allow_resubmit']
+                    });
+                    allowResubmission = lookupSetup.custrecord_as_allow_resubmit === true || 
+                                        lookupSetup.custrecord_as_allow_resubmit === 'T';
+                } catch (lookupErr) {
+                    log.error('Error looking up approval setup resubmit field', lookupErr);
+                }
+
+                if (allowResubmission) {
+                    form.addButton({
+                        id: 'custpage_resubmitapproval',
+                        label: 'Resubmit for Approval',
+                        functionName: 'resubmitForApproval'
+                    });
+
+                    form.clientScriptModulePath =
+                        'SuiteScripts/approval_cs.js';
+                }
+            }
+            if (
+                approvalSetup &&
                 canApprove &&
                 approvalStatus === 'Pending Approval'
             ) {
@@ -292,11 +350,29 @@ define(['N/search', 'N/record', 'N/log', 'N/runtime', 'N/email'], (search, recor
 
         try {
 
-            if (context.type !== context.UserEventType.CREATE) {
+            var oldRec = context.oldRecord;
+            var isCreate = (context.type === context.UserEventType.CREATE);
+            var isEdit = (context.type === context.UserEventType.EDIT);
+
+            if (!isCreate && !isEdit) {
                 return;
             }
 
             const poId = context.newRecord.id;
+
+            // Check if cancel was just filled
+            var isCancelJustFilled = false;
+            if (isEdit && oldRec) {
+                var oldCancel = oldRec.getValue('custrecordnjt_agent_agreementcancel');
+                var newCancel = context.newRecord.getValue('custrecordnjt_agent_agreementcancel');
+                if (newCancel && !oldCancel) {
+                    isCancelJustFilled = true;
+                }
+            }
+
+            if (!isCreate && !isCancelJustFilled) {
+                return;
+            }
 
             const poRec = record.load({
                 type: context.newRecord.type,
@@ -305,6 +381,7 @@ define(['N/search', 'N/record', 'N/log', 'N/runtime', 'N/email'], (search, recor
             });
 
             var department = poRec.getValue(FIELD_MAPPINGS.department);
+            var isCancel = !!poRec.getValue('custrecordnjt_agent_agreementcancel');
 
             if (!department) {
                 log.debug('Department Missing', 'Department is required');
@@ -374,7 +451,9 @@ define(['N/search', 'N/record', 'N/log', 'N/runtime', 'N/email'], (search, recor
                         'AND',
                         ['custrecord_as_department', 'anyof', department],
                         'AND',
-                        ['custrecord_as_active', 'is', 'T']
+                        ['custrecord_as_active', 'is', 'T'],
+                        'AND',
+                        ['custrecord_as_is_cancel', 'is', isCancel ? 'T' : 'F']
                     ],
                     columns: ['internalid']
                 });
@@ -392,7 +471,9 @@ define(['N/search', 'N/record', 'N/log', 'N/runtime', 'N/email'], (search, recor
                         filters: [
                             ['custrecord_as_department', 'anyof', department],
                             'AND',
-                            ['custrecord_as_active', 'is', 'T']
+                            ['custrecord_as_active', 'is', 'T'],
+                            'AND',
+                            ['custrecord_as_is_cancel', 'is', isCancel ? 'T' : 'F']
                         ],
                         columns: ['internalid', 'custrecord_as_recordtype']
                     });
@@ -481,6 +562,13 @@ define(['N/search', 'N/record', 'N/log', 'N/runtime', 'N/email'], (search, recor
             values[FIELD_MAPPINGS.approval_setup] = approvalSetupId;
             values[FIELD_MAPPINGS.status] = 1;
             values[FIELD_MAPPINGS.approval_requestor] = runtime.getCurrentUser().id;
+
+            if (isCancelJustFilled) {
+                values[FIELD_MAPPINGS.current_level] = '';
+                values[FIELD_MAPPINGS.next_approver] = '';
+                values[FIELD_MAPPINGS.next_approver_role] = '';
+                values[FIELD_MAPPINGS.rejection_reason] = '';
+            }
 
             record.submitFields({
                 type: context.newRecord.type,

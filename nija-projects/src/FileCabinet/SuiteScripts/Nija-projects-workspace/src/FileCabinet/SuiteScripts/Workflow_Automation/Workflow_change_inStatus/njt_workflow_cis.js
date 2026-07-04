@@ -255,6 +255,36 @@ define(['N/search', 'N/record', 'N/log', 'N/runtime', 'N/email'], (search, recor
             }
             if (
                 approvalSetup &&
+                Number(currentUser) === Number(requestor)
+                &&
+                approvalStatus === 'Rejected'
+            ) {
+                var allowResubmission = false;
+                try {
+                    var lookupSetup = search.lookupFields({
+                        type: 'customrecord_approval_setup',
+                        id: approvalSetup,
+                        columns: ['custrecord_as_allow_resubmit']
+                    });
+                    allowResubmission = lookupSetup.custrecord_as_allow_resubmit === true || 
+                                        lookupSetup.custrecord_as_allow_resubmit === 'T';
+                } catch (lookupErr) {
+                    log.error('Error looking up approval setup resubmit field', lookupErr);
+                }
+
+                if (allowResubmission) {
+                    form.addButton({
+                        id: 'custpage_resubmitapproval',
+                        label: 'Resubmit for Approval',
+                        functionName: 'resubmitForApproval'
+                    });
+
+                    form.clientScriptModulePath =
+                        'SuiteScripts/approval_cs.js';
+                }
+            }
+            if (
+                approvalSetup &&
                 canApprove &&
                 approvalStatus === 'Pending Approval'
             ) {
