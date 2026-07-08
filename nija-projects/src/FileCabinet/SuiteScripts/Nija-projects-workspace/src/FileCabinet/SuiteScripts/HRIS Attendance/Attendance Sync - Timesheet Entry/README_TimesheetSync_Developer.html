@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Documentation: Biometric to Timesheet Sync</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-color: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --code-bg: #030712;
+            --border-color: #1f2937;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--card-bg), #0f172a);
+            border: 1px solid var(--border-color);
+            padding: 35px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            color: var(--text-color);
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-size: 0.98rem;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-color);
+        }
+
+        code {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            background-color: var(--code-bg);
+            color: #f43f5e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid rgba(244, 63, 94, 0.1);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 15px 0 25px 0;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: #d1d5db;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .keyword { color: #f43f5e; }
+        .string { color: #10b981; }
+        .comment { color: #4b5563; font-style: italic; }
+        .number { color: #fb923c; }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            color: var(--text-color);
+            padding: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 12px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        td strong {
+            color: var(--text-color);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .badge-get { background-color: rgba(56, 189, 248, 0.2); color: var(--accent-color); }
+        .badge-map { background-color: rgba(245, 158, 11, 0.2); color: var(--warning-color); }
+        .badge-reduce { background-color: rgba(16, 185, 129, 0.2); color: var(--success-color); }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 40px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Developer Reference Guide</h1>
+        <div class="subtitle">Script: biometric to employee daily attendance (2).js</div>
+    </header>
+
+    <!-- INTRO CARD -->
+    <div class="card">
+        <h2>Integration Purpose & Scope</h2>
+        <p>This script is a scheduled NetSuite Map/Reduce script used to create and update child records of employee attendance from raw biometric sync feeds.</p>
+        <ul>
+            <li><strong>Data Source:</strong> The <strong>Daily Attendance - Sync</strong> record is populated by an external HRMS application through a RESTlet interface.</li>
+            <li><strong>Data Destination:</strong> The daily logs are compiled and written directly into the corresponding employee's monthly <strong>Time Sheet Entry</strong> records.</li>
+            <li><strong>Monthly Parent Timesheets:</strong> Parent monthly timesheet records are pre-created for every employee by a separate monthly batch Map/Reduce script.</li>
+        </ul>
+    </div>
+
+    <!-- LIFECYCLE CARD -->
+    <div class="card">
+        <h2>Script Stages & Execution Lifecycle</h2>
+        
+        <!-- GET INPUT DATA -->
+        <h3>1. Get Input Data <span class="badge badge-get">getInputData</span></h3>
+        <p>Calculates the target date dynamically (Current Date in IST minus 1 day to fetch yesterday's raw data) and searches for unprocessed sync logs:</p>
+        <pre><code><span class="comment">// 1. Calculate Yesterday's date in IST (UTC+5:30)</span>
+<span class="keyword">var</span> currentDate = moment.utc();
+<span class="keyword">var</span> istDate = currentDate.add(<span class="number">5</span>, <span class="string">"hours"</span>).add(<span class="number">30</span>, <span class="string">"minutes"</span>);
+<span class="keyword">var</span> previousDate = istDate.subtract(<span class="number">1</span>, <span class="string">"days"</span>).format(<span class="string">"DD/MM/YYYY"</span>);
+
+<span class="comment">// 2. Search for biometric sync entries for the calculated date</span>
+<span class="keyword">var</span> searchObj = search.create({
+    type: <span class="string">"customrecord_njt_daily_attendance_bio"</span>,
+    filters: [ ... ],
+    columns: [ ... ]
+});</code></pre>
+
+        <!-- MAP STAGE -->
+        <h3>2. Map Stage <span class="badge badge-map">map</span></h3>
+        <p>Processes each biometric log in parallel, parses input/output check-in timestamps, computes daily working hours using helper utility methods, and maps details to the target employee:</p>
+        <pre><code><span class="keyword">var</span> formattedWorkHours = calculateWorkHours(minBioTime, maxBioTime);
+<span class="keyword">var</span> workhoursdecimal = calculateWorkHoursdecimal(minBioTime, maxBioTime);
+
+context.write({
+    key: employeeName1,
+    value: JSON.stringify(recordData)
+});</code></pre>
+
+        <!-- REDUCE STAGE -->
+        <h3>3. Reduce Stage <span class="badge badge-reduce">reduce</span></h3>
+        <p>Aggregates the daily logs per employee, loads the employee's existing daily attendance child record, computes overtime, sets updated values, and flags processed raw entries as complete:</p>
+        <pre><code><span class="comment">// 1. Load the corresponding employee daily attendance child record</span>
+<span class="keyword">var</span> existingRecord = record.load({
+    type: <span class="string">"customrecord_njt_emp_daily_atten_ch"</span>,
+    id: recordId,
+    isDynamic: <span class="keyword">true</span>
+});
+
+<span class="comment">// 2. Set check-in/out times, locations, and calculated work & OT hours</span>
+existingRecord.setValue({ fieldId: <span class="string">"custrecord_njt_emp_daily_in_time"</span>, value: minBioTime });
+existingRecord.setValue({ fieldId: <span class="string">"custrecord_njt_emp_daily_out_time"</span>, value: maxBioTime });
+existingRecord.setValue({ fieldId: <span class="string">"custrecord_hris_actual_woking_hours"</span>, value: workhoursdecimal });
+existingRecord.setValue({ fieldId: <span class="string">"custrecord_njt_ot_hours"</span>, value: otHour });
+
+<span class="keyword">var</span> savedId = existingRecord.save();</code></pre>
+    </div>
+
+    <!-- MAPPINGS CARD -->
+    <div class="card">
+        <h2>Data Field Mappings Reference</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Source Field (Daily Sync)</th>
+                        <th>Target Field (Timesheet Child)</th>
+                        <th>Description / Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>custrecord_njt_bio_time</strong> (Min)</td>
+                        <td><strong>custrecord_njt_emp_daily_in_time</strong></td>
+                        <td>First punch-in timestamp of the day.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>custrecord_njt_bio_time</strong> (Max)</td>
+                        <td><strong>custrecord_njt_emp_daily_out_time</strong></td>
+                        <td>Last punch-out timestamp of the day.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>custrecord_njt_bio_address</strong> (Min)</td>
+                        <td><strong>custrecord_njt_emp_atten_location</strong></td>
+                        <td>First check-in location (GPS address).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>custrecord_njt_bio_address</strong> (Max)</td>
+                        <td><strong>custrecord_njt_emp_atten_out_location</strong></td>
+                        <td>Last check-out location (GPS address).</td>
+                    </tr>
+                    <tr>
+                        <td>Calculated Diff Decimal</td>
+                        <td><strong>custrecord_hris_actual_woking_hours</strong></td>
+                        <td>Calculated duration between min and max punch.</td>
+                    </tr>
+                    <tr>
+                        <td>Calculated OT Diff</td>
+                        <td><strong>custrecord_njt_ot_hours</strong></td>
+                        <td>Difference between actual hours and shift working hours.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>HRIS Integration Group &copy; 2026</p>
+    </footer>
+</div>
+
+</body>
+</html>

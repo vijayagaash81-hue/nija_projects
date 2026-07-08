@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf xmlns:pdf="http://big.faceless.org/pdf" version="1.1">
+  <head>
+    <link name="NotoSans" type="font" subtype="truetype"
+          src="NetSuiteFonts/NotoSans-Regular.ttf"
+          src-bold="NetSuiteFonts/NotoSans-Bold.ttf"
+          src-italic="NetSuiteFonts/NotoSans-Italic.ttf"
+          src-bolditalic="NetSuiteFonts/NotoSans-BoldItalic.ttf"
+          bytes="2"/>
+    <style type="text/css">
+      body {
+        font-family: NotoSans, sans-serif;
+        font-size: 8.5pt;
+        color: #000000;
+      }
+      p { margin: 0; padding: 0; }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      td {
+        padding: 4px;
+        vertical-align: middle;
+      }
+      .header-title {
+        font-size: 16pt;
+        font-weight: bold;
+        color: #555555;
+      }
+      .custom-checkbox {
+        width: 13px;
+        height: 13px;
+        margin: 0;
+        vertical-align: middle;
+      }
+      .inline-table { width: auto; margin: 0; padding: 0; }
+      .inline-table td { padding: 2px; border: none; vertical-align: middle; }
+      .footer-text { font-size: 7pt; color: #888888; }
+    </style>
+    <macrolist>
+      <macro id="nlfooter">
+        <table width="100%">
+          <tr>
+            <td width="50%" align="left" class="footer-text">
+              Form No. EL8-HR-FRM-0015-R00, 30-06-2025
+            </td>
+            <td width="50%" align="right" class="footer-text">
+              <pagenumber/> of <totalpages/>
+            </td>
+          </tr>
+        </table>
+      </macro>
+    </macrolist>
+  </head>
+  <body size="A4" padding="0mm 15mm 15mm 15mm" footer="nlfooter" footer-height="12mm">
+    <!-- Header -->
+    <table width="100%" style="margin-bottom: 20px; border-collapse: collapse;">
+      <tr>
+        <td width="70%" valign="bottom" style="padding-top: 15mm; padding-bottom: 5px;">
+          <p class="header-title">Exit Interview Form</p>
+        </td>
+        <td width="30%" align="right" valign="top" style="padding: 0; margin: 0;">
+          <#if data.logoUrl?has_content>
+            <img src="${data.logoUrl?xml}" style="width: 70px; height: 90px; margin-right: -15mm; margin-top: 0;" />
+          <#else>
+            <table style="background-color: #8c8c8c; width: 70px; height: 90px; border-collapse: collapse; margin: 0; margin-right: -15mm;">
+              <tr>
+                <td align="center" valign="middle" style="padding: 0 5px;">
+                  <p style="font-size: 16pt; color: #ffffff; margin: 0; font-family: Arial, sans-serif;">Elev8</p>
+                  <p style="font-size: 5pt; color: #e5e5e5; margin: 0; font-family: Arial, sans-serif; letter-spacing: 1px; text-transform: uppercase; font-weight: bold;">Architects</p>
+                </td>
+              </tr>
+            </table>
+          </#if>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Employee Details -->
+    <table width="100%" style="margin-bottom: 20px; font-size: 9pt;">
+      <tr>
+        <td width="12%">Name:</td>
+        <td width="48%" style="border-bottom: 0.5pt solid #000000; padding-bottom: 1px;">${data.empName?xml}&nbsp;</td>
+        <td width="12%">Join Date:</td>
+        <td width="28%" style="border-bottom: 0.5pt solid #000000; padding-bottom: 1px;">${data.joinDate?xml}&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="padding-top: 8px;">Designation:</td>
+        <td style="border-bottom: 0.5pt solid #000000; padding-top: 8px; padding-bottom: 1px;">${data.designation?xml}&nbsp;</td>
+        <td style="padding-top: 8px;">End Date:</td>
+        <td style="border-bottom: 0.5pt solid #000000; padding-top: 8px; padding-bottom: 1px;">${data.endDate?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Section 1 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          1. Please indicate the reason(s) below that contributed to your decision to resign from your current position.
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 10px;">
+      <tr>
+        <td width="28%">Career Development</td>
+        <td width="5%"><input name="chk_career" class="custom-checkbox" type="checkbox" <#if data.chk_career>checked="checked"</#if> readonly="readonly"/></td>
+        <td width="28%">Dissatisfied / Management</td>
+        <td width="5%"><input name="chk_dissatisfied" class="custom-checkbox" type="checkbox" <#if data.chk_dissatisfied>checked="checked"</#if> readonly="readonly"/></td>
+        <td width="28%">Termination</td>
+        <td width="6%"><input name="chk_termination" class="custom-checkbox" type="checkbox" <#if data.chk_termination>checked="checked"</#if> readonly="readonly"/></td>
+      </tr>
+      <tr>
+        <td>Salary</td>
+        <td><input name="chk_salary" class="custom-checkbox" type="checkbox" <#if data.chk_salary>checked="checked"</#if> readonly="readonly"/></td>
+        <td>Benefits</td>
+        <td><input name="chk_benefits" class="custom-checkbox" type="checkbox" <#if data.chk_benefits>checked="checked"</#if> readonly="readonly"/></td>
+        <td>Others (specify)</td>
+        <td><input name="chk_others" class="custom-checkbox" type="checkbox" <#if data.chk_others>checked="checked"</#if> readonly="readonly"/></td>
+      </tr>
+      <tr>
+        <td>Family Responsibilities</td>
+        <td><input name="chk_family" class="custom-checkbox" type="checkbox" <#if data.chk_family>checked="checked"</#if> readonly="readonly"/></td>
+        <td>Return to School</td>
+        <td><input name="chk_school" class="custom-checkbox" type="checkbox" <#if data.chk_school>checked="checked"</#if> readonly="readonly"/></td>
+        <td colspan="2" style="border-bottom: 0.5pt solid #000000; padding-bottom: 1px;">${data.othersSpecify?xml}&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Relocation</td>
+        <td><input name="chk_relocation" class="custom-checkbox" type="checkbox" <#if data.chk_relocation>checked="checked"</#if> readonly="readonly"/></td>
+        <td>Work-Life Balance</td>
+        <td><input name="chk_worklife" class="custom-checkbox" type="checkbox" <#if data.chk_worklife>checked="checked"</#if> readonly="readonly"/></td>
+        <td colspan="2"></td>
+      </tr>
+    </table>
+
+    <!-- Section 2 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          2. At approximately what point in time did you begin making your decision to resign?
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 10px;">
+      <tr>
+        <td width="45%">1-2 months ago,</td>
+        <td width="5%"><input name="resign_1_2" class="custom-checkbox" type="checkbox" <#if data.resign_1_2>checked="checked"</#if> readonly="readonly"/></td>
+        <td width="45%">6-9 months ago,</td>
+        <td width="5%"><input name="resign_6_9" class="custom-checkbox" type="checkbox" <#if data.resign_6_9>checked="checked"</#if> readonly="readonly"/></td>
+      </tr>
+      <tr>
+        <td>3-5 months ago,</td>
+        <td><input name="resign_3_5" class="custom-checkbox" type="checkbox" <#if data.resign_3_5>checked="checked"</#if> readonly="readonly"/></td>
+        <td>Others</td>
+        <td><input name="resign_others" class="custom-checkbox" type="checkbox" <#if data.resign_others>checked="checked"</#if> readonly="readonly"/></td>
+      </tr>
+    </table>
+
+    <!-- Section 3 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          3. Was there a specific event or issue that prompted your resignation?
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 10px;">
+      <tr>
+        <td width="8%" valign="middle">Yes</td>
+        <td width="7%" valign="middle">
+          <input name="spec_event_yes" class="custom-checkbox" type="checkbox" <#if data.spec_event_yes>checked="checked"</#if> readonly="readonly"/>
+        </td>
+        <td width="85%" rowspan="2" valign="top" style="padding-left: 15px;">
+          <table style="border: 0.5pt solid #000000; width: 100%;">
+            <tr>
+              <td style="height: 40px; font-size: 8pt; color: #555555; vertical-align: top; padding: 4px;">
+                If yes, please briefly explain:
+                <br/>
+                ${data.spec_event_explain?xml}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td valign="middle">No</td>
+        <td valign="middle">
+          <input name="spec_event_no" class="custom-checkbox" type="checkbox" <#if data.spec_event_no>checked="checked"</#if> readonly="readonly"/>
+        </td>
+      </tr>
+    </table>
+
+    <table width="100%" style="margin-top: 10px; margin-bottom: 15px;">
+      <tr>
+        <td width="55%" valign="middle">If yes, did you discuss with your Supervisor/Manager</td>
+        <td width="5%" align="right" valign="middle">
+          <input name="discuss_yes" class="custom-checkbox" type="checkbox" <#if data.discuss_yes>checked="checked"</#if> readonly="readonly"/>
+        </td>
+        <td width="40%" valign="middle" style="padding-left: 5px;">Yes</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td align="right" valign="middle">
+          <input name="discuss_no" class="custom-checkbox" type="checkbox" <#if data.discuss_no>checked="checked"</#if> readonly="readonly"/>
+        </td>
+        <td valign="middle" style="padding-left: 5px;">No</td>
+      </tr>
+    </table>
+
+    <!-- Rating Section Header -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 15px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          On a scale of 1 to 5, with "1" being poor and "5" being outstanding, please rate the following:
+        </td>
+      </tr>
+    </table>
+
+    <!-- Section 4 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          4. Quantity and quality of training received for your position(s) at Elev8.
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 2px;">
+      <tr>
+        <#list 1..5 as i>
+        <td width="20%" align="left">
+          <table class="inline-table">
+            <tr>
+              <td style="padding-right: 5px;">${i}</td>
+              <td><input name="rate_training_${i}" class="custom-checkbox" type="checkbox" <#if data.rate_training == i>checked="checked"</#if> readonly="readonly"/></td>
+            </tr>
+          </table>
+        </td>
+        </#list>
+      </tr>
+    </table>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 10px;">
+      <tr>
+        <td style="height: 25px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.rate_training_comments?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Section 5 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          5. Working relationship with your current supervisor/manager.
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 2px;">
+      <tr>
+        <#list 1..5 as i>
+        <td width="20%" align="left">
+          <table class="inline-table">
+            <tr>
+              <td style="padding-right: 5px;">${i}</td>
+              <td><input name="rate_supervisor_${i}" class="custom-checkbox" type="checkbox" <#if data.rate_supervisor == i>checked="checked"</#if> readonly="readonly"/></td>
+            </tr>
+          </table>
+        </td>
+        </#list>
+      </tr>
+    </table>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 10px;">
+      <tr>
+        <td style="height: 25px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.rate_supervisor_comments?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Section 6 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          6. Working relationship with fellow employees.
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 2px;">
+      <tr>
+        <#list 1..5 as i>
+        <td width="20%" align="left">
+          <table class="inline-table">
+            <tr>
+              <td style="padding-right: 5px;">${i}</td>
+              <td><input name="rate_employees_${i}" class="custom-checkbox" type="checkbox" <#if data.rate_employees == i>checked="checked"</#if> readonly="readonly"/></td>
+            </tr>
+          </table>
+        </td>
+        </#list>
+      </tr>
+    </table>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 10px;">
+      <tr>
+        <td style="height: 25px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.rate_employees_comments?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Section 7 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          7. Salary for your position.
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 2px;">
+      <tr>
+        <#list 1..5 as i>
+        <td width="20%" align="left">
+          <table class="inline-table">
+            <tr>
+              <td style="padding-right: 5px;">${i}</td>
+              <td><input name="rate_salary_${i}" class="custom-checkbox" type="checkbox" <#if data.rate_salary == i>checked="checked"</#if> readonly="readonly"/></td>
+            </tr>
+          </table>
+        </td>
+        </#list>
+      </tr>
+    </table>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 10px;">
+      <tr>
+        <td style="height: 25px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.rate_salary_comments?xml}&nbsp;</td>
+      </tr>
+    </table>
+    
+    <pbr/>
+
+    <!-- PAGE 2 HEADER -->
+    <table width="100%" style="margin-bottom: 20px; border-collapse: collapse;">
+      <tr>
+        <td width="70%" valign="bottom" style="padding-top: 15mm; padding-bottom: 5px;">
+          <p class="header-title">Exit Interview Form</p>
+        </td>
+        <td width="30%" align="right" valign="top" style="padding: 0; margin: 0;">
+          <#if data.logoUrl?has_content>
+            <img src="${data.logoUrl?xml}" style="width: 70px; height: 90px; margin-right: -15mm; margin-top: 0;" />
+          <#else>
+            <table style="background-color: #8c8c8c; width: 70px; height: 90px; border-collapse: collapse; margin: 0; margin-right: -15mm;">
+              <tr>
+                <td align="center" valign="middle" style="padding: 0 5px;">
+                  <p style="font-size: 16pt; color: #ffffff; margin: 0; font-family: Arial, sans-serif;">Elev8</p>
+                  <p style="font-size: 5pt; color: #e5e5e5; margin: 0; font-family: Arial, sans-serif; letter-spacing: 1px; text-transform: uppercase; font-weight: bold;">Architects</p>
+                </td>
+              </tr>
+            </table>
+          </#if>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Section 8 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          8. Employee benefits package.
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 2px;">
+      <tr>
+        <#list 1..5 as i>
+        <td width="20%" align="left">
+          <table class="inline-table">
+            <tr>
+              <td style="padding-right: 5px;">${i}</td>
+              <td><input name="rate_benefits_${i}" class="custom-checkbox" type="checkbox" <#if data.rate_benefits == i>checked="checked"</#if> readonly="readonly"/></td>
+            </tr>
+          </table>
+        </td>
+        </#list>
+      </tr>
+    </table>
+    <p style="margin-top:2px; margin-bottom: 3px; font-size: 8.5pt;">Please share any comments or suggestions for improvement regarding the Benefits package.</p>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 10px;">
+      <tr>
+        <td style="height: 25px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.rate_benefits_comments?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Section 9 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          9. Overall workload for your position.
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 2px;">
+      <tr>
+        <#list 1..5 as i>
+        <td width="20%" align="left">
+          <table class="inline-table">
+            <tr>
+              <td style="padding-right: 5px;">${i}</td>
+              <td><input name="rate_workload_${i}" class="custom-checkbox" type="checkbox" <#if data.rate_workload == i>checked="checked"</#if> readonly="readonly"/></td>
+            </tr>
+          </table>
+        </td>
+        </#list>
+      </tr>
+    </table>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 10px;">
+      <tr>
+        <td style="height: 25px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.rate_workload_comments?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Section 10 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          10. Overall satisfaction and enjoyment in your current position.
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 2px;">
+      <tr>
+        <#list 1..5 as i>
+        <td width="20%" align="left">
+          <table class="inline-table">
+            <tr>
+              <td style="padding-right: 5px;">${i}</td>
+              <td><input name="rate_satisfaction_${i}" class="custom-checkbox" type="checkbox" <#if data.rate_satisfaction == i>checked="checked"</#if> readonly="readonly"/></td>
+            </tr>
+          </table>
+        </td>
+        </#list>
+      </tr>
+    </table>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 10px;">
+      <tr>
+        <td style="height: 25px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.rate_satisfaction_comments?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Section 11 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          11. Did you encounter any problems in your current position?
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 2px;">
+      <tr>
+        <td width="15%">
+          <table class="inline-table"><tr>
+            <td style="padding-right: 5px;">Yes</td>
+            <td><input name="prob_yes" class="custom-checkbox" type="checkbox" <#if data.prob_yes>checked="checked"</#if> readonly="readonly"/></td>
+          </tr></table>
+        </td>
+        <td width="85%">
+          <table class="inline-table"><tr>
+            <td style="padding-right: 5px;">No</td>
+            <td><input name="prob_no" class="custom-checkbox" type="checkbox" <#if data.prob_no>checked="checked"</#if> readonly="readonly"/></td>
+          </tr></table>
+        </td>
+      </tr>
+    </table>
+    <p style="margin-top:2px; margin-bottom:3px; font-size: 8.5pt;">If yes, please briefly comment.</p>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 10px;">
+      <tr>
+        <td style="height: 25px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.prob_comments?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Section 12 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          12. What did you enjoy most about your employment with Elev8?
+        </td>
+      </tr>
+    </table>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 10px;">
+      <tr>
+        <td style="height: 25px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.enjoy_most?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Section 13 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          13. What did you enjoy least about your employment with Elev8?
+        </td>
+      </tr>
+    </table>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 10px;">
+      <tr>
+        <td style="height: 25px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.enjoy_least?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Section 14 -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          14. Based upon your experience, would you recommend Elev8 as a potential employer for your friends, relatives, etc?
+        </td>
+      </tr>
+    </table>
+    <table width="100%" style="margin-top: 5px; margin-bottom: 2px;">
+      <tr>
+        <td width="15%">
+          <table class="inline-table"><tr>
+            <td style="padding-right: 5px;">Yes</td>
+            <td><input name="recomm_yes" class="custom-checkbox" type="checkbox" <#if data.recomm_yes>checked="checked"</#if> readonly="readonly"/></td>
+          </tr></table>
+        </td>
+        <td width="85%">
+          <table class="inline-table"><tr>
+            <td style="padding-right: 5px;">No</td>
+            <td><input name="recomm_no" class="custom-checkbox" type="checkbox" <#if data.recomm_no>checked="checked"</#if> readonly="readonly"/></td>
+          </tr></table>
+        </td>
+      </tr>
+    </table>
+    <p style="margin-top:2px; margin-bottom:3px; font-size: 8.5pt;">If no, please briefly comment.</p>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 10px;">
+      <tr>
+        <td style="height: 25px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.recomm_comments?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Additional Comments -->
+    <table width="100%" style="background-color: #e6e6e6; margin-top: 10px; margin-bottom: 5px;">
+      <tr>
+        <td style="font-weight: bold; padding: 4px; font-size: 9pt;">
+          Please add any additional comments:
+        </td>
+      </tr>
+    </table>
+    <table style="border: 0.5pt solid #000000; width: 100%; margin-bottom: 15px;">
+      <tr>
+        <td style="height: 35px; vertical-align: top; font-size: 8pt; padding: 3px;">${data.additional_comments?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+    <!-- Signatures -->
+    <table width="100%" style="margin-top: 25px; font-size: 9pt;">
+      <tr>
+        <td width="30%">Exit Interview Conducted by:</td>
+        <td width="15%">Signature:</td>
+        <td width="55%" style="border-bottom: 0.5pt solid #000000;">&nbsp;</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td style="padding-top: 8px;">Name:</td>
+        <td style="border-bottom: 0.5pt solid #000000; padding-top: 8px;">${data.conductedByName?xml}&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="padding-top: 8px;">Date:</td>
+        <td colspan="2" style="border-bottom: 0.5pt solid #000000; padding-top: 8px;">${data.conductedDate?xml}&nbsp;</td>
+      </tr>
+    </table>
+
+  </body>
+</pdf>

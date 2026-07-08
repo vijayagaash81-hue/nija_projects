@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Reference: Monthly Attendance Generation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-color: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --code-bg: #030712;
+            --border-color: #1f2937;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--card-bg), #0f172a);
+            border: 1px solid var(--border-color);
+            padding: 35px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            color: var(--text-color);
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-size: 0.98rem;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-color);
+        }
+
+        code {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            background-color: var(--code-bg);
+            color: #f43f5e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid rgba(244, 63, 94, 0.1);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 15px 0 25px 0;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: #d1d5db;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .keyword { color: #f43f5e; }
+        .string { color: #10b981; }
+        .comment { color: #4b5563; font-style: italic; }
+        .number { color: #fb923c; }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            color: var(--text-color);
+            padding: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 12px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        td strong {
+            color: var(--text-color);
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 40px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Developer Script Reference</h1>
+        <div class="subtitle">Script: mr daily attendance daily schedueld.js</div>
+    </header>
+
+    <!-- RECORD SETUP -->
+    <div class="card">
+        <h2>NetSuite Script Record & Custom Records</h2>
+        <p>This developer guide documents the custom record structures, script settings, and program logic used to initialize daily timesheets for payroll tracking.</p>
+
+        <h3>NetSuite Script Record Settings</h3>
+        <ul>
+            <li><strong>Script File:</strong> <code>mr daily attendance daily schedueld.js</code></li>
+            <li><strong>Script Type:</strong> Map/Reduce Script (SuiteScript 2.x)</li>
+            <li><strong>Scheduled Execution:</strong> Automated monthly run.</li>
+            <li><strong>API Modules Used:</strong> <code>N/record</code>, <code>N/search</code>, <code>N/log</code>, <code>N/format</code>, <code>N/query</code>, <code>N/runtime</code></li>
+        </ul>
+
+        <h3>Target Custom Record Types</h3>
+        <ul>
+            <li><strong>Parent Record Type:</strong> Employee Daily Attendance (<code>customrecord_njt_emp_daily_attendance</code>)</li>
+            <li><strong>Child Record Type:</strong> Timesheet Entry (<code>customrecord_njt_emp_daily_atten_ch</code>)</li>
+            <li><strong>Sublist Link Machine ID:</strong> <code>recmachcustrecord_njt_emp_daily_parent</code></li>
+        </ul>
+    </div>
+
+    <!-- CODE FLOW -->
+    <div class="card">
+        <h2>Logic & Code Snippets</h2>
+
+        <h3>1. Get Input Data Stage</h3>
+        <p>Queries all active employees with hire dates prior to or during the run date to identify employees who need monthly attendance logs:</p>
+        <pre><code><span class="keyword">var</span> sqlQuery =
+    <span class="string">"SELECT id, hiredate FROM employee WHERE custentity_hris_empemploymentstatus=1 and isinactive='F' and hiredate <= '"</span> +
+    dateString +
+    <span class="string">"' "</span>;
+
+<span class="keyword">var</span> results = query.runSuiteQL({ query: sqlQuery }).asMappedResults();</code></pre>
+
+        <h3>2. Map Stage</h3>
+        <p>Checks for an existing parent record using <code>findExistingRecord()</code>. If none exists, creates the monthly parent shell and appends child daily lines in a dynamic transaction loop:</p>
+        <pre><code><span class="comment">// Create new Employee Daily Attendance parent container</span>
+<span class="keyword">var</span> attendanceRecord = record.create({
+    type: <span class="string">"customrecord_njt_emp_daily_attendance"</span>,
+    isDynamic: <span class="keyword">true</span>
+});
+attendanceRecord.setValue({ fieldId: <span class="string">"custrecord_njt_emp_atten_employee"</span>, value: employeeId });
+attendanceRecord.setValue({ fieldId: <span class="string">"custrecord_njt_emp_atten_month"</span>, value: monthToCreate });
+attendanceRecord.setValue({ fieldId: <span class="string">"custrecord_njt_emp_atten_year"</span>, value: yearId });
+
+<span class="comment">// Create child daily lines inside sublist</span>
+createSublistRecords(attendanceRecord, currentYear, monthToCreate, employeeId, hireDate);
+<span class="keyword">var</span> parentRecordId = attendanceRecord.save();</code></pre>
+    </div>
+
+    <!-- MAPPINGS TABLE -->
+    <div class="card">
+        <h2>Child Sublist Field Mappings</h2>
+        <p>The sublist generation helper (<code>createSublistRecords</code>) creates one line per day in the month, mapping the following fields:</p>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sublist Field ID</th>
+                        <th>Field Name (UI Label)</th>
+                        <th>Mapped Value / Default Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>custrecord_njt_emp_daily_date</strong></td>
+                        <td>Date</td>
+                        <td>Specific day date (parsed Date object).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>custrecord_njt_emp_daily_enddate</strong></td>
+                        <td>End Date</td>
+                        <td>Specific day date (parsed Date object).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>custrecord_njt_emp_daily_day</strong></td>
+                        <td>Day</td>
+                        <td>Day of the week string (e.g. "Sunday", "Monday").</td>
+                    </tr>
+                    <tr>
+                        <td><strong>custrecord_njt_emp_daily_project</strong></td>
+                        <td>Project Code</td>
+                        <td>Static project ID link.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>custrecord_njt_daily_atten_emp</strong></td>
+                        <td>Employee</td>
+                        <td>Link to Employee internal ID.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>custrecord_njt_emp_daily_intatt</strong></td>
+                        <td>Attendance Type</td>
+                        <td>Defaults to <code>23</code> (Pending/Not Processed).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>custrecord_njt_emp_daily_working_hours</strong></td>
+                        <td>Normal Working Hours</td>
+                        <td>Pulled from normal working hours config.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>custrecord_njt_emp_daily_lunch_time</strong></td>
+                        <td>Lunch Time</td>
+                        <td>Pulled from shift lunch master.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>custrecord_hris_shiftmaser</strong></td>
+                        <td>Shift Master</td>
+                        <td>Employee assigned shift ID.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>HRIS Integration Development &copy; 2026</p>
+    </footer>
+</div>
+
+</body>
+</html>

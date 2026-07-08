@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRIS Attendance Comp-Off Integration Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-color: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --code-bg: #0b0f19;
+            --border-color: #334155;
+            --success-color: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--card-bg), #0f172a);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(56, 189, 248, 0.05);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-color);
+        }
+
+        code {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            background-color: var(--code-bg);
+            color: #f43f5e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid rgba(244, 63, 94, 0.2);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 15px 0 25px 0;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: #cbd5e1;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .keyword { color: #f43f5e; }
+        .string { color: #10b981; }
+        .comment { color: #64748b; font-style: italic; }
+        .number { color: #fb923c; }
+
+        .file-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            padding: 4px 8px;
+            background-color: var(--accent-glow);
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .file-link:hover {
+            background-color: rgba(56, 189, 248, 0.25);
+        }
+
+        .highlight-box {
+            background-color: var(--accent-glow);
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 20px;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            color: #e2e8f0;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>HRIS Attendance Comp-Off</h1>
+        <div class="subtitle">System Integration & Custom Logic Documentation</div>
+    </header>
+
+    <!-- SECTION 1: SUITELET -->
+    <section>
+        <h2>1. Suitelet Customizations</h2>
+        <a class="file-link" href="file:///C:/Users/EDWIN/Documents/Nija%20Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/HRIS%20Attendance%20Comp-Off/hris_dailymanualtomonthly_process_sl.js" target="_blank">
+            hris_dailymanualtomonthly_process_sl.js
+        </a>
+
+        <h3>A. Added UI Columns in Sublist</h3>
+        <p>Two new text fields were added to the employee monthly attendance sublist to display the calculated values dynamically to the users:</p>
+        <ul>
+            <li><strong>Comp Off (<code>custpage_compoff</code>)</strong>: Displays the float comp-off calculation.</li>
+            <li><strong>Comp Off Roundoff (<code>custpage_compoffround</code>)</strong>: Displays standard rounded integer.</li>
+        </ul>
+
+        <pre><code><span class="keyword">var</span> compOffField = salesSublist.addField({
+    id: <span class="string">"custpage_compoff"</span>,
+    type: serverWidget.FieldType.TEXT,
+    label: <span class="string">"Comp Off"</span>
+});
+<span class="keyword">var</span> compOffRoundField = salesSublist.addField({
+    id: <span class="string">"custpage_compoffround"</span>,
+    type: serverWidget.FieldType.TEXT,
+    label: <span class="string">"Comp Off Roundoff"</span>
+});</code></pre>
+
+        <h3>B. SuiteQL SQL Query Mod</h3>
+        <p>Both query definitions in <code>setSublistvalue</code> (with and without location parameter check) were modified to perform the division directly in the database while guarding against potential division by zero:</p>
+        <pre><code>SUM(CASE WHEN NVL(emp.custrecord_njt_emp_daily_working_hours, 0) = 0 THEN 0 ELSE NVL(emp.custrecord_njt_ot_hours, 0) / emp.custrecord_njt_emp_daily_working_hours END) AS comp_off</code></pre>
+        
+        <div class="highlight-box">
+            <p><strong>Note on SQL spacing:</strong> Added explicit whitespace spacing before <code>" GROUP BY "</code> dynamically concatenated clauses to prevent SQL parsing syntax error (e.g. <code>1GROUP BY</code> or <code>2GROUP BY</code>).</p>
+        </div>
+
+        <h3>C. Sublist Value Mapping & Rounding</h3>
+        <p>Fetched <code>comp_off</code> from the result set, computed standard roundoff using <code>Math.round()</code>, and set these values to the corresponding sublist lines:</p>
+        <pre><code><span class="keyword">var</span> compOff = rec.comp_off || <span class="number">0</span>;
+<span class="keyword">var</span> compOffRound = Math.round(compOff);
+
+sublist.setSublistValue({
+    id: <span class="string">"custpage_compoff"</span>,
+    line: i,
+    value: compOff.toFixed(<span class="number">2</span>),
+    ignoreFieldChange: <span class="keyword">true</span>,
+});
+sublist.setSublistValue({
+    id: <span class="string">"custpage_compoffround"</span>,
+    line: i,
+    value: compOffRound.toString(),
+    ignoreFieldChange: <span class="keyword">true</span>,
+});</code></pre>
+
+        <h3>D. Sublist Column Index Realignment in POST</h3>
+        <p>Since the <code>weeklyOt</code> and <code>holidayOt</code> fields were commented out in the sublist setup, all columns starting from index 9 shifted left by 2 positions. Realigned column mappings inside the POST handler:</p>
+        <ul>
+            <li><code>selectObj.noweeklyId = "";</code> <span class="comment">// Disabled/Commented out</span></li>
+            <li><code>selectObj.noholiId = "";</code> <span class="comment">// Disabled/Commented out</span></li>
+            <li><code>selectObj.norotId = columnArray[9];</code> <span class="comment">// maps to custpage_rothours</span></li>
+            <li><code>selectObj.intempId = columnArray[10];</code> <span class="comment">// maps to custpage_de_empintid</span></li>
+            <li><code>selectObj.parId = columnArray[11];</code> <span class="comment">// maps to custpage_parid</span></li>
+            <li><code>selectObj.compOff = columnArray[12];</code> <span class="comment">// maps to custpage_compoff</span></li>
+            <li><code>selectObj.compOffRound = columnArray[13];</code> <span class="comment">// maps to custpage_compoffround</span></li>
+        </ul>
+    </section>
+
+    <!-- SECTION 2: MAP REDUCE -->
+    <section>
+        <h2>2. Map/Reduce Customizations</h2>
+        <a class="file-link" href="file:///C:/Users/EDWIN/Documents/Nija%20Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/HRIS%20Attendance%20Comp-Off/hris_dailytomonthlyattend_process_mrs.js" target="_blank">
+            hris_dailytomonthlyattend_process_mrs.js
+        </a>
+
+        <h3>A. Direct Field Value Update</h3>
+        <p>In the Map/Reduce script, updated <code>createMonthlyAttendanceRecord</code> to map and directly store the parsed parameter values from the Suitelet into the custom fields on the custom Monthly Attendance record (<code>customrecord_hrms_monthlyattendance</code>):</p>
+        <ul>
+            <li><strong>Comp-Off Days</strong>: mapped to custom field <code>custrecord_compoff_days</code></li>
+            <li><strong>Comp-Off Days Round Off</strong>: mapped to custom field <code>custrecord_compoff_days_round_off</code></li>
+        </ul>
+
+        <pre><code><span class="keyword">var</span> newCompOff = parseFloat(data.compOff || <span class="number">0</span>);
+<span class="keyword">var</span> newCompOffRound = parseFloat(data.compOffRound || <span class="number">0</span>);
+
+monthlyAttendanceRecord.setValue({ fieldId: <span class="string">'custrecord_compoff_days'</span>, value: newCompOff });
+monthlyAttendanceRecord.setValue({ fieldId: <span class="string">'custrecord_compoff_days_round_off'</span>, value: newCompOffRound });</code></pre>
+    </section>
+
+    <footer>
+        <p>HRIS Attendance Comp-Off System Integration &copy; 2026</p>
+    </footer>
+</div>
+
+</body>
+</html>

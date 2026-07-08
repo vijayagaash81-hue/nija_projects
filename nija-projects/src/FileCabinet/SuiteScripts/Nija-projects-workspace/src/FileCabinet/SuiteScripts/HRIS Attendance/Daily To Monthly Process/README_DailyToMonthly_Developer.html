@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Reference: Daily to Monthly Attendance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-color: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --code-bg: #030712;
+            --border-color: #1f2937;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--card-bg), #0f172a);
+            border: 1px solid var(--border-color);
+            padding: 35px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            color: var(--text-color);
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-size: 0.98rem;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-color);
+        }
+
+        code {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            background-color: var(--code-bg);
+            color: #f43f5e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid rgba(244, 63, 94, 0.1);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 15px 0 25px 0;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: #d1d5db;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .keyword { color: #f43f5e; }
+        .string { color: #10b981; }
+        .comment { color: #4b5563; font-style: italic; }
+        .number { color: #fb923c; }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            color: var(--text-color);
+            padding: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 12px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        td strong {
+            color: var(--text-color);
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 40px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Developer Script Reference</h1>
+        <div class="subtitle">Integration: Daily manual timesheet consolidation process</div>
+    </header>
+
+    <!-- COMPONENT CARDS -->
+    <div class="card">
+        <h2>Integration Elements</h2>
+        <p>This document highlights how consolidation queries, sublist indexes, and the Map/Reduce serialization parameters are integrated across the Suitelet and Map/Reduce script.</p>
+
+        <h3>1. Suitelet Script</h3>
+        <ul>
+            <li><strong>File Name:</strong> <code>hris_dailymanualtomonthly_process_sl.js</code></li>
+            <li><strong>Script Type:</strong> NetSuite Suitelet</li>
+            <li><strong>Duties:</strong> Consolidates daily attendance data, presents a checklist grid to payroll managers, parses submitted values, and launches the Map/Reduce script.</li>
+        </ul>
+
+        <h3>2. Map/Reduce Script</h3>
+        <ul>
+            <li><strong>File Name:</strong> <code>hris_dailytomonthlyattend_process_mrs.js</code></li>
+            <li><strong>Script Type:</strong> NetSuite Map/Reduce Script</li>
+            <li><strong>Duties:</strong> Processes the checked employee details in parallel and saves/overwrites the records directly.</li>
+        </ul>
+    </div>
+
+    <!-- DB QUERIES AND CALCS -->
+    <div class="card">
+        <h2>Data Aggregation & Comp-Off Calculation</h2>
+        <p>The Suitelet uses a SuiteQL query to aggregate daily attendance records from the <code>customrecord_njt_emp_daily_atten_ch</code> child lines table:</p>
+        <pre><code>SUM(CASE WHEN NVL(emp.custrecord_njt_emp_daily_working_hours, 0) = 0 THEN 0 ELSE NVL(emp.custrecord_njt_ot_hours, 0) / emp.custrecord_njt_emp_daily_working_hours END) AS comp_off</code></pre>
+        <p>Comp-off is calculated as daily OT hours divided by employee daily shift hours. Standard roundoff is computed at execution time in JS using <code>Math.round(compOff)</code>.</p>
+    </div>
+
+    <!-- POST PARAM MAPPINGS -->
+    <div class="card">
+        <h2>Serialized Parameter Data Structure</h2>
+        <p>When the manager submits the checked rows, the Suitelet extracts parameters from the sublist array and writes them as serialized JSON object parameters to the Map/Reduce task:</p>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Object Key</th>
+                        <th>Sublist Array Index</th>
+                        <th>Target Record Field ID</th>
+                        <th>Description / Usage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>empid</strong></td>
+                        <td>columnArray[2]</td>
+                        <td>custrecord_hrms_month_empid</td>
+                        <td>Employee Internal ID.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>noPresntId</strong></td>
+                        <td>columnArray[7]</td>
+                        <td>custrecord_hrms_month_presentdays</td>
+                        <td>Sum of present days.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>noAbsentId</strong></td>
+                        <td>columnArray[8]</td>
+                        <td>custrecord_hrms_month_absentdays</td>
+                        <td>Sum of absent days.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>norotId</strong></td>
+                        <td>columnArray[9]</td>
+                        <td>custrecord_hrms_month_rothrs</td>
+                        <td>Total overtime hours.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>compOff</strong></td>
+                        <td>columnArray[12]</td>
+                        <td>custrecord_compoff_days</td>
+                        <td>Comp-off float value.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>compOffRound</strong></td>
+                        <td>columnArray[13]</td>
+                        <td>custrecord_compoff_days_round_off</td>
+                        <td>Comp-off rounded integer.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>HRIS Daily to Monthly Process &copy; 2026</p>
+    </footer>
+</div>
+
+</body>
+</html>
