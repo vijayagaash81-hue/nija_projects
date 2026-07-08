@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRMS Winstar - Integration & Module Overview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --text-muted: #475569;
+            --accent-color: #2563eb;
+            --accent-light: #eff6ff;
+            --border-color: #e2e8f0;
+            --success-color: #16a34a;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Navigation Sidebar */
+        aside {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 40px 24px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .logo-area {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 6px;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 10px 14px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--accent-light);
+            color: var(--accent-color);
+        }
+
+        /* Main Content Layout */
+        main {
+            margin-left: 300px;
+            flex: 1;
+            padding: 60px 80px;
+            max-width: 1100px;
+        }
+
+        header {
+            margin-bottom: 45px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .section-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-sm);
+            scroll-margin-top: 40px;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            letter-spacing: -0.3px;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .module-item {
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        .module-item strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-color);
+            font-size: 0.98rem;
+        }
+
+        .module-item span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 24px;
+            }
+            main {
+                margin-left: 0;
+                padding: 40px 24px;
+            }
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="logo-area">
+            <div class="logo-dot"></div>
+            HRMS Winstar Docs
+        </div>
+        <ul class="nav-links">
+            <li><a href="#overview" class="active">Solution Overview</a></li>
+            <li><a href="#hrms-api">1. Mobile API & RESTlets</a></li>
+            <li><a href="#attendance">2. Attendance Modules</a></li>
+            <li><a href="#salary-revision">3. Salary & Revision</a></li>
+            <li><a href="#leaves">4. Leave Operations</a></li>
+            <li><a href="#payslip-portal">5. Payslips & Web Portal</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <header id="overview">
+            <h1>HRMS Winstar Integration Suite</h1>
+            <div class="subtitle">Detailed Functional Directory Reference</div>
+        </header>
+
+        <!-- OVERVIEW CARD -->
+        <div class="section-card">
+            <h2>Winstar HRMS Module Framework</h2>
+            <p>The <strong>HRMS Winstar</strong> directory houses the entire suite of payroll, leave, attendance, and employee self-service features. It is built as a modular integration engine connecting NetSuite ERP transactions to external employee web portals and mobile applications.</p>
+        </div>
+
+        <!-- 1. HRMS API -->
+        <div class="section-card" id="hrms-api">
+            <h2>1. Mobile Sync & RESTlet API Engine</h2>
+            <p>The <code>HRMS API</code> folder is the central communications node for the Winstar Mobile App. It publishes NetSuite master data endpoints and listens for mobile requests via RESTlets and scheduled batch processes:</p>
+            
+            <div class="module-grid">
+                <div class="module-item">
+                    <strong>Master Data Feeds (GET RESTlets)</strong>
+                    <span>Pushes Department, Currency, Subsidiaries, Countries, Skill Masters, and Asset Master lists to the mobile terminal interface.</span>
+                </div>
+                <div class="module-item">
+                    <strong>Employee Requests (POST RESTlets)</strong>
+                    <span>Accepts employee requests from mobile (such as Leave Applications, Expense Claims, Document Uploads, Grievance reports, and Letter requests) and writes them to NetSuite.</span>
+                </div>
+                <div class="module-item">
+                    <strong>Biometric Pushes</strong>
+                    <span>Translates check-in/out timestamps from the mobile phone GPS checks to the biometric attendance record.</span>
+                </div>
+                <div class="module-item">
+                    <strong>Authentication & Passwords</strong>
+                    <span>Handles secure authentication tokens, mobile devices ID registration, and IMEI binding for employees.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. ATTENDANCE -->
+        <div class="section-card" id="attendance">
+            <h2>2. Attendance Processing & Approvals</h2>
+            <p>Handles daily biometric timesheet aggregation, monthly timesheet creation, roster assignments, and manager approval gates:</p>
+            
+            <div class="module-grid">
+                <div class="module-item">
+                    <strong>Monthly Attendance Creation</strong>
+                    <span>Suitelet dashboards and Map/Reduce engines used to initialize monthly daily containers and compute employee shift configurations.</span>
+                </div>
+                <div class="module-item">
+                    <strong>Monthly Attendance Approval</strong>
+                    <span>Workspace tables and verification gates to review employee worked hours, OT limits, and LOP (Loss of Pay) deductions before releasing payments.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. SALARY AND REVISION -->
+        <div class="section-card" id="salary-revision">
+            <h2>3. Salary Records & Revision History</h2>
+            <p>Manages historical compensation logs, revisions, and pay structures for employees:</p>
+            
+            <div class="module-grid">
+                <div class="module-item">
+                    <strong>Salary Updation & Revision</strong>
+                    <span>Stores client validations (CS) and server triggers (UE) verifying revisions, restricting unauthorized field updates, and tracking bulk pay group changes.</span>
+                </div>
+                <div class="module-item">
+                    <strong>Salary Register Layouts</strong>
+                    <span>Generates consolidated registers and journal files detailing payroll components for accounting audits.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. LEAVES -->
+        <div class="section-card" id="leaves">
+            <h2>4. Leave Operations</h2>
+            <p>Provides workflows for managing leave types, running leave balances computations, and final settlements:</p>
+            
+            <div class="module-grid">
+                <div class="module-item">
+                    <strong>Leave Balances</strong>
+                    <span>Tracks accruals, encashment details, and remaining leave balances per employee type.</span>
+                </div>
+                <div class="module-item">
+                    <strong>Leave Settlement</strong>
+                    <span>Computes final settlements (gratuity, notice period adjustments, and vacation payouts) for resigning or terminated employees.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. PAYSLIP AND PORTAL -->
+        <div class="section-card" id="payslip-portal">
+            <h2>5. Payslip Engine & Web Portal</h2>
+            <p>Generates print-ready payslips and hosts web pages for employee self-service checkins:</p>
+            
+            <div class="module-grid">
+                <div class="module-item">
+                    <strong>Payslip PDF Generator</strong>
+                    <span>Renders PDF layouts of monthly payslips dynamically from payroll records.</span>
+                </div>
+                <div class="module-item">
+                    <strong>Web Portal & Forms</strong>
+                    <span>Provides client UI screens for internal employee self-service web pages.</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Winstar HRMS Documentation Suite &copy; 2026</p>
+        </footer>
+    </main>
+
+    <!-- ScrollSpy Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('.nav-links a');
+            const sections = document.querySelectorAll('main > header, main > .section-card');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-10% 0px -80% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        if (id) {
+                            links.forEach(link => {
+                                link.classList.remove('active');
+                                if (link.getAttribute('href') === `#${id}`) {
+                                    link.classList.add('active');
+                                }
+                            });
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>
