@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Attendance to Leave Balance Integration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --text-muted: #475569;
+            --accent-color: #0284c7;
+            --accent-light: #f0f9ff;
+            --border-color: #e2e8f0;
+            --success-color: #16a34a;
+            --success-light: #f0fdf4;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 40px 24px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .logo-area {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 6px;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 10px 14px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--accent-light);
+            color: var(--accent-color);
+        }
+
+        /* Main Content Layout */
+        main {
+            margin-left: 280px;
+            flex: 1;
+            padding: 60px 80px;
+            max-width: 1100px;
+        }
+
+        header {
+            margin-bottom: 45px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .section-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-sm);
+            scroll-margin-top: 40px;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            letter-spacing: -0.3px;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        pre {
+            background-color: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 15px 0 25px 0;
+        }
+
+        pre code {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+
+        .keyword { color: #f43f5e; }
+        .string { color: #10b981; }
+
+        .callout {
+            background-color: var(--success-light);
+            border-left: 4px solid var(--success-color);
+            padding: 18px 24px;
+            border-radius: 4px;
+            margin-top: 25px;
+        }
+
+        .callout p {
+            margin-bottom: 0;
+            color: #15803d;
+            font-size: 0.94rem;
+            font-weight: 500;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 24px;
+            }
+            main {
+                margin-left: 0;
+                padding: 40px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="logo-area">
+            <div class="logo-dot"></div>
+            Integration Docs
+        </div>
+        <ul class="nav-links">
+            <li><a href="#overview" class="active">Overview</a></li>
+            <li><a href="#suitelet">Suitelet Customization</a></li>
+            <li><a href="#mapreduce">Map/Reduce Processing</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <header id="overview">
+            <h1>Monthly Attendance to Leave Balance</h1>
+            <div class="subtitle">Comp-Off Days Accrual & Processing Workflow</div>
+        </header>
+
+        <!-- OVERVIEW CARD -->
+        <div class="section-card">
+            <h2>Process Overview</h2>
+            <p>This module handles the consolidated monthly payroll run and automatically accrues earned employee compensatory leave times. When the payroll runs, it queries employee monthly attendance, displays their earned comp-off totals, and submits them to accrue in their compensatory leave balances.</p>
+        </div>
+
+        <!-- SUITELET CUSTOMIZATION -->
+        <div class="section-card" id="suitelet">
+            <h2>Suitelet Customizations</h2>
+            <p><strong>File:</strong> <code>njt_monthlyotandlopprocess_sl (1).js</code></p>
+            <ul>
+                <li><strong>Added Comp-Off Columns:</strong> Added a text column labeled <strong>Comp-Off Days</strong> (ID: <code>custpage_compoff</code>) to show managers the exact compensatory days calculated from their shifts.</li>
+                <li><strong>SuiteQL Selection Update:</strong> Both queries in <code>setSublistvalue</code> were updated to query <code>a.custrecord_compoff_days_round_off</code> and populate the sublist.</li>
+                <li><strong>Index Alignment Correction:</strong> Corrected sublist serialization parameters inside the POST handler to align indexing correctly after weekly/holiday fields were commented out:
+                    <pre><code>selectObj.norotId = columnArray[7];   <span class="keyword">// OT Hours</span>
+selectObj.latemin = columnArray[8];   <span class="keyword">// Late Mins</span>
+selectObj.latehrs = columnArray[9];   <span class="keyword">// Late Hours</span>
+selectObj.compOff = columnArray[10];  <span class="keyword">// Comp-Off Days</span>
+selectObj.intempId = columnArray[11]; <span class="keyword">// Employee ID</span>
+selectObj.parId = columnArray[12];    <span class="keyword">// Parent Record ID</span></code></pre>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MAP/REDUCE PROCESSING -->
+        <div class="section-card" id="mapreduce">
+            <h2>Map/Reduce Processing</h2>
+            <p><strong>File:</strong> <code>njt_monthlyotandlopcreation_mrs.js</code></p>
+            <p>Processes the serialized checks in the background. In addition to creating salary journals and unpaid leaves, it executes a leave balance search and updates the balance records:</p>
+            
+            <pre><code><span class="comment">// 1. Search for active Compensatory Off (Type: 11) leave balances</span>
+<span class="keyword">var</span> leavebalancesql = <span class="string">"SELECT id, custrecord_hris_lvbal_leave_balance_cred, custrecord_hris_lvbal_available_leave_ba, custrecord_hris_lvbal_annual_leave_bal FROM customrecord_hris_leavebalance WHERE custrecord_hris_lvbal_employee_name = "</span> + empid + <span class="string">" AND custrecord_hris_lvbal_leave_type = 11 AND isinactive = 'F'"</span>;
+
+<span class="comment">// 2. Accumulate the comp-off days to the credited, annual, and available fields</span>
+<span class="keyword">var</span> newCredited = leavebalancecredited + compoffdays;
+<span class="keyword">var</span> newAvailable = availableleavebal + compoffdays;
+<span class="keyword">var</span> newAnnual = annualleavebal + compoffdays;</code></pre>
+
+            <div class="callout">
+                <p>Consistent balances updates: To maintain balance sheet integrity, comp-off days are added simultaneously to Credited Balance, Annual Balance, and Available Balance fields.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Monthly Attendance to Leave Balance Systems &copy; 2026</p>
+        </footer>
+    </main>
+
+    <!-- ScrollSpy Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('.nav-links a');
+            const sections = document.querySelectorAll('main > header, main > .section-card');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-10% 0px -80% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        if (id) {
+                            links.forEach(link => {
+                                link.classList.remove('active');
+                                if (link.getAttribute('href') === `#${id}`) {
+                                    link.classList.add('active');
+                                }
+                            });
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>
