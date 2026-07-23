@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetSuite SuiteScript 2.1 QA Verification & Testing Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-subtle: #f1f5f9;
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            
+            --text-main: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --success: #16a34a;
+            --success-light: #f0fdf4;
+            --warning: #d97706;
+            --warning-light: #fffbeb;
+            --danger: #dc2626;
+            --danger-light: #fef2f2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            line-height: 1.6;
+            padding: 2.5rem 1.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Card */
+        .doc-header {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .header-badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-blue { background-color: var(--primary-light); color: var(--primary); border: 1px solid #bfdbfe; }
+        .badge-green { background-color: var(--success-light); color: var(--success); border: 1px solid #bbf7d0; }
+        .badge-amber { background-color: var(--warning-light); color: var(--warning); border: 1px solid #fde68a; }
+
+        .doc-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Metrics Progress Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .metric-title {
+            font-size: 0.775rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .metric-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Progress Bar */
+        .progress-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .progress-track {
+            height: 10px;
+            background-color: var(--bg-subtle);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--success);
+            transition: width 0.3s ease;
+        }
+
+        /* Filter Controls */
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+        }
+
+        .filter-btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-body);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--border-hover);
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        .action-btn {
+            background-color: var(--bg-subtle);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* Test Table */
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th {
+            background-color: var(--bg-subtle);
+            color: var(--text-main);
+            font-weight: 600;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Status Dropdown / Badge */
+        .status-select {
+            padding: 0.35rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .status-pending { background-color: var(--warning-light); color: var(--warning); border-color: #fde68a; }
+        .status-passed { background-color: var(--success-light); color: var(--success); border-color: #bbf7d0; }
+        .status-failed { background-color: var(--danger-light); color: var(--danger); border-color: #fca5a5; }
+
+        /* Remarks Input */
+        .remarks-input {
+            width: 100%;
+            padding: 0.4rem 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.825rem;
+            color: var(--text-body);
+            background-color: var(--bg-page);
+        }
+
+        .remarks-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #ffffff;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--bg-subtle);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <header class="doc-header">
+        <div class="header-badges">
+            <span class="badge badge-blue">SuiteScript 2.1 Verification</span>
+            <span class="badge badge-green">Consolidated Scripts</span>
+            <span class="badge badge-amber">Interactive QA Checklist</span>
+        </div>
+        <h1>Consolidated Scripts Test Plan & Verification Portal</h1>
+        <p>Interactive QA checklist for validating the SuiteScript 2.1 Consolidated Client Script (<code>hris_emp_consolidated_cs.js</code>) and Consolidated User Event Script (<code>hris_emp_consolidated_ue.js</code>).</p>
+    </header>
+
+    <!-- Metrics Cards -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-title">Total Test Cases</div>
+            <div class="metric-value" id="m-total">19</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Passed</div>
+            <div class="metric-value" style="color: var(--success);" id="m-passed">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Failed</div>
+            <div class="metric-value" style="color: var(--danger);" id="m-failed">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Pending Verification</div>
+            <div class="metric-value" style="color: var(--warning);" id="m-pending">19</div>
+        </div>
+    </div>
+
+    <!-- Progress Track -->
+    <div class="progress-box">
+        <div class="progress-header">
+            <span>Overall Verification Completion</span>
+            <span id="progress-text">0% Completed (0/19)</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-bar">
+        <div class="filter-group">
+            <button class="filter-btn active" onclick="filterCategory('all', this)">All Tests (19)</button>
+            <button class="filter-btn" onclick="filterCategory('cs', this)">Client Script Tests (10)</button>
+            <button class="filter-btn" onclick="filterCategory('ue', this)">User Event Tests (9)</button>
+        </div>
+        <div>
+            <button class="action-btn" onclick="resetAllTests()">Reset All Checkboxes</button>
+        </div>
+    </div>
+
+    <!-- PART 1: Client Script Section -->
+    <div class="section-card category-block" id="block-cs">
+        <h2 class="section-title">
+            Part 1: Consolidated Client Script (<code>hris_emp_consolidated_cs.js</code>)
+        </h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Select</th>
+                        <th style="width: 10%;">Test ID</th>
+                        <th style="width: 15%;">Event / Trigger</th>
+                        <th style="width: 25%;">Test Scenario & Action</th>
+                        <th style="width: 25%;">Expected Result</th>
+                        <th style="width: 10%;">Status</th>
+                        <th style="width: 10%;">Remarks / Test Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="test-row" data-cat="cs" id="tr-TS-CS-01">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-CS-01', this)"></td>
+                        <td><code>TS-CS-01</code></td>
+                        <td><code>pageInit</code></td>
+                        <td>Open Employee Record in CREATE or EDIT mode.</td>
+                        <td>Sets <code>custentity_hris_emp_employeecheck</code> to <code>true</code> (Form 167) or <code>false</code> (Other forms). Safely initializes module callbacks.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-CS-01', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-CS-01', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="cs" id="tr-TS-CS-02">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-CS-02', this)"></td>
+                        <td><code>TS-CS-02</code></td>
+                        <td><code>fieldChanged</code></td>
+                        <td>Type First Name (<code>custentity_hris_empfname</code>), Middle Name, or Last Name on Form 167.</td>
+                        <td>Automatically populates standard <code>firstname</code>, <code>middlename</code>, <code>lastname</code> and concatenates Full Legal Name (<code>custentity_hris_emplegalname</code>).</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-CS-02', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-CS-02', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="cs" id="tr-TS-CS-03">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-CS-03', this)"></td>
+                        <td><code>TS-CS-03</code></td>
+                        <td><code>fieldChanged</code></td>
+                        <td>Enter Probation Period (<code>custentity_hris_empprobationperiod</code> = e.g. 90 days) with Hire Date populated on Form 167.</td>
+                        <td>Job Confirmation Date (<code>custentity_hris_empjobconfirmationdt</code>) is automatically calculated and set to Hire Date + Probation Days.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-CS-03', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-CS-03', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="cs" id="tr-TS-CS-04">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-CS-04', this)"></td>
+                        <td><code>TS-CS-04</code></td>
+                        <td><code>fieldChanged</code></td>
+                        <td>Select Working Location (<code>custentity_hris_empworkinglocation</code>) / Weekly Off Criteria, or toggle Mobile Access (<code>custentity_hris_emp_accesstomobile</code>) on Form 167.</td>
+                        <td>Multi-select Holiday field (<code>custentity_hris_empholidays</code>) populates with location holidays, or toggles mobile fields enabled/mandatory state.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-CS-04', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-CS-04', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="cs" id="tr-TS-CS-05">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-CS-05', this)"></td>
+                        <td><code>TS-CS-05</code></td>
+                        <td><code>fieldChanged</code></td>
+                        <td>Uncheck ESIC Applicable (<code>custentity_hris_isesiapplicable = false</code>) on Form 167.</td>
+                        <td>Displays non-blocking <code>dialog.alert</code> warning: ESIC has to deducted till September or March. Verify Employee Salary details.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-CS-05', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-CS-05', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="cs" id="tr-TS-CS-06">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-CS-06', this)"></td>
+                        <td><code>TS-CS-06</code></td>
+                        <td><code>fieldChanged</code></td>
+                        <td>Check "Click Here" (<code>custrecord_hris_emp_supp_doc_click_here</code>) on Support Documents sublist.</td>
+                        <td>Triggers <code>fileUploadOptimized</code> to launch popup window for uploading supporting documents into File Cabinet.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-CS-06', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-CS-06', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="cs" id="tr-TS-CS-07">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-CS-07', this)"></td>
+                        <td><code>TS-CS-07</code></td>
+                        <td><code>saveRecord</code></td>
+                        <td>On Form 131, set Employee Status to Resigned (6) or Terminated (7), leave Date of Leaving (<code>custentity_hirs_empdol</code>) empty, and click Save.</td>
+                        <td>Save is blocked (returns <code>false</code>); displays alert: "Please enter the date of leaving of employee".</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-CS-07', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-CS-07', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="cs" id="tr-TS-CS-08">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-CS-08', this)"></td>
+                        <td><code>TS-CS-08</code></td>
+                        <td><code>saveRecord</code></td>
+                        <td>On Form 131, check PT Applicable (<code>custentity_hris_emp_isptapplicable = true</code>), leave PT Location (<code>custentity_hris_empptlocation</code>) empty, and click Save.</td>
+                        <td>Save is blocked (returns <code>false</code>); displays alert: "Please enter PT Location".</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-CS-08', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-CS-08', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="cs" id="tr-TS-CS-09">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-CS-09', this)"></td>
+                        <td><code>TS-CS-09</code></td>
+                        <td><code>saveRecord</code></td>
+                        <td>On Form 167, check Mobile Access (<code>custentity_hris_emp_accesstomobile = true</code>), leave Mobile E-Mail (<code>custentity_hris_empmobileemail</code>) empty, and click Save.</td>
+                        <td>Save is blocked (returns <code>false</code>); displays alert: "Please Enter Mobile E-Mail".</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-CS-09', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-CS-09', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="cs" id="tr-TS-CS-10">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-CS-10', this)"></td>
+                        <td><code>TS-CS-10</code></td>
+                        <td><code>validateDelete</code></td>
+                        <td>Attempt to delete a line on Support Documents sublist (<code>recmachcustrecord_hris_emp_supp_doc_employee_li</code>).</td>
+                        <td>Verifies user role/ID; if authorized, deletes file from cabinet via Suitelet; if unauthorized, alerts: You dont have access to remove files.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-CS-10', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-CS-10', this)"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PART 2: User Event Script Section -->
+    <div class="section-card category-block" id="block-ue">
+        <h2 class="section-title">
+            Part 2: Consolidated User Event Script (<code>hris_emp_consolidated_ue.js</code>)
+        </h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Select</th>
+                        <th style="width: 10%;">Test ID</th>
+                        <th style="width: 15%;">Event / Trigger</th>
+                        <th style="width: 25%;">Test Scenario & Action</th>
+                        <th style="width: 25%;">Expected Result</th>
+                        <th style="width: 10%;">Status</th>
+                        <th style="width: 10%;">Remarks / Test Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="test-row" data-cat="ue" id="tr-TS-UE-01">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-UE-01', this)"></td>
+                        <td><code>TS-UE-01</code></td>
+                        <td><code>beforeLoad</code></td>
+                        <td>Open an INACTIVE Employee record in VIEW mode; then try direct URL edit.</td>
+                        <td>In VIEW mode, Edit button is disabled. In EDIT mode, user error is thrown: User is inactive so you cannot edit...</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-UE-01', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-UE-01', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="ue" id="tr-TS-UE-02">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-UE-02', this)"></td>
+                        <td><code>TS-UE-02</code></td>
+                        <td><code>beforeLoad</code></td>
+                        <td>Open Employee record in VIEW mode. Inspect Client Script attachment.</td>
+                        <td><code>form.clientScriptFileId</code> attaches <code>customscript_hris_empleave_cs</code> in VIEW mode with 0 governance overhead.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-UE-02', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-UE-02', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="ue" id="tr-TS-UE-03">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-UE-03', this)"></td>
+                        <td><code>TS-UE-03</code></td>
+                        <td><code>beforeSubmit</code></td>
+                        <td>Create and Save a NEW Employee record (Form 167).</td>
+                        <td><code>custentity_hris_empcode</code> is assigned next incremented 5-digit number (e.g. <code>00143</code>). Unique ref record is updated.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-UE-03', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-UE-03', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="ue" id="tr-TS-UE-04">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-UE-04', this)"></td>
+                        <td><code>TS-UE-04</code></td>
+                        <td><code>afterSubmit</code></td>
+                        <td>Save a NEW Employee with Code <code>00143</code> & Legal Name <code>John Doe</code>.</td>
+                        <td>Creates <code>customrecord_cseg_njt_seg_emp</code> with Name <code>00143 - John Doe</code> and updates <code>custentity_hris_empsegment</code>.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-UE-04', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-UE-04', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="ue" id="tr-TS-UE-05">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-UE-05', this)"></td>
+                        <td><code>TS-UE-05</code></td>
+                        <td><code>afterSubmit</code></td>
+                        <td>Save a NEW Employee with Employee Category specified.</td>
+                        <td>Triggers Scheduled Script <code>customscript_hris_emp_leavecredit</code> via <code>N/task</code>. Check Script Execution Log for Task ID.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-UE-05', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-UE-05', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="ue" id="tr-TS-UE-06">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-UE-06', this)"></td>
+                        <td><code>TS-UE-06</code></td>
+                        <td><code>afterSubmit</code></td>
+                        <td>Save Employee record. Check <code>customrecord_hris_employeedatasourcing</code>.</td>
+                        <td>Creates or updates child sourcing record mapping hiredate, designation, department, location, subsidiary, gender, category.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-UE-06', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-UE-06', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="ue" id="tr-TS-UE-07">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-UE-07', this)"></td>
+                        <td><code>TS-UE-07</code></td>
+                        <td><code>afterSubmit</code></td>
+                        <td>Check Inactive on Employee (<code>isinactive = true</code>) and Save.</td>
+                        <td>Syncs <code>isinactive = true</code> across 4 child custom records (Compensation Change, Leave Balance, Sourcing, Compensation) using <code>record.submitFields</code>.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-UE-07', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-UE-07', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="ue" id="tr-TS-UE-08">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-UE-08', this)"></td>
+                        <td><code>TS-UE-08</code></td>
+                        <td><code>afterSubmit</code></td>
+                        <td>Update Employee department, grade, bank details, passport/visa numbers and Save.</td>
+                        <td>Automatically syncs 30+ fields into <code>customrecord_hris_employee_compen_change</code> via <code>record.submitFields</code> (2 governance units).</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-UE-08', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-UE-08', this)"></td>
+                    </tr>
+                    <tr class="test-row" data-cat="ue" id="tr-TS-UE-09">
+                        <td style="text-align: center;"><input type="checkbox" onchange="onCheckChange('TS-UE-09', this)"></td>
+                        <td><code>TS-UE-09</code></td>
+                        <td><code>afterSubmit</code></td>
+                        <td>Change Working Location (<code>custentity_hris_empworkinglocation</code>) and Save.</td>
+                        <td>Updates multi-select <code>custentity_hris_empholidays</code> with active holiday IDs from <code>customrecord_hris_holiday_master</code> via <code>record.submitFields</code>.</td>
+                        <td>
+                            <select class="status-select status-pending" onchange="onStatusSelect('TS-UE-09', this)">
+                                <option value="PENDING">PENDING</option>
+                                <option value="PASSED">PASSED</option>
+                                <option value="FAILED">FAILED</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="remarks-input" placeholder="Add test notes..." onchange="onRemarkChange('TS-UE-09', this)"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="footer">
+        NetSuite SuiteScript 2.1 Verification Checklist • Interactive QA Portal
+    </footer>
+
+</div>
+
+<script>
+    const STORAGE_KEY = 'Netsuite_SS21_QA_Test_Data_v1';
+
+    let testState = {};
+
+    window.addEventListener('DOMContentLoaded', () => {
+        loadState();
+        updateMetrics();
+    });
+
+    function loadState() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            try {
+                testState = JSON.parse(saved);
+                Object.keys(testState).forEach(testId => {
+                    const row = document.getElementById('tr-' + testId);
+                    if (row) {
+                        const chk = row.querySelector('input[type="checkbox"]');
+                        const sel = row.querySelector('select');
+                        const rem = row.querySelector('.remarks-input');
+                        
+                        if (chk && testState[testId].checked !== undefined) chk.checked = testState[testId].checked;
+                        if (sel && testState[testId].status) {
+                            sel.value = testState[testId].status;
+                            updateSelectStyle(sel);
+                        }
+                        if (rem && testState[testId].remarks !== undefined) rem.value = testState[testId].remarks;
+                    }
+                });
+            } catch(e) {
+                console.error('Failed to parse state:', e);
+            }
+        }
+    }
+
+    function saveState() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(testState));
+    }
+
+    function onCheckChange(testId, chkEl) {
+        if (!testState[testId]) testState[testId] = {};
+        testState[testId].checked = chkEl.checked;
+        
+        const row = document.getElementById('tr-' + testId);
+        const sel = row.querySelector('select');
+        if (chkEl.checked) {
+            sel.value = 'PASSED';
+            testState[testId].status = 'PASSED';
+        } else {
+            sel.value = 'PENDING';
+            testState[testId].status = 'PENDING';
+        }
+        updateSelectStyle(sel);
+        saveState();
+        updateMetrics();
+    }
+
+    function onStatusSelect(testId, selEl) {
+        if (!testState[testId]) testState[testId] = {};
+        testState[testId].status = selEl.value;
+        
+        const row = document.getElementById('tr-' + testId);
+        const chk = row.querySelector('input[type="checkbox"]');
+        if (selEl.value === 'PASSED') {
+            chk.checked = true;
+            testState[testId].checked = true;
+        } else {
+            chk.checked = false;
+            testState[testId].checked = false;
+        }
+        updateSelectStyle(selEl);
+        saveState();
+        updateMetrics();
+    }
+
+    function onRemarkChange(testId, remEl) {
+        if (!testState[testId]) testState[testId] = {};
+        testState[testId].remarks = remEl.value;
+        saveState();
+    }
+
+    function updateSelectStyle(selEl) {
+        selEl.className = 'status-select';
+        if (selEl.value === 'PASSED') selEl.classList.add('status-passed');
+        else if (selEl.value === 'FAILED') selEl.classList.add('status-failed');
+        else selEl.classList.add('status-pending');
+    }
+
+    function updateMetrics() {
+        const rows = document.querySelectorAll('.test-row');
+        let passed = 0;
+        let failed = 0;
+        let pending = 0;
+        const total = rows.length;
+
+        rows.forEach(row => {
+            const sel = row.querySelector('select');
+            if (sel.value === 'PASSED') passed++;
+            else if (sel.value === 'FAILED') failed++;
+            else pending++;
+        });
+
+        document.getElementById('m-total').innerText = total;
+        document.getElementById('m-passed').innerText = passed;
+        document.getElementById('m-failed').innerText = failed;
+        document.getElementById('m-pending').innerText = pending;
+
+        const pct = Math.round((passed / total) * 100);
+        document.getElementById('progress-text').innerText = pct + '% Completed (' + passed + '/' + total + ')';
+        document.getElementById('progress-fill').style.width = pct + '%';
+    }
+
+    function filterCategory(cat, btnEl) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+
+        const blockCs = document.getElementById('block-cs');
+        const blockUe = document.getElementById('block-ue');
+
+        if (cat === 'all') {
+            blockCs.style.display = 'block';
+            blockUe.style.display = 'block';
+        } else if (cat === 'cs') {
+            blockCs.style.display = 'block';
+            blockUe.style.display = 'none';
+        } else if (cat === 'ue') {
+            blockCs.style.display = 'none';
+            blockUe.style.display = 'block';
+        }
+    }
+
+    function resetAllTests() {
+        if (confirm('Are you sure you want to reset all test statuses and notes?')) {
+            testState = {};
+            localStorage.removeItem(STORAGE_KEY);
+            document.querySelectorAll('.test-row').forEach(row => {
+                row.querySelector('input[type="checkbox"]').checked = false;
+                const sel = row.querySelector('select');
+                sel.value = 'PENDING';
+                updateSelectStyle(sel);
+                row.querySelector('.remarks-input').value = '';
+            });
+            updateMetrics();
+        }
+    }
+</script>
+
+</body>
+</html>

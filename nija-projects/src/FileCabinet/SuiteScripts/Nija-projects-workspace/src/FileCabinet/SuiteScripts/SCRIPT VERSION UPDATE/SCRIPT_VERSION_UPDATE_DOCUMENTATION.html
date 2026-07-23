@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetSuite SuiteScript 2.1 Technical Migration Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-subtle: #f1f5f9;
+            --bg-code: #0f172a;
+            
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            
+            --text-main: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --success: #16a34a;
+            --success-light: #f0fdf4;
+            --warning: #d97706;
+            --warning-light: #fffbeb;
+            --danger: #dc2626;
+            --danger-light: #fef2f2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            line-height: 1.6;
+            padding: 2.5rem 1.5rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Top Header */
+        .doc-header {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .header-badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 0.775rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-blue {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border: 1px solid #bfdbfe;
+        }
+
+        .badge-green {
+            background-color: var(--success-light);
+            color: var(--success);
+            border: 1px solid #bbf7d0;
+        }
+
+        .doc-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-header p {
+            color: var(--text-muted);
+            font-size: 0.975rem;
+        }
+
+        /* Summary Cards Grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .summary-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Content Sections */
+        .section-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Folder Tree Box */
+        .tree-box {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            padding: 1.25rem;
+            border-radius: 8px;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        .tree-dir {
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .tree-file-old {
+            color: #f87171;
+        }
+
+        .tree-file-new {
+            color: #4ade80;
+        }
+
+        .tree-desc {
+            color: #94a3b8;
+            font-size: 0.775rem;
+            margin-left: 10px;
+        }
+
+        /* Clean Table */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--bg-subtle);
+            color: var(--text-main);
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-body);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--bg-subtle);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.825rem;
+            color: var(--primary);
+        }
+
+        /* Tabs and Diff Viewer */
+        .tab-bar {
+            display: flex;
+            gap: 6px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.25rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.6rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            font-weight: 600;
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .diff-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 850px) {
+            .diff-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .diff-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: var(--bg-card);
+        }
+
+        .diff-header {
+            padding: 0.6rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .diff-header.old {
+            background-color: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .diff-header.new {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+
+        .code-view {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            padding: 1rem;
+            background-color: var(--bg-code);
+            color: #f1f5f9;
+            overflow-x: auto;
+            max-height: 480px;
+        }
+
+        .c-line {
+            display: flex;
+        }
+
+        .c-num {
+            width: 32px;
+            color: #64748b;
+            user-select: none;
+            text-align: right;
+            padding-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .c-del {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            width: 100%;
+        }
+
+        .c-add {
+            background-color: rgba(34, 197, 94, 0.15);
+            color: #86efac;
+            width: 100%;
+        }
+
+        /* Simple Checklist */
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 0.6rem 0;
+            font-size: 0.9rem;
+        }
+
+        .check-bullet {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Top Header -->
+    <header class="doc-header">
+        <div class="header-badges">
+            <span class="badge badge-blue">NetSuite SuiteScript 2.1</span>
+            <span class="badge badge-green">Refactoring Complete</span>
+        </div>
+        <h1>SuiteScript Version Upgrade Documentation</h1>
+        <p>Technical reference manual mapping legacy SuiteScript 1.0 & 2.0 Client and User Event scripts to modernized SuiteScript 2.1 architecture, including consolidated scripts.</p>
+    </header>
+
+    <!-- Summary Metrics -->
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-title">Total Script Artifacts</div>
+            <div class="summary-value">16</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-title">Client Scripts (Modular + Cons)</div>
+            <div class="summary-value">6</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-title">Consolidated Scripts</div>
+            <div class="summary-value" style="color: var(--success);">2 Files (CS & UE)</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-title">User Event Scripts (Modular + Cons)</div>
+            <div class="summary-value">10</div>
+        </div>
+    </div>
+
+    <!-- Directory Structure -->
+    <section class="section-box">
+        <h2 class="section-title">1. Workspace Directory Structure</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+            All upgraded SuiteScript 2.1 files are organized under the <code>new script/Employee Record/</code> path, maintaining exact separation from historical legacy versions.
+        </p>
+        <div class="tree-box">
+<span class="tree-dir">SCRIPT VERSION UPDATE/</span>
+├── <span class="tree-dir">old script/</span> <span class="tree-desc">(Legacy Executables)</span>
+│   └── <span class="tree-dir">Employee Record/</span>
+│       ├── <span class="tree-dir">Client Script/</span>
+│       │   ├── <span class="tree-file-old">hris_emp_validation_cs.js</span>                    <span class="tree-desc">[SS 1.0]</span>
+│       │   ├── <span class="tree-file-old">hris_fileuploadwindow_cs.js</span>                  <span class="tree-desc">[SS 1.0]</span>
+│       │   ├── <span class="tree-file-old">hris_emp_legalnameset_cs.js</span>                  <span class="tree-desc">[SS 2.0]</span>
+│       │   ├── <span class="tree-file-old">hris_emp_holidaysource_cs.js</span>                 <span class="tree-desc">[SS 1.0]</span>
+│       │   └── <span class="tree-file-old">hris_emp_employeeesicheck_cs.js</span>              <span class="tree-desc">[SS 1.0]</span>
+│       └── <span class="tree-dir">User Event Script/</span>
+│           ├── <span class="tree-file-old">employee segment aftersubmit.js</span>             <span class="tree-desc">[SS 2.0]</span>
+│           ├── <span class="tree-file-old">hris_emp_createleavebalance_ue.js</span>            <span class="tree-desc">[SS 1.0]</span>
+│           ├── <span class="tree-file-old">hris_emp_disableedit_ue.js</span>                   <span class="tree-desc">[SS 1.0]</span>
+│           ├── <span class="tree-file-old">hris_emp_empdata_ue.js</span>                       <span class="tree-desc">[SS 1.0]</span>
+│           ├── <span class="tree-file-old">hris_emp_empleave_ue.js</span>                      <span class="tree-desc">[SS 1.0]</span>
+│           ├── <span class="tree-file-old">hris_emp_genempcode_ue.js</span>                    <span class="tree-desc">[SS 1.0]</span>
+│           ├── <span class="tree-file-old">hris_emp_inactiveedcrecord_ue.js</span>             <span class="tree-desc">[SS 1.0]</span>
+│           ├── <span class="tree-file-old">hris_employeetoemployeecompensationchange_ue.js</span> <span class="tree-desc">[SS 1.0]</span>
+│           └── <span class="tree-file-old">hris_emp_setholiday_ue.js</span>                    <span class="tree-desc">[SS 1.0]</span>
+└── <span class="tree-dir">new script/</span> <span class="tree-desc">(Upgraded SuiteScript 2.1)</span>
+    └── <span class="tree-dir">Employee Record/</span>
+        ├── <span class="tree-dir">Client Script/</span>
+        │   ├── <span class="tree-file-new">hris_emp_validation_cs.js</span>                    <span class="tree-desc">[SS 2.1]</span>
+        │   ├── <span class="tree-file-new">hris_fileuploadwindow_cs.js</span>                  <span class="tree-desc">[SS 2.1]</span>
+        │   ├── <span class="tree-file-new">hris_emp_legalnameset_cs.js</span>                  <span class="tree-desc">[SS 2.1]</span>
+        │   ├── <span class="tree-file-new">hris_emp_holidaysource_cs.js</span>                 <span class="tree-desc">[SS 2.1]</span>
+        │   ├── <span class="tree-file-new">hris_emp_employeeesicheck_cs.js</span>              <span class="tree-desc">[SS 2.1]</span>
+        │   └── <span class="tree-dir">consolidated script/</span>
+        │       └── <span class="tree-file-new">hris_emp_consolidated_cs.js</span>                 <span class="tree-desc">[SS 2.1 Consolidated CS]</span>
+        └── <span class="tree-dir">User Event Script/</span>
+            ├── <span class="tree-file-new">employee segment aftersubmit.js</span>             <span class="tree-desc">[SS 2.1]</span>
+            ├── <span class="tree-file-new">hris_emp_createleavebalance_ue.js</span>            <span class="tree-desc">[SS 2.1]</span>
+            ├── <span class="tree-file-new">hris_emp_disableedit_ue.js</span>                   <span class="tree-desc">[SS 2.1]</span>
+            ├── <span class="tree-file-new">hris_emp_empdata_ue.js</span>                       <span class="tree-desc">[SS 2.1]</span>
+            ├── <span class="tree-file-new">hris_emp_empleave_ue.js</span>                      <span class="tree-desc">[SS 2.1]</span>
+            ├── <span class="tree-file-new">hris_emp_genempcode_ue.js</span>                    <span class="tree-desc">[SS 2.1]</span>
+            ├── <span class="tree-file-new">hris_emp_inactiveedcrecord_ue.js</span>             <span class="tree-desc">[SS 2.1]</span>
+            ├── <span class="tree-file-new">hris_employeetoemployeecompensationchange_ue.js</span> <span class="tree-desc">[SS 2.1]</span>
+            ├── <span class="tree-file-new">hris_emp_setholiday_ue.js</span>                    <span class="tree-desc">[SS 2.1]</span>
+            └── <span class="tree-dir">consolidated script/</span>
+                └── <span class="tree-file-new">hris_emp_consolidated_ue.js</span>                 <span class="tree-desc">[SS 2.1 Consolidated UE]</span>
+        </div>
+    </section>
+
+    <!-- Technical Differences Table -->
+    <section class="section-box">
+        <h2 class="section-title">2. Script Overview & API Comparison</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Script Name</th>
+                        <th>Type</th>
+                        <th>Legacy API (1.0 / 2.0)</th>
+                        <th>SuiteScript 2.1 AMD Module</th>
+                        <th>Key Change Rationale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color: var(--success-light);">
+                        <td><code>hris_emp_consolidated_cs.js</code></td>
+                        <td>Client (Consolidated)</td>
+                        <td>5 Multiple SS 1.0/2.0 CS Scripts</td>
+                        <td>Single Unified <code>SS 2.1</code> ClientScript</td>
+                        <td>Eliminates Client Script conflicts & optimizes browser execution.</td>
+                    </tr>
+                    <tr style="background-color: var(--success-light);">
+                        <td><code>hris_emp_consolidated_ue.js</code></td>
+                        <td>User Event (Consolidated)</td>
+                        <td>9 Multiple SS 1.0/2.0 UE Scripts</td>
+                        <td>Single Unified <code>SS 2.1</code> UserEventScript</td>
+                        <td>Combines beforeLoad, beforeSubmit & afterSubmit across 9 scripts into 1 deployment.</td>
+                    </tr>
+                    <tr>
+                        <td><code>hris_emp_validation_cs.js</code></td>
+                        <td>Client</td>
+                        <td><code>nlapiSearchRecord</code></td>
+                        <td><code>N/search</code>, <code>N/currentRecord</code></td>
+                        <td>Standardized AMD search & record fields read.</td>
+                    </tr>
+                    <tr>
+                        <td><code>hris_fileuploadwindow_cs.js</code></td>
+                        <td>Client</td>
+                        <td><code>nlapiRequestURL</code>, <code>nlapiGetUser</code></td>
+                        <td><code>N/https</code>, <code>N/url</code>, <code>N/runtime</code></td>
+                        <td>Replaced global window popups & Suitelet URLs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>hris_emp_legalnameset_cs.js</code></td>
+                        <td>Client</td>
+                        <td><code>moment.js</code> dependency</td>
+                        <td>Native JS <code>Date</code> & <code>N/format</code></td>
+                        <td>Eliminated 3rd-party library overhead.</td>
+                    </tr>
+                    <tr>
+                        <td><code>hris_emp_holidaysource_cs.js</code></td>
+                        <td>Client</td>
+                        <td><code>nlapiSetFieldValues</code></td>
+                        <td><code>N/search</code>, <code>currentRecord.setValue</code></td>
+                        <td>Multi-select holiday sourcing via search.</td>
+                    </tr>
+                    <tr>
+                        <td><code>hris_emp_employeeesicheck_cs.js</code></td>
+                        <td>Client</td>
+                        <td><code>alert(...)</code></td>
+                        <td><code>N/ui/dialog</code></td>
+                        <td>Non-blocking UI modal warning dialog.</td>
+                    </tr>
+                    <tr style="background-color: #f8fafc;">
+                        <td><code>employee segment aftersubmit.js</code></td>
+                        <td>User Event</td>
+                        <td>SuiteScript 2.0 ES5 syntax</td>
+                        <td><code>SS 2.1</code> ES6 template literals</td>
+                        <td>Creates custom segment record and updates Employee record.</td>
+                    </tr>
+                    <tr style="background-color: #f8fafc;">
+                        <td><code>hris_emp_createleavebalance_ue.js</code></td>
+                        <td>User Event</td>
+                        <td><code>nlapiScheduleScript</code></td>
+                        <td><code>N/task</code> (afterSubmit)</td>
+                        <td>Schedules leave credit balance task via <code>task.create</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><code>hris_emp_disableedit_ue.js</code></td>
+                        <td>User Event</td>
+                        <td><code>nlapiLoadRecord</code> in UE</td>
+                        <td><code>scriptContext.newRecord</code></td>
+                        <td>Eliminated governance cost by using loaded record.</td>
+                    </tr>
+                    <tr style="background-color: #f8fafc;">
+                        <td><code>hris_emp_empdata_ue.js</code></td>
+                        <td>User Event</td>
+                        <td><code>nlapiSearchRecord</code> / <code>nlapiSubmitRecord</code></td>
+                        <td><code>N/record</code>, <code>N/search</code> (afterSubmit)</td>
+                        <td>Creates/updates custom Employee Data Sourcing record.</td>
+                    </tr>
+                    <tr style="background-color: #f8fafc;">
+                        <td><code>hris_emp_empleave_ue.js</code></td>
+                        <td>User Event</td>
+                        <td><code>nlapiLoadRecord</code> / <code>form.setScript</code></td>
+                        <td><code>form.clientScriptFileId</code> (beforeLoad)</td>
+                        <td>Attaches Client Script in VIEW mode with 0 governance cost.</td>
+                    </tr>
+                    <tr style="background-color: #f8fafc;">
+                        <td><code>hris_emp_genempcode_ue.js</code></td>
+                        <td>User Event</td>
+                        <td><code>nlapiSubmitField</code> / <code>padNumber</code></td>
+                        <td><code>record.submitFields</code> / <code>padStart</code> (beforeSubmit)</td>
+                        <td>Generates unique employee codes with 5-digit padding.</td>
+                    </tr>
+                    <tr style="background-color: #f8fafc;">
+                        <td><code>hris_emp_inactiveedcrecord_ue.js</code></td>
+                        <td>User Event</td>
+                        <td><code>nlapiLoadRecord</code> / <code>nlapiSubmitRecord</code> (100+ gov)</td>
+                        <td><code>record.submitFields</code> (afterSubmit)</td>
+                        <td>Syncs inactive status across 4 custom child records via 2-gov submitFields.</td>
+                    </tr>
+                    <tr style="background-color: #f8fafc;">
+                        <td><code>hris_employeetoemployeecompensationchange_ue.js</code></td>
+                        <td>User Event</td>
+                        <td><code>SearchEmployeeInfo</code> / <code>nlapiLoadRecord</code> (30+ fields)</td>
+                        <td><code>record.submitFields</code> (afterSubmit)</td>
+                        <td>Syncs 30+ Employee demographic/compensation fields into Compensation Change custom record via 2-gov submitFields.</td>
+                    </tr>
+                    <tr style="background-color: #f8fafc;">
+                        <td><code>hris_emp_setholiday_ue.js</code></td>
+                        <td>User Event</td>
+                        <td><code>nlapiLoadRecord</code> / <code>nlapiSubmitRecord</code></td>
+                        <td><code>record.submitFields</code> / <code>N/search</code> (afterSubmit)</td>
+                        <td>Sources location-based holidays via 2-governance unit submitFields.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Code Diffs -->
+    <section class="section-box">
+        <h2 class="section-title">3. Code Comparison & Diffs</h2>
+        
+        <div class="tab-bar">
+            <button class="tab-btn active" onclick="showTab(0, this)">★ Consolidated CS</button>
+            <button class="tab-btn" onclick="showTab(1, this)" style="color: var(--success);">★ Consolidated UE</button>
+            <button class="tab-btn" onclick="showTab(2, this)">1. emp_validation</button>
+            <button class="tab-btn" onclick="showTab(3, this)">2. fileuploadwindow</button>
+            <button class="tab-btn" onclick="showTab(4, this)">3. emp_legalnameset</button>
+            <button class="tab-btn" onclick="showTab(5, this)">4. emp_holidaysource</button>
+            <button class="tab-btn" onclick="showTab(6, this)">5. emp_employeeesicheck</button>
+            <button class="tab-btn" onclick="showTab(7, this)">6. emp_segment_aftersubmit [UE]</button>
+            <button class="tab-btn" onclick="showTab(8, this)">7. emp_createleavebal [UE]</button>
+            <button class="tab-btn" onclick="showTab(9, this)">8. emp_disableedit [UE]</button>
+            <button class="tab-btn" onclick="showTab(10, this)">9. emp_empdata [UE]</button>
+            <button class="tab-btn" onclick="showTab(11, this)">10. emp_empleave [UE]</button>
+            <button class="tab-btn" onclick="showTab(12, this)">11. emp_genempcode [UE]</button>
+            <button class="tab-btn" onclick="showTab(13, this)">12. emp_inactiveedc [UE]</button>
+            <button class="tab-btn" onclick="showTab(14, this)">13. employeetoempcompchange [UE]</button>
+            <button class="tab-btn" onclick="showTab(15, this)">14. emp_setholiday [UE]</button>
+        </div>
+
+        <!-- Consolidated CS Tab -->
+        <div class="tab-content active" id="tab-0">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">LEGACY: 5 Separate Script Deployments</div>
+                    <div class="code-view">
+                        <div class="c-line c-del"><span class="c-num">1</span>- hris_emp_validation_cs.js (SS 1.0)</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>- hris_fileuploadwindow_cs.js (SS 1.0)</div>
+                        <div class="c-line c-del"><span class="c-num">3</span>- hris_emp_legalnameset_cs.js (SS 2.0)</div>
+                        <div class="c-line c-del"><span class="c-num">4</span>- hris_emp_holidaysource_cs.js (SS 1.0)</div>
+                        <div class="c-line c-del"><span class="c-num">5</span>- hris_emp_employeeesicheck_cs.js (SS 1.0)</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: Consolidated Single Script (SS 2.1)</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ /** @NApiVersion 2.1 @NScriptType ClientScript */</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+ define(['N/search', 'N/log', 'N/runtime', 'N/url', 'N/https', 'N/ui/dialog', 'N/format', 'N/currentRecord'],</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+   (search, log, runtime, urlModule, httpsModule, dialog, format, currentRecordModule) => {</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+     // Unified pageInit, fieldChanged, saveRecord, validateDelete entry points</div>
+                        <div class="c-line c-add"><span class="c-num">5</span>+     return { pageInit, fieldChanged, saveRecord, validateDelete };</div>
+                        <div class="c-line c-add"><span class="c-num">6</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consolidated UE Tab -->
+        <div class="tab-content" id="tab-1">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">LEGACY: 9 Separate User Event Script Deployments</div>
+                    <div class="code-view">
+                        <div class="c-line c-del"><span class="c-num">1</span>- hris_emp_disableedit_ue.js (SS 1.0)</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>- hris_emp_empleave_ue.js (SS 1.0)</div>
+                        <div class="c-line c-del"><span class="c-num">3</span>- hris_emp_genempcode_ue.js (SS 1.0)</div>
+                        <div class="c-line c-del"><span class="c-num">4</span>- employee segment aftersubmit.js (SS 2.0)</div>
+                        <div class="c-line c-del"><span class="c-num">5</span>- hris_emp_createleavebalance_ue.js (SS 1.0)</div>
+                        <div class="c-line c-del"><span class="c-num">6</span>- hris_emp_empdata_ue.js (SS 1.0)</div>
+                        <div class="c-line c-del"><span class="c-num">7</span>- hris_emp_inactiveedcrecord_ue.js (SS 1.0)</div>
+                        <div class="c-line c-del"><span class="c-num">8</span>- hris_employeetoemployeecompensationchange_ue.js (SS 1.0)</div>
+                        <div class="c-line c-del"><span class="c-num">9</span>- hris_emp_setholiday_ue.js (SS 1.0)</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: Consolidated Single UE Script (SS 2.1)</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ /** @NApiVersion 2.1 @NScriptType UserEventScript */</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+ define(['N/record', 'N/search', 'N/runtime', 'N/task', 'N/log'],</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+   (record, search, runtime, task, log) => {</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+     // Unified beforeLoad, beforeSubmit, afterSubmit across all 9 User Event tasks</div>
+                        <div class="c-line c-add"><span class="c-num">5</span>+     return { beforeLoad, beforeSubmit, afterSubmit };</div>
+                        <div class="c-line c-add"><span class="c-num">6</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 1 -->
+        <div class="tab-content" id="tab-2">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0</div>
+                    <div class="code-view">
+                        <div class="c-line"><span class="c-num">1</span>function leaving_date_saveRecord() {</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>-   var customform = nlapiGetFieldValue('customform');</div>
+                        <div class="c-line c-del"><span class="c-num">3</span>-   var searchEmpRec = nlapiSearchRecord('employee', null, Filters, Colm);</div>
+                        <div class="c-line"><span class="c-num">4</span>}</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ define(['N/search', 'N/log'], (search, log) => {</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+   const saveRecord = (scriptContext) => {</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+     const customForm = scriptContext.currentRecord.getValue({ fieldId: 'customform' });</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+     const searchEmpRec = search.create({ type: search.Type.EMPLOYEE, ... }).run();</div>
+                        <div class="c-line c-add"><span class="c-num">5</span>+   };</div>
+                        <div class="c-line c-add"><span class="c-num">6</span>+   return { saveRecord };</div>
+                        <div class="c-line c-add"><span class="c-num">7</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 2 -->
+        <div class="tab-content" id="tab-3">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0</div>
+                    <div class="code-view">
+                        <div class="c-line c-del"><span class="c-num">1</span>- i_Current_User = nlapiGetUser();</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>- var url = nlapiResolveURL('SUITELET', ...);</div>
+                        <div class="c-line c-del"><span class="c-num">3</span>- nlapiRequestURL(url);</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ const currentUser = runtime.getCurrentUser().id;</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+ const urlStr = urlModule.resolveScript({ scriptId, deploymentId, params });</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+ httpsModule.get({ url: urlStr });</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+ window.setFileOptimized = setFileOptimized; // Exposed for window popups</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 3 -->
+        <div class="tab-content" id="tab-4">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 2.0</div>
+                    <div class="code-view">
+                        <div class="c-line c-del"><span class="c-num">1</span>- define(["N/record", "./moment.js"], function(record, moment) {</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>-   var jobconform_dt = moment(hire_date).add(probationdays, 'days').format('D/M/YYYY');</div>
+                        <div class="c-line"><span class="c-num">3</span>  });</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ define(['N/record', 'N/format'], (record, format) => {</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+   let jobdate = new Date(hireDate.getTime());</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+   jobdate.setDate(jobdate.getDate() + probationdays);</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 4 -->
+        <div class="tab-content" id="tab-5">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0</div>
+                    <div class="code-view">
+                        <div class="c-line c-del"><span class="c-num">1</span>- var empRegion = nlapiGetFieldValue("custentity_hris_empworkinglocation");</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>- nlapiSetFieldValues("custentity_hris_empholidays", holidayList);</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ const empRegion = currentRecord.getValue({ fieldId: 'custentity_hris_empworkinglocation' });</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+ currentRecord.setValue({ fieldId: 'custentity_hris_empholidays', value: holidayList });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 5 -->
+        <div class="tab-content" id="tab-6">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0</div>
+                    <div class="code-view">
+                        <div class="c-line c-del"><span class="c-num">1</span>- if (ESICCheck == 'F') {</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>-   alert('ESIC has to deducted till September or March...');</div>
+                        <div class="c-line"><span class="c-num">3</span>  }</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ if (isEsic === false || isEsic === 'F') {</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+   dialog.alert({ title: 'ESIC Validation Warning', message: 'ESIC has to deducted till September or March...' });</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+ }</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 6 -->
+        <div class="tab-content" id="tab-7">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 2.0 (User Event)</div>
+                    <div class="code-view">
+                        <div class="c-line c-del"><span class="c-num">1</span>- var concatenatedName = empCode + ' - ' + empFullName;</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>- var customRecord = record.create({ type: 'customrecord_cseg_njt_seg_emp', isDynamic: true });</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1 (UserEventScript)</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ define(['N/record', 'N/log'], (record, log) => {</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+   const concatenatedName = `${empCode} - ${empFullName}`;</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+   const customRecord = record.create({ type: 'customrecord_cseg_njt_seg_emp', isDynamic: true });</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 7 -->
+        <div class="tab-content" id="tab-8">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0 (User Event)</div>
+                    <div class="code-view">
+                        <div class="c-line"><span class="c-num">1</span>function afterSubmitRecord_createRecord(type) {</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>-   var status = nlapiScheduleScript('customscript_hris_emp_leavecredit', ...);</div>
+                        <div class="c-line"><span class="c-num">3</span>}</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1 (UserEventScript)</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ define(['N/task', 'N/log'], (task, log) => {</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+   const afterSubmit = (scriptContext) => {</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+     const scheduledTask = task.create({ taskType: task.TaskType.SCHEDULED_SCRIPT, scriptId: 'customscript_hris_emp_leavecredit', deploymentId: 'customdeploy_hris_emp_leavecredit', params });</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+     scheduledTask.submit();</div>
+                        <div class="c-line c-add"><span class="c-num">5</span>+   };</div>
+                        <div class="c-line c-add"><span class="c-num">6</span>+   return { afterSubmit };</div>
+                        <div class="c-line c-add"><span class="c-num">7</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 8 -->
+        <div class="tab-content" id="tab-9">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0 (User Event)</div>
+                    <div class="code-view">
+                        <div class="c-line c-del"><span class="c-num">1</span>- var EmpObj = nlapiLoadRecord('employee', Empid); // Redundant load</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>- form.getButton('edit').setDisabled(true);</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1 (UserEventScript)</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ const isInactive = scriptContext.newRecord.getValue({ fieldId: 'isinactive' });</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+ const editButton = scriptContext.form.getButton({ id: 'edit' });</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+ if (editButton) editButton.isDisabled = true;</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 9 -->
+        <div class="tab-content" id="tab-10">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0 (User Event)</div>
+                    <div class="code-view">
+                        <div class="c-line"><span class="c-num">1</span>function employeeDataRecordCreation(type) {</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>-   var ed_search = nlapiSearchRecord('customrecord_hris_employeedatasourcing', ...);</div>
+                        <div class="c-line c-del"><span class="c-num">3</span>-   var edRecord = nlapiCreateRecord('customrecord_hris_employeedatasourcing');</div>
+                        <div class="c-line c-del"><span class="c-num">4</span>-   nlapiSubmitRecord(edRecord);</div>
+                        <div class="c-line"><span class="c-num">5</span>}</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1 (UserEventScript)</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ define(['N/record', 'N/search', 'N/log'], (record, search, log) => {</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+   const afterSubmit = (scriptContext) => {</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+     const edSearch = search.create({ type: 'customrecord_hris_employeedatasourcing', ... }).run();</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+     const edRecord = record.create({ type: 'customrecord_hris_employeedatasourcing', isDynamic: true });</div>
+                        <div class="c-line c-add"><span class="c-num">5</span>+     edRecord.save();</div>
+                        <div class="c-line c-add"><span class="c-num">6</span>+   };</div>
+                        <div class="c-line c-add"><span class="c-num">7</span>+   return { afterSubmit };</div>
+                        <div class="c-line c-add"><span class="c-num">8</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 10 -->
+        <div class="tab-content" id="tab-11">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0 (User Event)</div>
+                    <div class="code-view">
+                        <div class="c-line"><span class="c-num">1</span>function beforeLoadAction(type, form, request) {</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>-   var res = nlapiLoadRecord("employee", recid);</div>
+                        <div class="c-line c-del"><span class="c-num">3</span>-   form.setScript("customscript_hris_empleave_cs");</div>
+                        <div class="c-line"><span class="c-num">4</span>}</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1 (UserEventScript)</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ define(['N/log'], (log) => {</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+   const beforeLoad = (scriptContext) => {</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+     scriptContext.form.clientScriptFileId = 'customscript_hris_empleave_cs';</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+   };</div>
+                        <div class="c-line c-add"><span class="c-num">5</span>+   return { beforeLoad };</div>
+                        <div class="c-line c-add"><span class="c-num">6</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 11 -->
+        <div class="tab-content" id="tab-12">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0 (User Event)</div>
+                    <div class="code-view">
+                        <div class="c-line"><span class="c-num">1</span>function generate_employee_code(type) {</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>-   var formattedUniqueNumber = padNumber(i_unique_num, 5);</div>
+                        <div class="c-line c-del"><span class="c-num">3</span>-   nlapiSubmitField('customrecord_hris_unique_reference_numbe', i_id_unique_ref, 'custrecord_hris_unique_number', unique_number);</div>
+                        <div class="c-line"><span class="c-num">4</span>}</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1 (UserEventScript)</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ define(['N/record', 'N/search', 'N/log'], (record, search, log) => {</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+   const beforeSubmit = (scriptContext) => {</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+     const formattedUniqueNumber = String(nextUniqueNum).padStart(5, '0');</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+     record.submitFields({ type: 'customrecord_hris_unique_reference_numbe', id: iIdUniqueRef, values: { custrecord_hris_unique_number: nextUniqueNum } });</div>
+                        <div class="c-line c-add"><span class="c-num">5</span>+   };</div>
+                        <div class="c-line c-add"><span class="c-num">6</span>+   return { beforeSubmit };</div>
+                        <div class="c-line c-add"><span class="c-num">7</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 12 -->
+        <div class="tab-content" id="tab-13">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0 (User Event)</div>
+                    <div class="code-view">
+                        <div class="c-line"><span class="c-num">1</span>function EventAfterSubmit(type) {</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>-   var EDCREC = nlapiLoadRecord('customrecord_hris_employee_compen_change', EDCID);</div>
+                        <div class="c-line c-del"><span class="c-num">3</span>-   EDCREC.setFieldValue('isinactive', 'T');</div>
+                        <div class="c-line c-del"><span class="c-num">4</span>-   nlapiSubmitRecord(EDCREC, true, true);</div>
+                        <div class="c-line"><span class="c-num">5</span>}</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1 (UserEventScript)</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ define(['N/record', 'N/search', 'N/runtime', 'N/log'], (record, search, runtime, log) => {</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+   const afterSubmit = (scriptContext) => {</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+     // Syncs 4 custom child records using record.submitFields with only 2 governance units per record!</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+     record.submitFields({ type: recordType, id: recId, values: { isinactive: targetInactiveVal } });</div>
+                        <div class="c-line c-add"><span class="c-num">5</span>+   };</div>
+                        <div class="c-line c-add"><span class="c-num">6</span>+   return { afterSubmit };</div>
+                        <div class="c-line c-add"><span class="c-num">7</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 13 -->
+        <div class="tab-content" id="tab-14">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0 (User Event)</div>
+                    <div class="code-view">
+                        <div class="c-line"><span class="c-num">1</span>function SourceValueFromEmployeeAfterSubmit(type) {</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>-   var EmployeeId = SearchEmployeeInfo(recordId); // Redundant search for 30+ fields</div>
+                        <div class="c-line c-del"><span class="c-num">3</span>-   var o_employeeDataChange = nlapiLoadRecord('customrecord_hris_employee_compen_change', EDCId);</div>
+                        <div class="c-line c-del"><span class="c-num">4</span>-   nlapiSubmitRecord(o_employeeDataChange, false, true);</div>
+                        <div class="c-line"><span class="c-num">5</span>}</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1 (UserEventScript)</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ define(['N/record', 'N/search', 'N/runtime', 'N/log'], (record, search, runtime, log) => {</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+   const afterSubmit = (scriptContext) => {</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+     // Directly reads 30+ fields from scriptContext.newRecord and updates custom record via submitFields</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+     record.submitFields({ type: 'customrecord_hris_employee_compen_change', id: edcId, values: updateValues });</div>
+                        <div class="c-line c-add"><span class="c-num">5</span>+   };</div>
+                        <div class="c-line c-add"><span class="c-num">6</span>+   return { afterSubmit };</div>
+                        <div class="c-line c-add"><span class="c-num">7</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script 14 -->
+        <div class="tab-content" id="tab-15">
+            <div class="diff-container">
+                <div class="diff-card">
+                    <div class="diff-header old">OLD: SuiteScript 1.0 (User Event)</div>
+                    <div class="code-view">
+                        <div class="c-line"><span class="c-num">1</span>function SourceValueFromEmployeeAfterSubmit(type) {</div>
+                        <div class="c-line c-del"><span class="c-num">2</span>-   o_employee = nlapiLoadRecord('employee', recordId);</div>
+                        <div class="c-line c-del"><span class="c-num">3</span>-   o_employee.setFieldValues('custentity_hris_empholidays', holidayList);</div>
+                        <div class="c-line c-del"><span class="c-num">4</span>-   nlapiSubmitRecord(o_employee, false, true);</div>
+                        <div class="c-line"><span class="c-num">5</span>}</div>
+                    </div>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-header new">NEW: SuiteScript 2.1 (UserEventScript)</div>
+                    <div class="code-view">
+                        <div class="c-line c-add"><span class="c-num">1</span>+ define(['N/record', 'N/search', 'N/log'], (record, search, log) => {</div>
+                        <div class="c-line c-add"><span class="c-num">2</span>+   const afterSubmit = (scriptContext) => {</div>
+                        <div class="c-line c-add"><span class="c-num">3</span>+     const holidayList = searchHolidays(empLocation);</div>
+                        <div class="c-line c-add"><span class="c-num">4</span>+     record.submitFields({ type: record.Type.EMPLOYEE, id: recordId, values: { custentity_hris_empholidays: holidayList } });</div>
+                        <div class="c-line c-add"><span class="c-num">5</span>+   };</div>
+                        <div class="c-line c-add"><span class="c-num">6</span>+   return { afterSubmit };</div>
+                        <div class="c-line c-add"><span class="c-num">7</span>+ });</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Checklist -->
+    <section class="section-box">
+        <h2 class="section-title">4. Deployment Options</h2>
+        <ul class="checklist">
+            <li class="checklist-item">
+                <span class="check-bullet">★</span>
+                <div><strong>OPTION A (Recommended - Consolidated Deployments)</strong>: Deploy <code>hris_emp_consolidated_cs.js</code> as the single Client Script and <code>hris_emp_consolidated_ue.js</code> as the single User Event Script to the Employee Record form. This eliminates script execution conflicts, reduces system overhead, and optimizes execution limits.</div>
+            </li>
+            <li class="checklist-item">
+                <span class="check-bullet">✓</span>
+                <div><strong>OPTION B (Modular Deployments)</strong>: Alternatively deploy individual script files from <code>new script/Employee Record/Client Script/</code> and <code>new script/Employee Record/User Event Script/</code> if modular deployment per feature is preferred.</div>
+            </li>
+        </ul>
+    </section>
+
+    <footer class="footer">
+        NetSuite SuiteScript 2.1 Migration Specification • Workspace Project
+    </footer>
+
+</div>
+
+<script>
+    function showTab(index, btnEl) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        btnEl.classList.add('active');
+        document.getElementById('tab-' + index).classList.add('active');
+    }
+</script>
+
+</body>
+</html>

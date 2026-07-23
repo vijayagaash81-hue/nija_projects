@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation: WinStar HR Attendance Report Fix</title>
+    <meta name="description" content="Technical documentation for the WinStar HRMS Attendance Portal Suitelet, detailing the SuiteQL 5,000-row limit truncation issue and its pagination solution.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a5f;
+            --primary-light: #2d4c7a;
+            --secondary: #0284c7;
+            --accent: #f97316;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --code-bg: #1e293b;
+            --code-text: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--secondary);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .header-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .header-badge {
+            background-color: var(--secondary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            position: sticky;
+            top: 40px;
+            height: fit-content;
+        }
+
+        .sidenav {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .sidenav-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .sidenav ul {
+            list-style: none;
+        }
+
+        .sidenav li {
+            margin-bottom: 8px;
+        }
+
+        .sidenav a {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .sidenav a:hover {
+            background-color: #f1f5f9;
+            color: var(--secondary);
+            transform: translateX(4px);
+        }
+
+        .sidenav a.active {
+            background-color: #eff6ff;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .sidenav-icon {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Content Area */
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        p {
+            color: #334155;
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        /* KPI Cards style */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            margin-bottom: 24px;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .info-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .icon-blue { background: #e0f2fe; color: #0284c7; }
+        .icon-orange { background: #ffedd5; color: #ea580c; }
+        .icon-green { background: #d1fae5; color: #059669; }
+
+        .info-card-content h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-card-content p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0;
+            color: var(--primary);
+        }
+
+        /* Database Diagram style */
+        .diagram-container {
+            background-color: #0f172a;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 24px 0;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .diagram-node {
+            background: #1e293b;
+            border: 2px solid #38bdf8;
+            border-radius: 8px;
+            padding: 16px;
+            color: white;
+            width: 210px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .diagram-node.highlight {
+            border-color: var(--accent);
+        }
+
+        .node-header {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #38bdf8;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 4px;
+        }
+
+        .node-field {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #cbd5e1;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .node-field span {
+            color: #64748b;
+        }
+
+        .diagram-arrow {
+            color: #64748b;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Code block style */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            margin: 20px 0;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .code-annotation {
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .keyword { color: #f472b6; }
+        .function { color: #38bdf8; }
+        .string { color: #a7f3d0; }
+        .number { color: #fca5a5; }
+        .comment { color: #64748b; }
+
+        /* Compare Grid */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        @media (min-width: 900px) {
+            .compare-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .compare-pane {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .compare-header {
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .compare-header.broken {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border-bottom: 2px solid #fecaca;
+        }
+
+        .compare-header.fixed {
+            background-color: #d1fae5;
+            color: #065f46;
+            border-bottom: 2px solid #a7f3d0;
+        }
+
+        .compare-pane pre {
+            margin: 0;
+            border-radius: 0;
+            border: none;
+            height: 100%;
+        }
+
+        /* Alerts and Callouts */
+        .callout {
+            border-left: 4px solid;
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
+        }
+
+        .callout.info {
+            background-color: #eff6ff;
+            border-color: var(--secondary);
+            color: #1e40af;
+        }
+
+        .callout.warning {
+            background-color: #fffbeb;
+            border-color: var(--warning);
+            color: #92400e;
+        }
+
+        .callout.danger {
+            background-color: #fef2f2;
+            border-color: var(--danger);
+            color: #991b1b;
+        }
+
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Diagnostic Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        td {
+            font-size: 0.95rem;
+        }
+
+        .diag-status {
+            font-weight: 600;
+        }
+
+        .status-danger { color: var(--danger); }
+        .status-warning { color: var(--warning); }
+        .status-success { color: var(--success); }
+
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            aside {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <span class="header-badge">Developer Docs</span>
+            <h1 id="top">WinStar HRMS: Attendance Portal</h1>
+            <p class="subtitle">Technical details of the SuiteQL 5,000 limit issue and pagination solution</p>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar Menu -->
+        <aside>
+            <div class="sidenav">
+                <div class="sidenav-title">Documentation</div>
+                <ul>
+                    <li><a href="#overview" class="active"><svg class="sidenav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> Overview</a></li>
+                    <li><a href="#problem"><svg class="sidenav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg> The Problem</a></li>
+                    <li><a href="#solution"><svg class="sidenav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg> The Solution</a></li>
+                    <li><a href="#database"><svg class="sidenav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg> Data Model</a></li>
+                    <li><a href="#diagnostics"><svg class="sidenav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"></path></svg> Troubleshooting</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Content Section -->
+        <main>
+            <!-- Overview -->
+            <section id="overview">
+                <h2>Overview</h2>
+                <p>The <strong>WinStar Attendance Portal Suitelet</strong> aggregates and renders monthly attendance records for employees based on Subsidiary and Pay Group configurations. The script displays statuses (Present, Absent, Leave, Swipe Missing, Week Off) along with daily work/OT hours and project information.</p>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-card-icon icon-blue">👤</div>
+                        <div class="info-card-content">
+                            <h4>Active Employees</h4>
+                            <p>236 in Subsidiary</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon icon-green">📅</div>
+                        <div class="info-card-content">
+                            <h4>Standard Wage Period</h4>
+                            <p>31 Days (July 2026)</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon icon-orange">📊</div>
+                        <div class="info-card-content">
+                            <h4>Total Row Potential</h4>
+                            <p>~7,316 Rows</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Problem -->
+            <section id="problem">
+                <h2>The Problem: 5,000-Row Truncation</h2>
+                <p>The Suitelet script initially used <code>query.runSuiteQL().asMappedResults()</code> to fetch employee logs. While this standard SuiteSQL API works well for small datasets, it contains a hard NetSuite governance limit of **5,000 results** per call. Any records beyond 5,000 are discarded.</p>
+                
+                <div class="callout danger">
+                    <div class="callout-title">Impact of the 5,000 Limit</div>
+                    <p>When loading July 2026, the database had <strong>7,113 total logs</strong>. Because the query was sorted by name (<code>ORDER BY emp_name</code>), the query cut off exactly at the 5,000th record. The last 2,113 rows were completely lost, which caused employees later in the alphabet (S to Z) to disappear from the report.</p>
+                </div>
+            </section>
+
+            <!-- Solution -->
+            <section id="solution">
+                <h2>The Solution: SuiteQL Pagination</h2>
+                <p>To bypass the 5,000-row limit, the code was updated to use <strong><code>query.runSuiteQLPaged()</code></strong>. This native SuiteScript 2.x API slices the results into distinct, paginated blocks of 1,000 rows, allowing us to safely retrieve datasets up to 100,000 rows.</p>
+
+                <div class="compare-grid">
+                    <!-- Broken version -->
+                    <div class="compare-pane">
+                        <div class="compare-header broken">
+                            <span>Before (Broken - Limits to 5,000)</span>
+                            <span>❌</span>
+                        </div>
+                        <pre><code><span class="comment">// Standard SuiteQL execution</span>
+<span class="keyword">var</span> results = query.runSuiteQL({
+    query: sql,
+    params: [subId, start, end]
+}).asMappedResults();
+
+log.debug(<span class="string">'Results'</span>, results.length); 
+<span class="comment">// Hard truncated to exactly 5000</span></code></pre>
+                    </div>
+
+                    <!-- Fixed version -->
+                    <div class="compare-pane">
+                        <div class="compare-header fixed">
+                            <span>After (Fixed - Paginated)</span>
+                            <span>✓</span>
+                        </div>
+                        <pre><code><span class="comment">// Paged execution loop</span>
+<span class="keyword">var</span> results = [];
+<span class="keyword">try</span> {
+    <span class="keyword">var</span> pagedResults = query.runSuiteQLPaged({
+        query: sql,
+        params: [subId, start, end],
+        pageSize: <span class="number">1000</span>
+    });
+    pagedResults.pageRanges.forEach(<span class="keyword">function</span> (pageRange) {
+        <span class="keyword">var</span> page = pagedResults.fetch({ 
+            index: pageRange.index 
+        });
+        results = results.concat(page.data.asMappedResults());
+    });
+} <span class="keyword">catch</span> (queryErr) {
+    <span class="comment">// Fallback safe trigger</span>
+    results = query.runSuiteQL({ ... }).asMappedResults();
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="callout info">
+                    <div class="callout-title">Outcome</div>
+                    <p>The record count successfully increased from <strong>5,000 to 7,113</strong>, and the number of active rendering employees in the Suitelet climbed from ~160 to **230 employees**, showing alphabetical listings through the letter Z.</p>
+                </div>
+            </section>
+
+            <!-- Data Model -->
+            <section id="database">
+                <h2>Database Model & Inner Joins</h2>
+                <p>The script uses an <code>INNER JOIN</code> database relation. An employee will only show up on the report if there is a match in all three tables.</p>
+
+                <div class="diagram-container">
+                    <div class="diagram-node">
+                        <div class="node-header">C: Employee</div>
+                        <div class="node-field">id <span>(PK)</span></div>
+                        <div class="node-field">subsidiary <span>(FK)</span></div>
+                        <div class="node-field">custentity_hris_empcode</div>
+                    </div>
+                    <div class="diagram-arrow">➔</div>
+                    <div class="diagram-node highlight">
+                        <div class="node-header">A: Parent Attendance</div>
+                        <div class="node-field">id <span>(PK)</span></div>
+                        <div class="node-field">custrecord_njt_emp_atten_employee <span>(FK)</span></div>
+                    </div>
+                    <div class="diagram-arrow">➔</div>
+                    <div class="diagram-node">
+                        <div class="node-header">B: Child Daily Logs</div>
+                        <div class="node-field">id <span>(PK)</span></div>
+                        <div class="node-field">custrecord_njt_emp_daily_parent <span>(FK)</span></div>
+                        <div class="node-field">custrecord_njt_emp_daily_date <span>(Date)</span></div>
+                    </div>
+                </div>
+
+                <div class="callout warning">
+                    <div class="callout-title">Join Conditions</div>
+                    <p>If an employee record exists, but has <strong>no parent attendance record</strong> or <strong>zero daily logs</strong> within the selected date range, they will be excluded from the results.</p>
+                </div>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section id="diagnostics">
+                <h2>Troubleshooting Missing Employees</h2>
+                <p>To debug the remaining 6 missing employees, we added a diagnostic check that runs comparison checks on active employees in the selected subsidiary and logs the status to the execution log.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Diagnostic Output Status</th>
+                            <th>Root Cause</th>
+                            <th>Resolution Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="diag-status status-danger">Missing Parent Attendance Record</td>
+                            <td>The parent custom record <code>CUSTOMRECORD_NJT_EMP_DAILY_ATTENDANCE</code> has not been created for this employee.</td>
+                            <td>Create a parent attendance header record for the employee in NetSuite.</td>
+                        </tr>
+                        <tr>
+                            <td class="diag-status status-warning">Parent record exists, but has 0 daily logs</td>
+                            <td>The parent record exists, but no children detail logs (<code>CUSTOMRECORD_NJT_EMP_DAILY_ATTEN_CH</code>) are logged in the wage period date range.</td>
+                            <td>Verify that the daily attendance logs are imported or run for the selected month.</td>
+                        </tr>
+                        <tr>
+                            <td class="diag-status status-success">Has X logs in date range. Check for code mismatch.</td>
+                            <td>Logs exist in the database, but the employee code or name contains mismatching spaces/data fields that cause mapping failures.</td>
+                            <td>Check that the employee code field (<code>custentity_hris_empcode</code>) matches the parent lookup details.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Simple script to highlight active section in sidebar on scroll
+        window.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    if (entry.intersectionRatio > 0.5) {
+                        document.querySelectorAll('.sidenav a').forEach(a => a.classList.remove('active'));
+                        document.querySelector(`.sidenav a[href="#${id}"]`).classList.add('active');
+                    }
+                });
+            }, { threshold: 0.6 });
+
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
