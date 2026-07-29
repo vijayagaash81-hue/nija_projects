@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Allocation Validation Testing Checklist - SuiteScript 2.1</title>
+    <meta name="description" content="Interactive testing checklist for verifying migrated SuiteScript 2.1 validations and User Event hooks on NetSuite Loan Allocation records.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #0b0f19;
+            --bg-card: #161c2a;
+            --bg-accent-subtle: #1e2640;
+            --border-color: #283556;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-light: rgba(99, 102, 241, 0.15);
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.15);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.15);
+            --danger: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.15);
+            --info: #06b6d4;
+            --info-light: rgba(6, 182, 212, 0.15);
+            --text-main: #f8fafc;
+            --text-body: #94a3b8;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            line-height: 1.6;
+            padding: 3rem 1.5rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Glassmorphism Header */
+        header.doc-header {
+            background: linear-gradient(135deg, rgba(22, 28, 42, 0.9) 0%, rgba(11, 15, 25, 0.9) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        header.doc-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--info), var(--success));
+        }
+
+        .badges {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 6px 12px;
+            border-radius: 30px;
+            border: 1px solid transparent;
+        }
+
+        .badge-primary {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .badge-info {
+            background-color: var(--info-light);
+            color: var(--info);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .badge-success {
+            background-color: var(--success-light);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-body);
+            max-width: 700px;
+        }
+
+        /* Progress Card */
+        .progress-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .progress-title {
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .progress-pct {
+            color: var(--success);
+            font-size: 1.1rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background-color: var(--bg-accent-subtle);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--info), var(--success));
+            border-radius: 10px;
+            transition: width 0.4s cubic-bezier(0.1, 0.8, 0.25, 1);
+        }
+
+        /* Controls Block */
+        .controls-block {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            position: relative;
+            min-width: 250px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--primary);
+        }
+
+        .filter-btn {
+            background-color: var(--bg-accent-subtle);
+            color: var(--text-body);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.825rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: var(--text-main);
+            border-color: var(--primary);
+        }
+
+        .reset-btn {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            margin-left: auto;
+        }
+
+        .reset-btn:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Section Headings inside Checklist */
+        .checklist-section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin: 1.5rem 0 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+
+        /* Validation Card */
+        .validation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .validation-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .validation-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .validation-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            height: 24px;
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .validation-card.checked .custom-checkbox {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .custom-checkbox::after {
+            content: '✓';
+            color: var(--bg-page);
+            font-size: 13px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .validation-card.checked .custom-checkbox::after {
+            display: block;
+        }
+
+        .validation-info {
+            flex-grow: 1;
+        }
+
+        .validation-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .validation-card.checked .validation-title {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .trigger-tag {
+            font-size: 0.725rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .tag-pageinit {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .tag-fieldchanged {
+            background-color: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .tag-saverecord {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+
+        .tag-beforeload {
+            background-color: var(--info-light);
+            color: var(--info);
+        }
+
+        .tag-beforesubmit {
+            background-color: rgba(167, 139, 250, 0.15);
+            color: #a78bfa;
+        }
+
+        .validation-desc {
+            font-size: 0.9rem;
+            color: var(--text-body);
+        }
+
+        .validation-card.checked .validation-desc {
+            color: var(--text-muted);
+        }
+
+        .toggle-details {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .validation-card.expanded .toggle-details {
+            transform: rotate(180deg);
+        }
+
+        /* Expanded Panel */
+        .validation-details {
+            background-color: rgba(11, 15, 25, 0.4);
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .validation-card.expanded .validation-details {
+            display: block;
+        }
+
+        .detail-section {
+            margin-bottom: 1rem;
+        }
+
+        .detail-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            font-size: 0.775rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .field-pill {
+            display: inline-block;
+            background-color: var(--bg-accent-subtle);
+            color: #60a5fa;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+        }
+
+        .steps-list {
+            padding-left: 1.25rem;
+            font-size: 0.875rem;
+            color: var(--text-body);
+        }
+
+        .steps-list li {
+            margin-bottom: 0.35rem;
+        }
+
+        .code-snippet {
+            background-color: #0d1117;
+            border: 1px solid #21262d;
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #c9d1d9;
+            margin-top: 0.25rem;
+        }
+
+        /* Footer */
+        footer.doc-footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header class="doc-header">
+        <div class="badges">
+            <span class="badge badge-primary">Client Script</span>
+            <span class="badge badge-info">User Event</span>
+            <span class="badge badge-success">SuiteScript 2.1</span>
+        </div>
+        <h1>Loan Allocation Validation Checklist</h1>
+        <p class="subtitle">Interactive manual testing blueprint to verify validations, calculations, UI customizations, and auto-numbering events across both client and server scripts.</p>
+    </header>
+
+    <!-- Progress Indicator -->
+    <div class="progress-card">
+        <div class="progress-meta">
+            <span class="progress-title" id="progress-text">Testing Progress (0 of 13 Complete)</span>
+            <span class="progress-pct" id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="controls-block">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search validation name, trigger, or field ID..." onkeyup="filterList()">
+        </div>
+        <button class="filter-btn active" id="btn-all" onclick="setFilter('all')">All</button>
+        <button class="filter-btn" id="btn-pageinit" onclick="setFilter('pageinit')">pageInit</button>
+        <button class="filter-btn" id="btn-fieldchanged" onclick="setFilter('fieldchanged')">fieldChanged</button>
+        <button class="filter-btn" id="btn-saverecord" onclick="setFilter('saverecord')">saveRecord</button>
+        <button class="filter-btn" id="btn-beforeload" onclick="setFilter('beforeload')">beforeLoad</button>
+        <button class="filter-btn" id="btn-beforesubmit" onclick="setFilter('beforesubmit')">beforeSubmit</button>
+        <button class="reset-btn" id="btn-reset" onclick="resetChecklist()">Reset Progress</button>
+    </div>
+
+    <!-- Checklist Cards -->
+    <main class="validation-list" id="validation-list">
+
+        <!-- ==================== CLIENT SCRIPT VALIDATIONS ==================== -->
+        <div class="checklist-section-title" id="sec-cs">
+            <span>Client Script (hris_loan_allocation_cs.js)</span>
+        </div>
+        
+        <!-- Item 1: pageInit Pay Group Auto-Population -->
+        <article class="validation-card" data-trigger="pageinit" id="v-1">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-1')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-1')">
+                    <div class="validation-title">
+                        Auto-populate Process Group on Load
+                        <span class="trigger-tag tag-pageinit">pageInit</span>
+                    </div>
+                    <div class="validation-desc">Verify that the pay process group automatically loads when creating a new record.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-1')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Impacted Fields</div>
+                    <span class="field-pill">custrecord_hris_loan_emp_name</span> (Employee) &rarr; 
+                    <span class="field-pill">custrecord_hris_loan_process_group</span> (Process Group)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Open a new Loan Allocation form.</li>
+                        <li>Verify if an employee is pre-filled. If so, check if <strong>Process Group</strong> is sourced automatically from the latest Employee Compensation Change record.</li>
+                        <li>If the form loads with no Employee, check that <strong>Process Group</strong> remains blank.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (scriptContext.mode === 'create') {
+    const empVal = currentRecord.getValue({ fieldId: 'custrecord_hris_loan_emp_name' });
+    if (!isNullOrEmpty(empVal)) {
+        const payGrp = searchPayGroup(empVal);
+        currentRecord.setValue({ fieldId: 'custrecord_hris_loan_process_group', value: payGrp });
+    }
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- Item 2: Employee FieldChange Sourcing -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-2">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-2')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-2')">
+                    <div class="validation-title">
+                        Auto-populate Process Group on Employee Change
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that updating the Employee updates the Process Group.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-2')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Impacted Fields</div>
+                    <span class="field-pill">custrecord_hris_loan_emp_name</span> (Employee) &rarr;
+                    <span class="field-pill">custrecord_hris_loan_process_group</span> (Process Group)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Change the value of the <strong>Employee</strong> field.</li>
+                        <li>Verify that the <strong>Process Group</strong> field is updated with the employee's matching process group retrieved from their compensation change history.</li>
+                        <li>Clear the <strong>Employee</strong> field and verify that the <strong>Process Group</strong> field is immediately cleared as well.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (fieldId === 'custrecord_hris_loan_emp_name') {
+    const empVal = currentRecord.getValue({ fieldId: 'custrecord_hris_loan_emp_name' });
+    const payGrp = empVal ? searchPayGroup(empVal) : '';
+    currentRecord.setValue({ fieldId: 'custrecord_hris_loan_process_group', value: payGrp });
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- Item 3: Loan Master Sourcing Logs -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-3">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-3')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-3')">
+                    <div class="validation-title">
+                        Loan Master Sourcing Logs
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that changing Loan Amount performs searches against Loan Master correctly.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-3')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Impacted Fields</div>
+                    <span class="field-pill">custrecord_hris_loan_amount</span> (Loan Amount)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Change the value of the <strong>Loan Amount</strong> field.</li>
+                        <li>Open the browser's console or developer tools, or look at the NetSuite script logs.</li>
+                        <li>Confirm a log entry named <strong>"Loan Amount check values"</strong> is written, displaying the resolved employee grade and the calculated ceiling amount from the Loan Master.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (fieldId === 'custrecord_hris_loan_amount') {
+    const empGrade = SearchEmpGrade(empId);
+    const ceilingAmt = searchLoanType(empGrade, loanType);
+    log.debug({ title: 'Loan Amount check values', details: { empGrade, ceilingAmt, loanAmt } });
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- Item 4: EMI Amount check -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-4">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-4')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-4')">
+                    <div class="validation-title">
+                        EMI Amount Exceeds Loan Amount Check
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that EMI Amount is not permitted to exceed Loan Amount.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-4')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Impacted Fields</div>
+                    <span class="field-pill">custrecord_hris_loan_amount</span> (Loan Amount) &amp;
+                    <span class="field-pill">custrecord_hris_loan_emi_amount</span> (EMI Amount)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Set <strong>Loan Amount</strong> to <code>1000</code>.</li>
+                        <li>Enter <code>1200</code> in the <strong>EMI Amount</strong> field and press tab.</li>
+                        <li>Confirm an alert modal is triggered: <strong>"EMI Amount should not be greater than Loan Amount"</strong>.</li>
+                        <li>Press OK and verify the <strong>EMI Amount</strong> is immediately cleared.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (fieldId === 'custrecord_hris_loan_emi_amount') {
+    if (emiAmt > loanAmt) {
+        alert('EMI Amount should not be greater than Loan Amount');
+        currentRecord.setValue({ fieldId: 'custrecord_hris_loan_emi_amount', value: '' });
+    }
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- Item 5: EMI Start Month Calculation -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-5">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-5')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-5')">
+                    <div class="validation-title">
+                        EMI Start Month & End Date Calculation
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that changing EMI Start Month automatically calculates the End Month.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-5')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Impacted Fields</div>
+                    <span class="field-pill">custrecord_hris_loan_emistartmonth</span> (EMI Start Month) &rarr;
+                    <span class="field-pill">custrecord_hris_loan_emi_end_date</span> (EMI End Date)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Parameters</div>
+                    <ul class="steps-list">
+                        <li>Input <strong>Installments</strong>: <code>12</code></li>
+                        <li>Input <strong>EMI Start Month</strong>: A mid-month date (e.g. <code>15-Jul-2026</code>).</li>
+                        <li>Verify that an alert triggers: <strong>"EMI start date should be END DATE of selected month"</strong>. Check that both start and end date fields are reset to blank.</li>
+                        <li>Now input a correct month-end date (e.g. <code>31-Jul-2026</code>).</li>
+                        <li>Confirm that <strong>EMI End Date</strong> automatically populates with the end date of the 12th month (e.g. <code>30-Jun-2027</code>).</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (fieldId === 'custrecord_hris_loan_emistartmonth') {
+    // ... Calculates the last day of (start month + installments - 1)
+    if (strEmiStartDate !== lastDayOfStartMonth) {
+        alert('EMI start date should be END DATE of selected month');
+        currentRecord.setValue({ fieldId: 'custrecord_hris_loan_emistartmonth', value: '' });
+        currentRecord.setValue({ fieldId: 'custrecord_hris_loan_emi_end_date', value: '' });
+    } else {
+        currentRecord.setValue({ fieldId: 'custrecord_hris_loan_emi_end_date', value: toDateValue });
+    }
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- Item 6: EMI End Date Verification -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-6">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-6')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-6')">
+                    <div class="validation-title">
+                        EMI End Date Validation
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify validations triggered when manually editing EMI End Date.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-6')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Impacted Fields</div>
+                    <span class="field-pill">custrecord_hris_loan_emi_end_date</span> (EMI End Date)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Enter a valid start date (e.g., <code>31-Jul-2026</code>).</li>
+                        <li>Enter an end date earlier than the start date (e.g., <code>30-Jun-2026</code>). Confirm that an alert triggers: <strong>"EMI End Month should be greater than EMI Start Month"</strong> and the field resets to blank.</li>
+                        <li>Enter a valid future end date but in the middle of the month (e.g., <code>15-Jun-2027</code>). Confirm that an alert triggers: <strong>"EMI end date should be END DATE of selected month"</strong> and the field resets to blank.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (fieldId === 'custrecord_hris_loan_emi_end_date') {
+    if (strEmiStartDate && strEndDate < strEmiStartDate) {
+        alert('EMI End Month should be greater than EMI Start Month');
+        currentRecord.setValue({ fieldId: 'custrecord_hris_loan_emi_end_date', value: '' });
+    }
+    if (strEmiEndDate !== lastDayOfEndMonth) {
+        alert('EMI end date should be END DATE of selected month');
+        currentRecord.setValue({ fieldId: 'custrecord_hris_loan_emi_end_date', value: '' });
+    }
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- Item 7: SaveRecord Block -->
+        <article class="validation-card" data-trigger="saverecord" id="v-7">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-7')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-7')">
+                    <div class="validation-title">
+                        Prevent Submission with Invalid Dates
+                        <span class="trigger-tag tag-saverecord">saveRecord</span>
+                    </div>
+                    <div class="validation-desc">Verify that the record cannot be saved if End Date is before Start Date.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-7')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Save Block Validation</div>
+                    <span class="field-pill">custrecord_hris_loan_emistartmonth</span> &amp;
+                    <span class="field-pill">custrecord_hris_loan_emi_end_date</span>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Fudge or manipulate the date fields so that EMI End Date is before EMI Start Date (bypassing Client alerts if possible, e.g. through keyboard inputs).</li>
+                        <li>Click <strong>Save</strong>.</li>
+                        <li>Verify that the record fails to submit, staying on the edit form page instead.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">const saveRecord = (scriptContext) => {
+    // ...
+    if (strEmiEndDate && strEmiStartDate && strEmiEndDate < strEmiStartDate) {
+        return false;
+    }
+    return true;
+};</pre>
+                </div>
+            </div>
+        </article>
+
+
+        <!-- ==================== USER EVENT SCRIPT VALIDATIONS ==================== -->
+        <div class="checklist-section-title" id="sec-ue">
+            <span>User Event Script (hris_generate_ref_no_ues.js)</span>
+        </div>
+
+        <!-- Item 8: Disable Name Field on Load -->
+        <article class="validation-card" data-trigger="beforeload" id="v-8">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-8')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-8')">
+                    <div class="validation-title">
+                        Disable Record Name Field on Load
+                        <span class="trigger-tag tag-beforeload">beforeLoad</span>
+                    </div>
+                    <div class="validation-desc">Verify that the standard Name field is read-only for all users on load.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-8')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Target Field</div>
+                    <span class="field-pill">name</span> (Record ID Name)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Load the Loan Allocation record in Create, Edit, or View mode.</li>
+                        <li>Verify that the <strong>Name</strong> field at the top is grayed out / disabled and cannot be edited by keyboard inputs.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">const nameField = form.getField({ id: 'name' });
+if (nameField) {
+    nameField.updateDisplayType({ displayType: serverWidget.FieldDisplayType.DISABLED });
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- Item 9: Hide Workflow Status on Create -->
+        <article class="validation-card" data-trigger="beforeload" id="v-9">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-9')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-9')">
+                    <div class="validation-title">
+                        Hide Workflow Status on Create Mode
+                        <span class="trigger-tag tag-beforeload">beforeLoad</span>
+                    </div>
+                    <div class="validation-desc">Verify that the workflow status is hidden specifically in create mode.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-9')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Target Field</div>
+                    <span class="field-pill">custrecord_workflowstatus</span> (Workflow Status)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Open the form in <strong>Create</strong> mode. Verify that the <strong>Workflow Status</strong> field is hidden.</li>
+                        <li>Load an existing record in <strong>Edit</strong> or <strong>View</strong> mode. Verify that the <strong>Workflow Status</strong> field is visible.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (triggerType === scriptContext.UserEventType.CREATE) {
+    const workflowStatusField = form.getField({ id: `custrecord_${PREFIX}_workflowstatus` });
+    if (workflowStatusField) {
+        workflowStatusField.updateDisplayType({ displayType: serverWidget.FieldDisplayType.HIDDEN });
+    }
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- Item 10: Format Status In Color -->
+        <article class="validation-card" data-trigger="beforeload" id="v-10">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-10')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-10')">
+                    <div class="validation-title">
+                        HTML Status Sourcing & Color Formatting
+                        <span class="trigger-tag tag-beforeload">beforeLoad</span>
+                    </div>
+                    <div class="validation-desc">Verify that the status is stylized and rendered in red color on View/Edit mode.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-10')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Target Fields</div>
+                    <span class="field-pill">custrecord_status</span> (Status value hidden) &rarr;
+                    <span class="field-pill">custrecord_status_in_color</span> (HTML Display Status)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Load an existing record.</li>
+                        <li>Verify that the standard <strong>Status</strong> text field is hidden.</li>
+                        <li>Verify that a customized label displays: <strong>"STATUS: [Value]"</strong> rendered in large red text.</li>
+                        <li>If the record is newly created (or status is empty) on Edit, check that the status defaults to <strong>"Draft"</strong>.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">const statusVal = newRecord.getValue({ fieldId: `custrecord_${PREFIX}_status` });
+let statusInColor = '';
+if (!isNullOrEmpty(statusVal)) {
+    statusInColor = `&lt;BR&gt;&lt;font size=2&gt;STATUS&lt;/font&gt;&lt;BR&gt;&lt;font color="red" size=2&gt;${statusVal}&lt;/font&gt;`;
+} else if (triggerType !== scriptContext.UserEventType.CREATE) {
+    statusInColor = '&lt;BR&gt;&lt;font size=2&gt;STATUS&lt;/font&gt;&lt;BR&gt;&lt;font color="red" size=2&gt;Draft&lt;/font&gt;';
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- Item 11: Hide Administrative Fields for Non-Admins -->
+        <article class="validation-card" data-trigger="beforeload" id="v-11">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-11')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-11')">
+                    <div class="validation-title">
+                        Hide Administrative Fields for Non-Admins
+                        <span class="trigger-tag tag-beforeload">beforeLoad</span>
+                    </div>
+                    <div class="validation-desc">Verify that approval helper fields are hidden from non-admin roles.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-11')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Target Roles & Fields</div>
+                    <strong>Non-Admin User Roles</strong> vs. 18 Workflow Fields (e.g. <code>custrecord_wfhelp</code>, <code>custrecord_app_no</code>, <code>custrecord_comments</code>, etc.)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Log in with an <strong>Administrator</strong> or <strong>Full Access</strong> role. Verify that workflow fields are visible in the form layout.</li>
+                        <li>Log in as a standard employee or non-admin role.</li>
+                        <li>Verify that all 18 system administrative/approval fields are completely hidden from the form.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (userRoleId !== 'administrator' && userRoleId !== 'full_access') {
+    const suffixes = ['_wfhelp', '_app_no', '_wfs', '_currentapprover', ...];
+    suffixes.forEach(suffix => {
+        const fld = form.getField({ id: `custrecord_${PREFIX}${suffix}` });
+        if (fld) fld.updateDisplayType({ displayType: serverWidget.FieldDisplayType.HIDDEN });
+    });
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- Item 12: Conditional Preview / Issue Buttons on Letter Request -->
+        <article class="validation-card" data-trigger="beforeload" id="v-12">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-12')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-12')">
+                    <div class="validation-title">
+                        Conditional Action Buttons on Letter Requests
+                        <span class="trigger-tag tag-beforeload">beforeLoad</span>
+                    </div>
+                    <div class="validation-desc">Verify that Preview/Issue buttons load conditionally on Letter Request VIEW mode.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-12')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Target Record & Conditions</div>
+                    <span class="field-pill">customrecord_hris_lve_letter_req</span> in <strong>VIEW Mode</strong>.
+                    <br>Conditions: Role ID 1001 or 1003, current approval level is 2, and workflow status is not 5.
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Open a <strong>Letter Request</strong> record matching the conditions in VIEW mode.</li>
+                        <li>Verify that the helper client script `customscript_cli_ihr_ess_ssr_btnclick` is loaded on the page.</li>
+                        <li>If the <strong>Certificate Letter</strong> field is empty, verify that the <strong>"Preview Document"</strong> button appears at the top.</li>
+                        <li>If the <strong>Certificate Letter</strong> field contains a value, verify that the <strong>"Issue Letter"</strong> button appears instead.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (userRole === 1001 || userRole === 1003) {
+    if (isNullOrEmpty(certificate)) {
+        form.addButton({ id: 'custpage_preview_document', label: 'Preview Document', functionName: "onClickPreviewDocBtn(...)" });
+    } else {
+        form.addButton({ id: 'custpage_preview_document', label: 'Issue Letter', functionName: "onClickIssueLatterBtn(...)" });
+    }
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- Item 13: Auto-generate Reference Number on Create -->
+        <article class="validation-card" data-trigger="beforesubmit" id="v-13">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-13')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-13')">
+                    <div class="validation-title">
+                        Auto-generate Transaction Reference Number
+                        <span class="trigger-tag tag-beforesubmit">beforeSubmit</span>
+                    </div>
+                    <div class="validation-desc">Verify auto-incrementing custom reference key generation for new records.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-13')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Key Sourcing Fields</div>
+                    <span class="field-pill">name</span> &larr;
+                    <code>LON</code> + <code>[Employee initials prefix]</code> + <code>[Unique Increment]</code> + <code>[Current Year]</code>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Ensure a sequence record exists in the <strong>Unique Reference Number</strong> custom table (matching the loan allocation record type). Let's say the current sequence is <code>45</code>.</li>
+                        <li>Create a new Loan Allocation record for employee <strong>"Vijay Agash"</strong>.</li>
+                        <li>Save the record.</li>
+                        <li>Verify the saved record's <strong>Name</strong> becomes <code>LON-VASH-46-2026</code> (Format: prefix-initials-sequence-year).</li>
+                        <li>Verify in the sequence record table that the unique reference index is updated to <code>46</code>.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">const sAutoNumber = `${sAutoPrfix}-${sEmpChar}${lastFour}-${iUniqueNum}-${iFullYear}`;
+newRecord.setValue({ fieldId: 'name', value: sAutoNumber });
+record.submitFields({
+    type: 'customrecord_hris_unique_reference_numbe',
+    id: iIdUniqueRef,
+    values: { custrecord_hris_unique_number: iUniqueNum }
+});</pre>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="doc-footer">
+        <p>Loan Allocation Verification Checklist • NetSuite Refactoring Project</p>
+    </footer>
+</div>
+
+<script>
+    // Initialize checked state from localStorage
+    document.addEventListener("DOMContentLoaded", function() {
+        const storedData = localStorage.getItem("loan_checklist_progress");
+        if (storedData) {
+            const checkedIds = JSON.parse(storedData);
+            checkedIds.forEach(id => {
+                const card = document.getElementById(id);
+                if (card) {
+                    card.classList.add("checked");
+                }
+            });
+        }
+        updateProgressBar();
+    });
+
+    // Toggle checked status of items
+    function toggleChecked(event, cardId) {
+        event.stopPropagation(); // Stop click from triggering toggleDetails
+        const card = document.getElementById(cardId);
+        if (card) {
+            card.classList.toggle("checked");
+            saveProgress();
+            updateProgressBar();
+        }
+    }
+
+    // Toggle expanded card details
+    function toggleDetails(cardId) {
+        const card = document.getElementById(cardId);
+        if (card) {
+            card.classList.toggle("expanded");
+        }
+    }
+
+    // Save checklist state to localStorage
+    function saveProgress() {
+        const checkedCards = document.querySelectorAll(".validation-card.checked");
+        const checkedIds = Array.from(checkedCards).map(card => card.id);
+        localStorage.setItem("loan_checklist_progress", JSON.stringify(checkedIds));
+    }
+
+    // Update progress indicator
+    function updateProgressBar() {
+        const total = document.querySelectorAll(".validation-card").length;
+        const checked = document.querySelectorAll(".validation-card.checked").length;
+        const pct = total > 0 ? Math.round((checked / total) * 100) : 0;
+        
+        document.getElementById("progress-text").innerText = `Testing Progress (${checked} of ${total} Complete)`;
+        document.getElementById("progress-pct").innerText = `${pct}%`;
+        document.getElementById("progress-bar").style.width = `${pct}%`;
+    }
+
+    // Reset progress
+    function resetChecklist() {
+        if (confirm("Are you sure you want to clear your testing progress?")) {
+            const cards = document.querySelectorAll(".validation-card");
+            cards.forEach(card => card.classList.remove("checked"));
+            localStorage.removeItem("loan_checklist_progress");
+            updateProgressBar();
+        }
+    }
+
+    // Filter list based on trigger buttons
+    let currentFilter = 'all';
+    function setFilter(filterType) {
+        currentFilter = filterType;
+        
+        // Update filter buttons state
+        document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+        document.getElementById(`btn-${filterType}`).classList.add("active");
+        
+        applyFilters();
+    }
+
+    // Apply combined filter & search
+    function applyFilters() {
+        const searchText = document.getElementById("search-input").value.toLowerCase();
+        const cards = document.querySelectorAll(".validation-card");
+        const sections = {
+            'cs': document.getElementById('sec-cs'),
+            'ue': document.getElementById('sec-ue')
+        };
+        
+        let csVisible = false;
+        let ueVisible = false;
+
+        cards.forEach(card => {
+            const trigger = card.getAttribute("data-trigger");
+            const textContent = card.innerText.toLowerCase();
+            
+            const matchesFilter = (currentFilter === 'all' || trigger === currentFilter);
+            const matchesSearch = textContent.includes(searchText);
+            
+            if (matchesFilter && matchesSearch) {
+                card.style.display = "block";
+                if (card.id.startsWith('v-') && parseInt(card.id.replace('v-', '')) <= 7) {
+                    csVisible = true;
+                } else {
+                    ueVisible = true;
+                }
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        // Toggle section title headers visibility based on results
+        sections.cs.style.display = (currentFilter === 'all' || ['pageinit', 'fieldchanged', 'saverecord'].includes(currentFilter)) && csVisible ? "block" : "none";
+        sections.ue.style.display = (currentFilter === 'all' || ['beforeload', 'beforesubmit'].includes(currentFilter)) && ueVisible ? "block" : "none";
+    }
+
+    // Search bar helper
+    function filterList() {
+        applyFilters();
+    }
+</script>
+
+</body>
+</html>

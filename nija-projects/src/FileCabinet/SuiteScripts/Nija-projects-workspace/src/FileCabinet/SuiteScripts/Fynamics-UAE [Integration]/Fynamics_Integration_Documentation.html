@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetSuite to Fynamics-UAE E-Invoicing Integration Documentation</title>
+    <style>
+        /* --- MS Word Style Sheet --- */
+        :root {
+            --word-bg-viewport: #f0f2f5;
+            --word-bg-page: #ffffff;
+            --word-border-page: #d3d3d3;
+            --word-text-primary: #333333;
+            --word-text-secondary: #555555;
+            --word-accent-blue: #2f5597; /* Standard Word Blue */
+            --word-dark-blue: #1f4e79;
+            --word-light-gray: #f2f2f2;
+            --word-border-gray: #bfbfbf;
+            --word-font: "Calibri", "Aptos", "Arial", sans-serif;
+            --word-mono: "Consolas", "Courier New", monospace;
+        }
+
+        /* Reset and Viewport Styling */
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--word-bg-viewport);
+            font-family: var(--word-font);
+            color: var(--word-text-primary);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Viewport Container */
+        .document-viewport {
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Page Container (Simulating A4 Page on screen) */
+        .word-page {
+            background-color: var(--word-bg-page);
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--word-border-page);
+            margin-bottom: 30px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* Typography & Headings */
+        h1.doc-title {
+            color: var(--word-dark-blue);
+            font-size: 24pt;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 5px;
+            line-height: 1.2;
+            font-family: var(--word-font);
+        }
+
+        .doc-subtitle {
+            color: var(--word-accent-blue);
+            font-size: 15pt;
+            font-weight: normal;
+            margin-top: 0;
+            margin-bottom: 35px;
+            line-height: 1.3;
+        }
+
+        h2.section-heading {
+            color: var(--word-accent-blue);
+            font-size: 16pt;
+            font-weight: bold;
+            border-bottom: 1.5px solid var(--word-accent-blue);
+            padding-bottom: 3px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            page-break-after: avoid;
+        }
+
+        h3.subsection-heading {
+            color: var(--word-dark-blue);
+            font-size: 13pt;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            page-break-after: avoid;
+        }
+
+        h4.subsubsection-heading {
+            color: var(--word-text-primary);
+            font-size: 11pt;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            page-break-after: avoid;
+        }
+
+        p {
+            font-size: 10.5pt;
+            line-height: 1.4;
+            margin-top: 0;
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        /* Metadata & Control Tables */
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 35px;
+            font-size: 9.5pt;
+        }
+
+        .meta-table td {
+            border: 1px solid var(--word-border-gray);
+            padding: 8px 12px;
+        }
+
+        .meta-table td.label {
+            background-color: var(--word-light-gray);
+            font-weight: bold;
+            width: 25%;
+            color: var(--word-text-secondary);
+        }
+
+        .meta-table td.value {
+            width: 25%;
+        }
+
+        /* Generic Data Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 9.5pt;
+        }
+
+        .data-table th {
+            background-color: var(--word-light-gray);
+            color: var(--word-dark-blue);
+            border: 1px solid var(--word-border-gray);
+            font-weight: bold;
+            padding: 8px 10px;
+            text-align: left;
+        }
+
+        .data-table td {
+            border: 1px solid var(--word-border-gray);
+            padding: 7px 10px;
+            vertical-align: top;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding-left: 20px;
+        }
+
+        li {
+            font-size: 10.5pt;
+            line-height: 1.4;
+            margin-bottom: 5px;
+        }
+
+        /* Monospace / Code Blocks */
+        code {
+            font-family: var(--word-mono);
+            font-size: 9pt;
+            background-color: #f5f5f5;
+            padding: 1px 3px;
+            border: 1px solid #e0e0e0;
+            border-radius: 3px;
+        }
+
+        pre {
+            background-color: #fafafa;
+            border: 1px solid var(--word-border-gray);
+            padding: 10px 14px;
+            margin: 12px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            page-break-inside: avoid;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            border: none;
+            font-size: 8.5pt;
+            color: #222222;
+        }
+
+        /* Note Blocks (Simulating Blockquotes in Word) */
+        .word-note {
+            border-left: 3px solid var(--word-accent-blue);
+            background-color: #f7f9fc;
+            padding: 10px 14px;
+            margin: 15px 0;
+            page-break-inside: avoid;
+        }
+
+        .word-note p {
+            margin: 0;
+            font-size: 10pt;
+            color: var(--word-text-secondary);
+        }
+
+        /* Decision Flow Box Styling (No Icons) */
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .flow-step {
+            border: 1px solid var(--word-border-gray);
+            padding: 10px 14px;
+            background-color: #ffffff;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .flow-step-header {
+            font-weight: bold;
+            color: var(--word-dark-blue);
+            font-size: 10pt;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .flow-step-body {
+            font-size: 9.5pt;
+            line-height: 1.3;
+        }
+
+        .flow-arrow {
+            text-align: center;
+            font-weight: bold;
+            color: var(--word-accent-blue);
+            font-size: 12pt;
+            margin: 3px 0;
+            line-height: 1;
+        }
+
+        .decision-branch {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .branch-option {
+            border: 1px dashed var(--word-border-gray);
+            padding: 10px;
+            background-color: #fafafa;
+            border-radius: 4px;
+        }
+
+        .branch-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 9.5pt;
+        }
+
+        .branch-yes {
+            border-left: 3px solid #2e7d32;
+        }
+
+        .branch-no {
+            border-left: 3px solid #c62828;
+        }
+
+        /* Footer styling (Word-like page number indicator) */
+        .page-footer {
+            position: absolute;
+            bottom: 20mm;
+            left: 20mm;
+            right: 20mm;
+            border-top: 1px solid var(--word-border-gray);
+            padding-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 8.5pt;
+            color: var(--word-text-secondary);
+        }
+
+        /* Responsive view on smaller screens */
+        @media screen and (max-width: 220mm) {
+            .document-viewport {
+                padding: 10px;
+            }
+            .word-page {
+                width: 100%;
+                height: auto;
+                padding: 15px;
+                margin-bottom: 15px;
+                box-shadow: none;
+            }
+            .page-footer {
+                position: static;
+                margin-top: 30px;
+                padding-bottom: 10px;
+            }
+        }
+
+        /* Print Override Styles (Pixel Perfect Alignment) */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0; /* Let the container handle layout margins */
+            }
+            body {
+                background-color: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                color: #000000 !important;
+            }
+            .document-viewport {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .word-page {
+                width: 210mm !important;
+                height: 297mm !important;
+                padding: 20mm !important;
+                margin: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                box-sizing: border-box !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                position: relative !important;
+            }
+            .page-footer {
+                position: absolute !important;
+                bottom: 20mm !important;
+                left: 20mm !important;
+                right: 20mm !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="document-viewport">
+        <!-- --- PAGE 1: COVER & OVERVIEW --- -->
+        <div class="word-page">
+            <h1 class="doc-title">NetSuite to Fynamics-UAE E-Invoicing</h1>
+            <div class="doc-subtitle">Technical Integration Specification &amp; Authentication Protocol</div>
+            
+            <!-- Document Control Table -->
+            <table class="meta-table">
+                <tr>
+                    <td class="label">Document ID</td>
+                    <td class="value">NS-FY-UAE-INT-001</td>
+                    <td class="label">Status</td>
+                    <td class="value">Initial Draft</td>
+                </tr>
+                <tr>
+                    <td class="label">Author</td>
+                    <td class="value">NetSuite Development Team</td>
+                    <td class="label">Version</td>
+                    <td class="value">1.0.0</td>
+                </tr>
+                <tr>
+                    <td class="label">Effective Date</td>
+                    <td class="value">July 28, 2026</td>
+                    <td class="label">Target Platform</td>
+                    <td class="value">Fynamics-UAE E-Invoicing</td>
+                </tr>
+            </table>
+
+            <h2 class="section-heading">1. Introduction &amp; Objectives</h2>
+            <p>
+                This document serves as the technical specification for establishing an automated integration between NetSuite ERP and the Fynamics-UAE e-invoicing platform. Fynamics is a certified tax service provider in the United Arab Emirates (UAE) that facilitates invoice clearance and reporting in accordance with the Federal Tax Authority (FTA) regulations.
+            </p>
+            <p>
+                The primary scope of the integration includes establishing a secure authentication handshake, maintaining session tokens, and routing transactional details from NetSuite into the Fynamics API endpoints for compliant e-invoice submission and signature.
+            </p>
+
+            <h2 class="section-heading">2. Integration Prerequisites &amp; Dependencies</h2>
+            <p>
+                To successfully implement and execute this integration, the following dependencies and configurations must be provisioned and resolved beforehand:
+            </p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">Prerequisite Item</th>
+                        <th style="width: 30%;">Requirement Details</th>
+                        <th style="width: 45%;">Actions Required / Verification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Fynamics API Credentials</strong></td>
+                        <td>Partner credentials containing username and password.</td>
+                        <td>Ensure credentials are acquired for sandbox testing. Production credentials will be issued upon testing sign-off.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>API Environments</strong></td>
+                        <td>URLs for Sandbox (Testing) and Production (Live) environments.</td>
+                        <td>Establish whitelisting rules in corporate firewalls if outbound NetSuite calls are restricted.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Invoice Fields Mapping</strong></td>
+                        <td>Data-level mappings between NetSuite invoice fields and Fynamics XML/JSON fields.</td>
+                        <td>Map NetSuite internal IDs (e.g., standard fields, custom transaction body fields) to corresponding Fynamics schema keys.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="word-note">
+                <p><strong>Note:</strong> Access to Sandbox environments must remain separate from Production configurations. A toggle switch or script parameter in NetSuite should determine the environment context dynamically.</p>
+            </div>
+
+            <div class="page-footer">
+                <span>NetSuite &amp; Fynamics-UAE Integration Specification</span>
+                <span>Page 1</span>
+            </div>
+        </div>
+
+        <!-- --- PAGE 2: AUTHENTICATION FLOW (REQUEST) --- -->
+        <div class="word-page">
+            <h2 class="section-heading">3. Authentication Protocol</h2>
+            <p>
+                The Fynamics-UAE platform secures its endpoints using OAuth 2.0 Client Credentials flow. NetSuite initiates the API session by submitting a POST request with basic authentication headers, receiving a temporary Bearer token in return.
+            </p>
+
+            <h3 class="subsection-heading">3.1 API Endpoints</h3>
+            <p>
+                The authentication endpoints correspond to the respective environments:
+            </p>
+            <ul>
+                <li><strong>Sandbox Endpoint:</strong> <code>https://sandbox-uae.fynamicstax.com/api/partner/auth/authenticate</code></li>
+                <li><strong>Production Endpoint:</strong> <code>https://uae.fynamicstax.com/api/partner/auth/authenticate</code></li>
+            </ul>
+
+            <h3 class="subsection-heading">3.2 Authentication Request Specification</h3>
+            <p>
+                The request must be structured as an HTTP POST containing the following parameters:
+            </p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Request Element</th>
+                        <th style="width: 30%;">Value Specification</th>
+                        <th style="width: 50%;">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>HTTP Method</strong></td>
+                        <td><code>POST</code></td>
+                        <td>Required for authentication requests.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Content-Type Header</strong></td>
+                        <td><code>application/x-www-form-urlencoded</code></td>
+                        <td>Declares form-encoded post-body payloads.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Authorization Header</strong></td>
+                        <td><code>Basic username:password</code></td>
+                        <td>Concatenation of Basic keyword and Fynamics credentials.<br><em>Developer Note: Standard protocols require credentials to be Base64-encoded. Use <code>N/encode</code> in SuiteScript to encode <code>"username:password"</code>.</em></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Body Parameters</strong></td>
+                        <td><code>grant_type=client_credentials<br>scope=read write</code></td>
+                        <td>Required fields within the request payload body.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="page-footer">
+                <span>NetSuite &amp; Fynamics-UAE Integration Specification</span>
+                <span>Page 2</span>
+            </div>
+        </div>
+
+        <!-- --- PAGE 3: AUTHENTICATION FLOW (RESPONSE & SNIPPETS) --- -->
+        <div class="word-page">
+            <h4 class="subsubsection-heading" style="margin-top: 0;">Reference Request Payload (JavaScript Fetch Example):</h4>
+            <pre style="margin-top: 5px;"><code>fetch('https://uae.fynamicstax.com/api/partner/auth/authenticate', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Authorization': 'Basic username:password'
+  },
+  body: new URLSearchParams({
+    grant_type: 'client_credentials',
+    scope: 'read write'
+  })
+})</code></pre>
+
+            <h3 class="subsection-heading">3.3 Authentication Response Specification</h3>
+            <p>
+                Upon successful validation of the credentials, the Fynamics server responds with an access token in the JSON body payload:
+            </p>
+            <pre><code>{
+  "success": 1,
+  "data": {
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9",
+    "token_type": "Bearer",
+    "expires_in": 3600
+  }
+}</code></pre>
+
+            <div class="page-footer">
+                <span>NetSuite &amp; Fynamics-UAE Integration Specification</span>
+                <span>Page 3</span>
+            </div>
+        </div>
+
+        <!-- --- PAGE 4: TOKEN LIFECYCLE MANAGEMENT --- -->
+        <div class="word-page">
+            <h2 class="section-heading">4. Token Lifecycle Management</h2>
+            <p>
+                The issued access token is transient and remains valid for exactly <strong>1 hour (3,600 seconds)</strong>. To prevent API throttling, a validation and storage logic must be established in NetSuite.
+            </p>
+
+            <h3 class="subsection-heading">4.1 Storage Strategy</h3>
+            <p>
+                The token and metadata must be stored in NetSuite using one of the following approaches:
+            </p>
+            <ul>
+                <li><strong>Custom Field:</strong> A designated custom field on a global configuration page.</li>
+                <li><strong>Custom Record:</strong> A specific Custom Record Type (e.g., <code>customrecord_fynamics_token_store</code>) holding a single persistent record. This is recommended.</li>
+            </ul>
+            <p>
+                The token store must capture: (1) Access Token, (2) Acquisition Timestamp, and (3) Expires In.
+            </p>
+
+            <h3 class="subsection-heading">4.2 Token Verification &amp; Retrieval Logic</h3>
+            <p>
+                When a NetSuite script initiates an outgoing invoice submission, it must execute the validation routine outlined below:
+            </p>
+
+            <div class="flow-container">
+                <div class="flow-step">
+                    <div class="flow-step-header">Step 1: Check Token Existence</div>
+                    <div class="flow-step-body">
+                        Query the NetSuite Custom Record/Field to retrieve the stored access token and its acquisition timestamp.
+                    </div>
+                </div>
+                
+                <div class="flow-arrow">▼</div>
+
+                <div class="decision-branch">
+                    <div class="branch-option branch-no">
+                        <div class="branch-title">Scenario A: Stored Token is Empty</div>
+                        <div class="flow-step-body">
+                            If no token is stored in NetSuite, skip validation and immediately execute the <strong>Authentication Routine</strong> (Section 4.3).
+                        </div>
+                    </div>
+                    <div class="branch-option branch-yes">
+                        <div class="branch-title">Scenario B: Token is Present</div>
+                        <div class="flow-step-body">
+                            Extract the stored Access Token, Acquisition Timestamp, and Expiry Period. Proceed to Step 2.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-arrow">▼</div>
+
+                <div class="flow-step">
+                    <div class="flow-step-header">Step 2: Evaluate Token Expiry</div>
+                    <div class="flow-step-body">
+                        Calculate the difference between the <strong>Current Time</strong> and the <strong>Acquisition Timestamp</strong>. Compare it against 3,600 seconds (minus a safety buffer of 60 seconds).
+                    </div>
+                </div>
+
+                <div class="flow-arrow">▼</div>
+
+                <div class="decision-branch">
+                    <div class="branch-option branch-yes">
+                        <div class="branch-title">Condition B.1: Token Not Expired</div>
+                        <div class="flow-step-body">
+                            If elapsed time &lt; 3,540 seconds, reuse token. Construct header: <code>"Authorization: Bearer [token]"</code>.
+                        </div>
+                    </div>
+                    <div class="branch-option branch-no">
+                        <div class="branch-title">Condition B.2: Token Expired</div>
+                        <div class="flow-step-body">
+                            If elapsed time &gt;= 3,540 seconds, trigger authentication. Update token store with new token.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-footer">
+                <span>NetSuite &amp; Fynamics-UAE Integration Specification</span>
+                <span>Page 4</span>
+            </div>
+        </div>
+
+        <!-- --- PAGE 5: ROUTINE AND CHECKLIST --- -->
+        <div class="word-page">
+            <h3 class="subsection-heading" style="margin-top: 0;">4.3 Authentication &amp; Storage Routine (Pseudo-code)</h3>
+            <p>
+                The following script routine encapsulates the verification and retrieval operations within NetSuite:
+            </p>
+            <pre style="margin-top: 5px; margin-bottom: 10px;"><code>function getValidFynamicsToken() {
+    var storedRecord = lookupStoredTokenRecord(); // Retrieve Custom Record
+    var now = new Date();
+
+    if (storedRecord) {
+        var token = storedRecord.token;
+        var acquisitionTime = new Date(storedRecord.timestamp);
+        var expiresInSeconds = storedRecord.expiresIn || 3600;
+
+        // Calculate age in seconds
+        var ageInSeconds = (now.getTime() - acquisitionTime.getTime()) / 1000;
+
+        // Use a 60-second buffer to prevent mid-flight token expiration
+        if (ageInSeconds < (expiresInSeconds - 60)) {
+            return token; // Token is valid; reuse it
+        }
+    }
+
+    // Token is missing or expired; authenticate to obtain a new one
+    var response = authenticateWithFynamics();
+    if (response.success == 1) {
+        // Save the new token data in NetSuite Custom Record
+        updateStoredTokenRecord(
+            response.data.access_token, 
+            now.toISOString(), 
+            response.data.expires_in
+        );
+        return response.data.access_token;
+    } else {
+        throw new Error("Fynamics authentication failed: " + response.errorMessage);
+    }
+}</code></pre>
+
+            <h2 class="section-heading" style="margin-top: 15px; margin-bottom: 8px;">5. Integration Verification &amp; Checklist</h2>
+            <table class="data-table" style="margin: 5px 0 15px 0;">
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Testing Checkpoint</th>
+                        <th style="width: 50%;">Expected Outcome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Execute authentication call against Fynamics Sandbox URL.</td>
+                        <td>Receive a successful <code>Bearer</code> token.</td>
+                    </tr>
+                    <tr>
+                        <td>Check Custom Record fields after authentication runs.</td>
+                        <td>The token and timestamp are stored and updated correctly.</td>
+                    </tr>
+                    <tr>
+                        <td>Verify token retrieval while it is still valid (&lt; 1 hour).</td>
+                        <td>The script reuse the token, avoiding redundant API calls.</td>
+                    </tr>
+                    <tr>
+                        <td>Simulate token expiration by setting record timestamp to 2 hours ago.</td>
+                        <td>The script triggers authentication, fetches a new token, and updates the store.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="page-footer">
+                <span>NetSuite &amp; Fynamics-UAE Integration Specification</span>
+                <span>Page 5</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

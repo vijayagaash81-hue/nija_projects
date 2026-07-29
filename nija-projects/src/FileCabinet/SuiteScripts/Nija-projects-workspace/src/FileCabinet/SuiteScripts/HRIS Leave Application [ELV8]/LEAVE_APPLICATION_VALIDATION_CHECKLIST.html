@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Application Validation Testing Checklist - SuiteScript 2.0</title>
+    <meta name="description" content="Interactive testing checklist for verifying business rules, calculations, and validations in the Annual Leave Client Script.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #0b0f19;
+            --bg-card: #161c2a;
+            --bg-accent-subtle: #1e2640;
+            --border-color: #283556;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-light: rgba(99, 102, 241, 0.15);
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.15);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.15);
+            --danger: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.15);
+            --info: #06b6d4;
+            --info-light: rgba(6, 182, 212, 0.15);
+            --text-main: #f8fafc;
+            --text-body: #94a3b8;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            line-height: 1.6;
+            padding: 3rem 1.5rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        /* Glassmorphism Header */
+        header.doc-header {
+            background: linear-gradient(135deg, rgba(22, 28, 42, 0.9) 0%, rgba(11, 15, 25, 0.9) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        header.doc-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--info), var(--success));
+        }
+
+        .badges {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 6px 12px;
+            border-radius: 30px;
+            border: 1px solid transparent;
+        }
+
+        .badge-primary {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .badge-info {
+            background-color: var(--info-light);
+            color: var(--info);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .badge-success {
+            background-color: var(--success-light);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-body);
+            max-width: 750px;
+        }
+
+        /* Progress Card */
+        .progress-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .progress-title {
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .progress-pct {
+            color: var(--success);
+            font-size: 1.1rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background-color: var(--bg-accent-subtle);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--info), var(--success));
+            border-radius: 10px;
+            transition: width 0.4s cubic-bezier(0.1, 0.8, 0.25, 1);
+        }
+
+        /* Controls Block */
+        .controls-block {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            position: relative;
+            min-width: 250px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--primary);
+        }
+
+        .filter-btn {
+            background-color: var(--bg-accent-subtle);
+            color: var(--text-body);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.825rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: var(--text-main);
+            border-color: var(--primary);
+        }
+
+        .reset-btn {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            margin-left: auto;
+        }
+
+        .reset-btn:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Section Headings */
+        .checklist-section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            color: var(--text-main);
+            margin: 2rem 0 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+
+        /* Validation Card */
+        .validation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .validation-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .validation-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .validation-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            height: 24px;
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .validation-card.checked .custom-checkbox {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .custom-checkbox::after {
+            content: '✓';
+            color: var(--bg-page);
+            font-size: 13px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .validation-card.checked .custom-checkbox::after {
+            display: block;
+        }
+
+        .validation-info {
+            flex-grow: 1;
+        }
+
+        .validation-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .validation-card.checked .validation-title {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .trigger-tag {
+            font-size: 0.725rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .tag-pageinit {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .tag-fieldchanged {
+            background-color: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .tag-saverecord {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+
+        .validation-desc {
+            font-size: 0.9rem;
+            color: var(--text-body);
+        }
+
+        .validation-card.checked .validation-desc {
+            color: var(--text-muted);
+        }
+
+        .toggle-details {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .validation-card.expanded .toggle-details {
+            transform: rotate(180deg);
+        }
+
+        /* Expanded Details Panel */
+        .validation-details {
+            background-color: rgba(11, 15, 25, 0.4);
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .validation-card.expanded .validation-details {
+            display: block;
+        }
+
+        .detail-section {
+            margin-bottom: 1rem;
+        }
+
+        .detail-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            font-size: 0.775rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .field-pill {
+            display: inline-block;
+            background-color: var(--bg-accent-subtle);
+            color: #60a5fa;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+        }
+
+        .steps-list {
+            padding-left: 1.25rem;
+            font-size: 0.875rem;
+            color: var(--text-body);
+        }
+
+        .steps-list li {
+            margin-bottom: 0.35rem;
+        }
+
+        .code-snippet {
+            background-color: #0d1117;
+            border: 1px solid #21262d;
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #c9d1d9;
+            margin-top: 0.25rem;
+        }
+
+        /* Footer */
+        footer.doc-footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header class="doc-header">
+        <div class="badges">
+            <span class="badge badge-primary">Client Script</span>
+            <span class="badge badge-success">ELV8 Sourcing</span>
+        </div>
+        <h1>Leave Application Validation Checklist</h1>
+        <p class="subtitle">Interactive checklist based on <code>hris_annual_leave_cs.js</code> to manually verify business logic, notice periods, service limits, calculations, and payroll block validations in your NetSuite account.</p>
+    </header>
+
+    <!-- Progress Indicator -->
+    <div class="progress-card">
+        <div class="progress-meta">
+            <span class="progress-title" id="progress-text">Testing Progress (0 of 17 Complete)</span>
+            <span class="progress-pct" id="progress-pct">0%</span>
+        </div>
+        <div class="progress-card-container">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="controls-block">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search validation name, trigger, or field ID..." onkeyup="filterList()">
+        </div>
+        <button class="filter-btn active" id="btn-all" onclick="setFilter('all')">All</button>
+        <button class="filter-btn" id="btn-pageinit" onclick="setFilter('pageinit')">pageInit</button>
+        <button class="filter-btn" id="btn-fieldchanged" onclick="setFilter('fieldchanged')">fieldChanged</button>
+        <button class="filter-btn" id="btn-saverecord" onclick="setFilter('saverecord')">saveRecord</button>
+        <button class="reset-btn" id="btn-reset" onclick="resetChecklist()">Reset Progress</button>
+    </div>
+
+    <!-- Checklist Cards -->
+    <main class="validation-list" id="validation-list">
+
+        <!-- ==================== INITIALIZATION TRIGGERS ==================== -->
+        <div class="checklist-section-title" id="sec-init">
+            <span>Form Initialization (pageInit)</span>
+        </div>
+
+        <!-- 1. URL Sourcing of Employee -->
+        <article class="validation-card" data-trigger="pageinit" id="v-1">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-1')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-1')">
+                    <div class="validation-title">
+                        URL Sourced Employee Name Parameter
+                        <span class="trigger-tag tag-pageinit">pageInit</span>
+                    </div>
+                    <div class="validation-desc">Verify that loading the form from a link containing url parameters auto-selects the employee.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-1')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Impacted Fields</div>
+                    <span class="field-pill">custrecord_hris_lve_employeename</span> (Employee Name)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Launch the record creation URL with parameters added at the end (e.g. <code>&record.custrecord_hris_lve_employeename=12345</code>).</li>
+                        <li>Verify that the <strong>Employee Name</strong> field automatically contains the employee with ID <code>12345</code>.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (scriptContext.mode === 'create') {
+    var urlParams = new URL(window.location.href).searchParams;
+    var emp = urlParams.get('record.custrecord_hris_lve_employeename');
+    if (emp) {
+        leaverecord.setValue({ fieldId: 'custrecord_hris_lve_employeename', value: emp });
+    }
+}</pre>
+                </div>
+            </div>
+        </article>
+
+
+        <!-- ==================== DYNAMIC EVENT VALIDATIONS ==================== -->
+        <div class="checklist-section-title" id="sec-fc">
+            <span>Dynamic Sourcing & Calculations (fieldChanged)</span>
+        </div>
+
+        <!-- 2. Sourcing Leave Balance -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-2">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-2')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-2')">
+                    <div class="validation-title">
+                        Sourcing Leave Balance & Slashes
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that changing dates or leave counts sources the correct remaining balance of Annual Leave.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-2')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_fromdate</span>, <span class="field-pill">custrecord_hris_lve_todate</span>, <span class="field-pill">custrecord_hris_lve_totalnodays</span> &rarr; <span class="field-pill">custrecord_hris_lve_leavebalance</span>, <span class="field-pill">custrecord_hris_lve_leavebalance_wholeno</span>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Ensure the leave type is **Annual Leave** (Sequence 3) and accrual is enabled.</li>
+                        <li>Update the From Date or To Date.</li>
+                        <li>Verify that the script searches the employee's `customrecord_hris_leavebalance` (considering Opening Balance details or Hire Date) and populates the **Leave Balance** (decimal) and **Leave Balance (Whole Number)** fields correctly.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">leavebalsearch = searchLeaveBalance(empname, query, empHireDateObj, format, moment, dateConsidered, fromdate, leavetype);
+leaverecord.setValue({ fieldId: 'custrecord_hris_lve_leavebalance', value: finalleavebal.toFixed(2) });
+leaverecord.setValue({ fieldId: 'custrecord_hris_lve_leavebalance_wholeno', value: roundfinalleavebal });</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 3. Emergency Leave Annual Limit -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-3">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-3')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-3')">
+                    <div class="validation-title">
+                        Emergency Leave 15-Day Annual Cap
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that emergency leave applications are capped at 15 cumulative days per year.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-3')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_leavetype</span> (Emergency Leave, Sequence 13), <span class="field-pill">custrecord_hris_lve_totalnodays</span>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Apply for emergency leave where the requested days + already approved emergency leave days in the same calendar year exceeds 15.</li>
+                        <li>Verify that an alert triggers: <strong>"You Should not apply Emergency Leave greater than 15"</strong>.</li>
+                        <li>Confirm that both the <strong>To Date</strong> and <strong>Total No of Days</strong> are reset to blank.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">var totalnodays = gettingemergencyleavedays(empname, leavetype, fromdateyear);
+totaldays = parseFloat(totaldays) + parseFloat(totalnodays);
+if (totaldays > 15) {
+    alert('You Should not apply Emergency Leave greater than 15');
+    leaverecord.setValue({ fieldId: 'custrecord_hris_lve_todate', value: '' });
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 4. Sourcing Last Working Date -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-4">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-4')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-4')">
+                    <div class="validation-title">
+                        Auto-populate Last Working Date
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that the Last Working Date is calculated automatically as From Date minus 1 day.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-4')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_fromdate</span> &rarr; <span class="field-pill">custrecord_hris_lve_lastworkingdate</span>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Enter a date in the <strong>Leave From Date</strong> field (e.g. <code>24-Jul-2026</code>).</li>
+                        <li>Verify that <strong>Last Working Date</strong> is automatically populated with the preceding day (e.g. <code>23-Jul-2026</code>).</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (scriptContext.fieldId == 'custrecord_hris_lve_fromdate') {
+    var fromDateObj = new Date(fromdate);
+    fromDateObj.setDate(fromDateObj.getDate() - 1);
+    leaverecord.setValue({ fieldId: 'custrecord_hris_lve_lastworkingdate', value: fromDateObj });
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 5. Completion of 12 Months Service -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-5">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-5')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-5')">
+                    <div class="validation-title">
+                        12 Months Service Limit for Annual Leave
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that Annual Leave can only be applied after completing 12 months of service.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-5')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_fromdate</span> (considering Employee Hire Date)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Select an employee with a hire date less than 1 year ago.</li>
+                        <li>Apply for **Annual Leave** (Sequence 3) with a start date within their first 12 months of employment.</li>
+                        <li>Verify that an alert triggers: <strong>"You are allowed to take Annual Leave only after completion of 12 months of service"</strong>.</li>
+                        <li>Confirm that the <strong>Leave From Date</strong> field is immediately reset to blank.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">var compareDate = moment(hireDate).add(365, 'days');
+if (compareDate >= fromdate) {
+    alert('You are allowed to take Annual Leave only after completion of 12 months of service');
+    leaverecord.setValue({ fieldId: 'custrecord_hris_lve_fromdate', value: '' });
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 6. Completion of 12 Months since Rejoining -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-6">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-6')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-6')">
+                    <div class="validation-title">
+                        12 Months Gap since Last Rejoining
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that Annual Leave requires a 12-month service duration since the previous rejoining date.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-6')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_fromdate</span> (considering previous leave rejoin date)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Verify an employee whose last annual leave rejoin date was less than 1 year from the new leave start date.</li>
+                        <li>Apply for a new annual leave.</li>
+                        <li>Verify that an alert triggers: <strong>"You are allowed to take Annual Leave only after completion of 12 months of rejoining date of the previous annual leave."</strong></li>
+                        <li>Confirm that the <strong>Leave From Date</strong> field is reset to blank.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">var rejoindate = gettingleaverejoindate(Leave_type, emp_name);
+if (rejoindate != '') {
+    var compareDate = moment(rejoindate).add(365, 'days');
+    if (compareDate >= fromdate) {
+        alert('You are allowed to take Annual Leave only after completion of 12... rejoining date');
+        leaverecord.setValue({ fieldId: 'custrecord_hris_lve_fromdate', value: '' });
+    }
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 7. Completion of 6 Months since Visa Renewal -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-7">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-7')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-7')">
+                    <div class="validation-title">
+                        6 Months Gap since Visa Renewal
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that Annual Leave can only be applied after 6 months have elapsed since visa renewal/issue.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-7')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_fromdate</span> (considering employee's ID Info record)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Find an employee whose visa issue date on their ID Info record is less than 6 months from the new leave start date.</li>
+                        <li>Apply for annual leave.</li>
+                        <li>Verify that an alert triggers: <strong>"You are allowed to take Annual Leave only after completion of 6 months of visa renewal."</strong></li>
+                        <li>Confirm that the <strong>Leave From Date</strong> field is reset to blank.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">var renewaldate = gettingvisarenewaldate(emp_name);
+if (renewaldate != '') {
+    var compareDate = moment(renewaldate).add(6, 'months');
+    if (compareDate >= fromdate) {
+        alert('You are allowed to take Annual Leave only after completion of 6 months of visa renewal.');
+        leaverecord.setValue({ fieldId: 'custrecord_hris_lve_fromdate', value: '' });
+    }
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 8. Standard Annual Leave Limit -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-8">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-8')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-8')">
+                    <div class="validation-title">
+                        Standard Annual Leave Duration Cap (12 Days)
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that standard (non-emergency) Annual Leave cannot exceed 12 calendar days.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-8')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_totalnodays</span>, <span class="field-pill">custrecord_hris_leave_application_emerge</span> (Unchecked)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Apply for **Annual Leave** (Sequence 3) with **Emergency** unchecked.</li>
+                        <li>Set dates so that <strong>Total No of Days</strong> is <code>13</code> or more.</li>
+                        <li>Verify that an alert triggers: <strong>"Standard Annual Leave duration cannot exceed 12 calendar days."</strong></li>
+                        <li>Confirm that both the To Date and Total No of Days fields are cleared.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (isEmergency == false || isEmergency == 'F') {
+    if (totaldays > 12) {
+        alert('Standard Annual Leave duration cannot exceed 12 calendar days.');
+        leaverecord.setValue({ fieldId: 'custrecord_hris_lve_todate', value: '' });
+        leaverecord.setValue({ fieldId: 'custrecord_hris_lve_totalnodays', value: '' });
+    }
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 9. Emergency Annual Leave Limit -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-9">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-9')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-9')">
+                    <div class="validation-title">
+                        Emergency Annual Leave Duration Cap (7 Days)
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that Emergency Annual Leave cannot exceed 7 calendar days.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-9')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_totalnodays</span>, <span class="field-pill">custrecord_hris_leave_application_emerge</span> (Checked)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Apply for **Annual Leave** (Sequence 3) with **Emergency** checked.</li>
+                        <li>Set dates so that <strong>Total No of Days</strong> is <code>8</code> or more.</li>
+                        <li>Verify that an alert triggers: <strong>"Emergency Annual Leave cannot exceed 7 calendar days."</strong></li>
+                        <li>Confirm that both the To Date and Total No of Days fields are cleared.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (isEmergency == true || isEmergency == 'T') {
+    if (totaldays > 7) {
+        alert('Emergency Annual Leave cannot exceed 7 calendar days.');
+        leaverecord.setValue({ fieldId: 'custrecord_hris_lve_todate', value: '' });
+        leaverecord.setValue({ fieldId: 'custrecord_hris_lve_totalnodays', value: '' });
+    }
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 10. Standard Annual Leave Notice Period -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-10">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-10')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-10')">
+                    <div class="validation-title">
+                        Standard Annual Leave 21-Day Notice Period
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that standard Annual Leave is blocked if applied less than 21 days in advance.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-10')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_fromdate</span>, <span class="field-pill">custrecord_hris_leave_application_emerge</span> (Unchecked)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Uncheck the <strong>Emergency</strong> field.</li>
+                        <li>Enter a <strong>From Date</strong> that is less than 21 days from today's current date.</li>
+                        <li>Verify that an alert triggers: <strong>"Standard Annual Leave must be applied for at least 21 days in advance."</strong></li>
+                        <li>Confirm that both the From Date and To Date fields are cleared.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">var noticeDiff = checkFromDate.getTime() - today.getTime();
+var noticeDays = Math.floor(noticeDiff / (1000 * 3600 * 24));
+if (noticeDays < 21) {
+    alert('Standard Annual Leave must be applied for at least 21 days in advance.');
+    leaverecord.setValue({ fieldId: 'custrecord_hris_lve_fromdate', value: '' });
+    leaverecord.setValue({ fieldId: 'custrecord_hris_lve_todate', value: '' });
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 11. Standard Annual Leave 90 Days Gap -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-11">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-11')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-11')">
+                    <div class="validation-title">
+                        Standard Annual Leave 90-Day Gap Requirement
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that standard Annual Leave requires a 90-day separation gap from the previous annual leave.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-11')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_fromdate</span>, <span class="field-pill">custrecord_hris_leave_application_emerge</span> (Unchecked)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Find an employee with a previously approved Annual Leave record. Note the end date.</li>
+                        <li>Apply for standard Annual Leave with a From Date less than 90 days after that previous end date.</li>
+                        <li>Verify that an alert triggers: <strong>"Rule Violation: A minimum 90-day gap is required between Standard Annual Leave applications."</strong></li>
+                        <li>Confirm that both the From Date and To Date fields are reset to blank.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">var gapDays = Math.floor(timeDiff / (1000 * 3600 * 24));
+if (gapDays < 90) {
+    alert('Rule Violation: A minimum 90-day gap is required between Standard Annual Leave applications.');
+    leaverecord.setValue({ fieldId: 'custrecord_hris_lve_fromdate', value: '' });
+    leaverecord.setValue({ fieldId: 'custrecord_hris_lve_todate', value: '' });
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 12. Payroll Connection block -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-12">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-12')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-12')">
+                    <div class="validation-title">
+                        Missing Pay Process Group Block
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that an employee cannot be selected if their Pay Process Group is missing.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-12')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_employeename</span> (Employee Name)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Select or create an employee who does not have an active compensation change record defining their pay process group.</li>
+                        <li>Select this employee in the <strong>Employee Name</strong> field.</li>
+                        <li>Verify that an alert triggers: <strong>"Selected Leave is connected with Payroll. And Pay Process Group is not defined..."</strong></li>
+                        <li>Confirm that the <strong>Employee Name</strong> field is reset to blank.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (employeecompensqlrecords.length == 0) {
+    alert('Selected Leave is connected with Payroll. And Pay Process Group is not defined...');
+    leaverecord.setValue({ fieldId: 'custrecord_hris_lve_employeename', value: '' });
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 13. Encashment Balance verification -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-13">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-13')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-13')">
+                    <div class="validation-title">
+                        Encashment Balance & Cap Limits
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify validations triggered when inputting number of encashment days.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-13')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_noofencashmentdays</span> (Encashment Days)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Enter a value in <strong>No of Encashment Days</strong> larger than the total available encashable balance. Confirm alert: <strong>"Encashment Balance low"</strong> and field reset.</li>
+                        <li>Enter a value larger than the max allowed encashable days. Confirm alert: <strong>"You are allowed to Encash maximum [X] days of leave"</strong> and field reset.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (applied_no_of_encashmentDays > total_avail_encash_days) {
+    alert('Encashment Balance low');
+    leaverecord.setValue('custrecord_hris_lve_noofencashmentdays', '');
+}
+if (applied_no_of_encashmentDays > max_encashDays) {
+    alert('You are allowed to Encash maximum ' + max_encashDays + ' days...');
+    leaverecord.setValue('custrecord_hris_lve_noofencashmentdays', '');
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 14. Expected Resume Date Sourcing -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-14">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-14')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-14')">
+                    <div class="validation-title">
+                        Auto-populate Expected Resume Date
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that the Expected Resume Date is calculated as To Date plus 1 day.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-14')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_todate</span> &rarr; <span class="field-pill">custrecord_hris_lve_expectedresumebackdt</span>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Enter a date in <strong>Leave To Date</strong> (e.g. <code>31-Jul-2026</code>).</li>
+                        <li>Verify that <strong>Expected Resume Back Date</strong> automatically populates with the next calendar day (e.g. <code>01-Aug-2026</code>).</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (scriptContext.fieldId == "custrecord_hris_lve_todate") {
+    toDate = moment(toDate).add(1, 'days').format('DD/MM/YYYY');
+    leaverecord.setValue("custrecord_hris_lve_expectedresumebackdt", toDate);
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 15. Actual Resume Date Constraints -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-15">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-15')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-15')">
+                    <div class="validation-title">
+                        Actual Resume Date Constraints & Delay
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that delay days are calculated and resume date is after start date.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-15')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_actualresumedate</span>, <span class="field-pill">custrecord_hris_lve_fromdate</span> &rarr; <span class="field-pill">custrecord_hris_lve_actualtotdelaydays</span>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Enter an <strong>Actual Resume Date</strong> that is equal to or before the <strong>Leave From Date</strong>. Confirm alert: <strong>"You can not Select Work resume as Leave From Date..."</strong> and fields reset.</li>
+                        <li>Enter a valid actual resume date. Verify that <strong>Actual Total Delay Days</strong> updates with the calculated difference (Actual Date - Expected Date).</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (totalDelayDays <= from_date) {
+    alert("You can not Select Work resume as Leave From Date or Less then Leave From Date");
+    leaverecord.setValue("custrecord_hris_lve_actualresumedate", "");
+}</pre>
+                </div>
+            </div>
+        </article>
+
+        <!-- 16. Air Ticket Allowance availability -->
+        <article class="validation-card" data-trigger="fieldchanged" id="v-16">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-16')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-16')">
+                    <div class="validation-title">
+                        Air Ticket Allowance Availment Limit
+                        <span class="trigger-tag tag-fieldchanged">fieldChanged</span>
+                    </div>
+                    <div class="validation-desc">Verify that Air Ticket Allowance is blocked if already received in the same year.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-16')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Fields Involved</div>
+                    <span class="field-pill">custrecord_hris_lve_airticketrequired</span> (Air Ticket Required)
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>Find or create an employee who has already received Air Ticket Allowance (`sequence_no` 36 on monthly salary input) for the applied year. Ensure rotation is disabled on the leave configuration.</li>
+                        <li>Toggle <strong>Air Ticket Required</strong> on.</li>
+                        <li>Verify that an alert triggers: <strong>"You have already availed Air Ticket Allowance for the Year [Year]"</strong> and the checkbox resets to unchecked.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (monthlysalarysqlrecords.length > 0 && b_allowRotation == false) {
+    alert("You have already availed Air Ticket Allowance for the Year " + year);
+    leaverecord.setValue("custrecord_hris_lve_airticketrequired", false);
+}</pre>
+                </div>
+            </div>
+        </article>
+
+
+        <!-- ==================== SUBMISSION VALIDATIONS ==================== -->
+        <div class="checklist-section-title" id="sec-sr">
+            <span>Form Submission Validation (saveRecord)</span>
+        </div>
+
+        <!-- 17. Carry Forward and Next Year Bounds -->
+        <article class="validation-card" data-trigger="saverecord" id="v-17">
+            <div class="validation-header">
+                <div class="checkbox-container">
+                    <div class="custom-checkbox" onclick="toggleChecked(event, 'v-17')"></div>
+                </div>
+                <div class="validation-info" onclick="toggleDetails('v-17')">
+                    <div class="validation-title">
+                        Next Year Carry Forward & Submission Limits
+                        <span class="trigger-tag tag-saverecord">saveRecord</span>
+                    </div>
+                    <div class="validation-desc">Verify that next-year leave submissions respect carry forward configurations on save.</div>
+                </div>
+                <div class="toggle-details" onclick="toggleDetails('v-17')">▼</div>
+            </div>
+            <div class="validation-details">
+                <div class="detail-section">
+                    <div class="detail-label">Database Controls</div>
+                    Uses Calendar End Date from <code>customrecord_hris_leave_calender_year</code> &amp; carry forward rules from <code>customrecord_hris_leaveconfig</code>.
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Test Instructions</div>
+                    <ul class="steps-list">
+                        <li>For a leave type with Carry Forward **disabled**, attempt to save a record starting in the next calendar year. Confirm alert: <strong>"You cannot Apply [Leave Type] for Next Year"</strong> and save is blocked.</li>
+                        <li>For a leave type with Carry Forward **enabled** (e.g. 90 days), save a record starting after the 90 days limit in the next year. Confirm alert: <strong>"You can apply [Leave Type] for next year within 90 Days."</strong> and save is blocked.</li>
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Code Block Reference</div>
+                    <pre class="code-snippet">if (carryforwardCHECK == "F") {
+    if (FromDate_YEAR > Cal_StartYear_String && FromDate_YEAR > Cal_EndYear_String) {
+        alert("You cannot Apply " + LeaveTYPE_text + " for Next Year");
+        return false;
+    }
+}
+if (carryforwardCHECK == "T" && FromDate_STRING > LastCarryFwd_DATE) {
+    alert("You can apply " + LeaveTYPE_text + " for next year within " + carryforwardDAYS + " Days.");
+    return false;
+}</pre>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="doc-footer">
+        <p>Leave Application Verification Checklist • NetSuite ELV8 Sourcing Project</p>
+    </footer>
+</div>
+
+<script>
+    // Initialize checked state from localStorage
+    document.addEventListener("DOMContentLoaded", function() {
+        const storedData = localStorage.getItem("leave_checklist_progress");
+        if (storedData) {
+            const checkedIds = JSON.parse(storedData);
+            checkedIds.forEach(id => {
+                const card = document.getElementById(id);
+                if (card) {
+                    card.classList.add("checked");
+                }
+            });
+        }
+        updateProgressBar();
+    });
+
+    // Toggle checked status of items
+    function toggleChecked(event, cardId) {
+        event.stopPropagation(); // Stop click from triggering toggleDetails
+        const card = document.getElementById(cardId);
+        if (card) {
+            card.classList.toggle("checked");
+            saveProgress();
+            updateProgressBar();
+        }
+    }
+
+    // Toggle expanded card details
+    function toggleDetails(cardId) {
+        const card = document.getElementById(cardId);
+        if (card) {
+            card.classList.toggle("expanded");
+        }
+    }
+
+    // Save checklist state to localStorage
+    function saveProgress() {
+        const checkedCards = document.querySelectorAll(".validation-card.checked");
+        const checkedIds = Array.from(checkedCards).map(card => card.id);
+        localStorage.setItem("leave_checklist_progress", JSON.stringify(checkedIds));
+    }
+
+    // Update progress indicator
+    function updateProgressBar() {
+        const total = document.querySelectorAll(".validation-card").length;
+        const checked = document.querySelectorAll(".validation-card.checked").length;
+        const pct = total > 0 ? Math.round((checked / total) * 100) : 0;
+        
+        document.getElementById("progress-text").innerText = `Testing Progress (${checked} of ${total} Complete)`;
+        document.getElementById("progress-pct").innerText = `${pct}%`;
+        document.getElementById("progress-bar").style.width = `${pct}%`;
+    }
+
+    // Reset progress
+    function resetChecklist() {
+        if (confirm("Are you sure you want to clear your testing progress?")) {
+            const cards = document.querySelectorAll(".validation-card");
+            cards.forEach(card => card.classList.remove("checked"));
+            localStorage.removeItem("leave_checklist_progress");
+            updateProgressBar();
+        }
+    }
+
+    // Filter list based on trigger buttons
+    let currentFilter = 'all';
+    function setFilter(filterType) {
+        currentFilter = filterType;
+        
+        // Update filter buttons state
+        document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+        document.getElementById(`btn-${filterType}`).classList.add("active");
+        
+        applyFilters();
+    }
+
+    // Apply combined filter & search
+    function applyFilters() {
+        const searchText = document.getElementById("search-input").value.toLowerCase();
+        const cards = document.querySelectorAll(".validation-card");
+        const sections = {
+            'init': document.getElementById('sec-init'),
+            'fc': document.getElementById('sec-fc'),
+            'sr': document.getElementById('sec-sr')
+        };
+        
+        let initVisible = false;
+        let fcVisible = false;
+        let srVisible = false;
+
+        cards.forEach(card => {
+            const trigger = card.getAttribute("data-trigger");
+            const textContent = card.innerText.toLowerCase();
+            
+            const matchesFilter = (currentFilter === 'all' || trigger === currentFilter);
+            const matchesSearch = textContent.includes(searchText);
+            
+            if (matchesFilter && matchesSearch) {
+                card.style.display = "block";
+                if (trigger === 'pageinit') {
+                    initVisible = true;
+                } else if (trigger === 'fieldchanged') {
+                    fcVisible = true;
+                } else if (trigger === 'saverecord') {
+                    srVisible = true;
+                }
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        // Toggle section title headers visibility based on results
+        sections.init.style.display = (currentFilter === 'all' || currentFilter === 'pageinit') && initVisible ? "block" : "none";
+        sections.fc.style.display = (currentFilter === 'all' || currentFilter === 'fieldchanged') && fcVisible ? "block" : "none";
+        sections.sr.style.display = (currentFilter === 'all' || currentFilter === 'saverecord') && srVisible ? "block" : "none";
+    }
+
+    // Search bar helper
+    function filterList() {
+        applyFilters();
+    }
+</script>
+
+</body>
+</html>
