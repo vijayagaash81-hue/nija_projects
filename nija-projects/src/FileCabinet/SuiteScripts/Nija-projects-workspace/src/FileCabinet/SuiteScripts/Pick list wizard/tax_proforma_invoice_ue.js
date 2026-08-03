@@ -1,0 +1,37 @@
+/**
+* @NApiVersion 2.x
+* @NScriptType UserEventScript
+* @NModuleScope Public
+*/
+define(['N/record', 'N/log', 'N/ui/serverWidget'], 
+    function(record, log, serverWidget) {
+        function beforeLoad(context) {
+            // Create a form
+            var form = context.form;
+            form.clientScriptModulePath = 'SuiteScripts/Layouts/tax_proforma_invoice_cs.js';
+            log.debug("form", form);
+            if (context.type == context.UserEventType.VIEW) {
+                // Get the current record
+                var currentRecord = context.newRecord;
+                log.debug("currentRecord", currentRecord);
+                
+                var requestButton = form.addButton({
+                    id: 'custpage_print_button',
+                    label: '🖶 TPI',
+                    functionName: 'printSelectedTemplate()'
+                });
+
+                // Add "Create Pick List" button pointing to Client Script handler
+                form.addButton({
+                    id: 'custpage_create_picklist',
+                    label: 'Create Pick List',
+                    functionName: 'callPickListSuitelet()'
+                });
+            }
+        }
+ 
+        return {
+            beforeLoad: beforeLoad
+        };
+    }
+);
