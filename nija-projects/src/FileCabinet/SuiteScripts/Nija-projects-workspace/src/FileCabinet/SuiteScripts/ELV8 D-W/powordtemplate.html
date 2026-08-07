@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: 'Arial', sans-serif; font-size: 12pt; line-height: 1.5; }
+        .header { text-align: center; font-weight: bold; font-size: 16pt; margin-bottom: 20px; }
+        .table-data { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .table-data th, .table-data td { border: 1px solid #000; padding: 8px; text-align: left; }
+        .table-data th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="header">Purchase Order: ${record.tranid}</div>
+    <p><strong>Vendor:</strong> ${record.entity}</p>
+    <p><strong>Date:</strong> ${record.trandate}</p>
+    
+    <table class="table-data">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- If rendering sublist data, use FreeMarker loops -->
+            <#list record.item as item>
+            <tr>
+                <td>${item.item}</td>
+                <td>${item.quantity}</td>
+                <td>${item.rate}</td>
+                <td>${item.amount}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+</body>
+</html>
