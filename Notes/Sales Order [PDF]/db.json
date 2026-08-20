@@ -1,0 +1,27 @@
+{
+  "scripts": {
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Sales Order [PDF]/STD SO PDF.xml": {
+      "name": "STD SO PDF.xml",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Sales Order [PDF]/STD SO PDF.xml",
+      "relativePath": "STD SO PDF.xml",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Sales Order [PDF]",
+      "extension": ".xml",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "STD_SO_PDF_2a33ed.md"
+    }
+  },
+  "logs": {
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Sales Order [PDF]/STD SO PDF.xml": [
+      {
+        "timestamp": "2026-08-19T09:28:00.000Z",
+        "args": "Executed",
+        "status": "success",
+        "notes": "Discription Changed"
+      }
+    ]
+  }
+}

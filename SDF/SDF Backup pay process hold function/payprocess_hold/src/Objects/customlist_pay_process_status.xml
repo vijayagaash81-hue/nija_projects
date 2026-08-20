@@ -1,0 +1,16 @@
+<customlist scriptid="customlist_pay_process_status">
+  <description></description>
+  <isinactive>F</isinactive>
+  <isordered>T</isordered>
+  <name>Pay Process Status</name>
+  <customvalues>
+    <customvalue scriptid="val_398463_9691235_sb1_285">
+      <isinactive>F</isinactive>
+      <value>Processed</value>
+    </customvalue>
+    <customvalue scriptid="val_398464_9691235_sb1_610">
+      <isinactive>F</isinactive>
+      <value>Hold</value>
+    </customvalue>
+  </customvalues>
+</customlist>

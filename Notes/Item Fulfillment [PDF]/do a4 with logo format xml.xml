@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+    <link name="arabic-font" type="font" subtype="opentype" src="MSUNG2.TTF" fallback-src="ArialUnicodeMS.TTF" />
+    <style type="text/css">
+        /* General Page Settings */
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 10pt;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        
+        .no-border, .no-border td {
+            border: none;
+        }
+
+        /* Main Item Table styling */
+        .item-table {
+            border-bottom: 0.5pt solid #000000;
+        }
+        .item-table th {
+            font-weight: bold;
+            background-color: #f2f2f2;
+            border: 0.5pt solid #000000;
+            padding: 5px;
+            text-align: center;
+        }
+        .item-table td {
+            padding: 5px;
+            border-left: 0.5pt solid #000000;
+            border-right: 0.5pt solid #000000;
+            vertical-align: top;
+            font-size: 9pt;
+        }
+        
+        .header-title {
+            font-size: 18pt;
+            font-weight: bold;
+            text-decoration: underline;
+            font-style: italic;
+        }
+        .label {
+            font-weight: bold;
+            width: 80px;
+        }
+        .blue-text {
+            color: #2e5190;
+            font-weight: bold;
+        }
+    </style>
+
+    <!-- HEADER AND FOOTER MACRO DEFINITIONS -->
+    <macrolist>
+        <macro id="nlheader">
+            <table class="no-border">
+                <tr>
+                    <td align="center" style="vertical-align: middle;">
+                        <#if record.subsidiary == "SJS Enersol LLC">
+                            <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=2609&amp;c=12075805&amp;h=O64SxlG4LsWpTQ7LCnBKMcYi6jP9FLl-CoauR7s9agUSaA-D" style="width: 740px; height: 160px;padding-top:-100px;" />
+                        <#else>
+                            <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=2619&amp;c=12075805&amp;h=lASWwe_0oZq1SqApNwf7Jqg-8vu504mSGH7thyIidSx1320v" style="width: 680px; height: 120px;" />
+                        </#if>
+                    </td>
+                </tr>
+            </table>
+        </macro>
+
+        <macro id="nlfooter">
+            <#if record.subsidiary == "SJS Enersol LLC">
+                <table class="no-border" style="width: 100%; margin-top: 10px;">
+                    <tr>
+                        <td style="width: 100%; text-align: center; vertical-align: top; padding-left:50px;padding-top:10px;">
+                             <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=2610&amp;c=12075805&amp;h=XRONrANM19yECUoemjt7hHesM43YYYJpoDKZiz3h5ZvaZA1P" style="width: 580px; height: 55px;"/>
+                        </td>
+                    </tr>
+                </table>
+            <#else>
+            <table class="no-border" style="width: 100%;">
+                <tr>
+                    <!-- LEFT SECTION: RECEIVER -->
+                    <td style="width: 40%; vertical-align: bottom; padding-bottom: 5px;">
+                        <span class="blue-text" style="font-size: 10px;">Name and Mobile Number:</span><br/>
+                        <span class="blue-text" style="font-size: 10px;">Receiver's Signature: ...........................................................</span>
+                    </td>
+                    
+                    <!-- CENTER SECTION: CERT LOGOS -->
+                    <td style="width: 30%; text-align: center; vertical-align: bottom; padding-bottom: 5px;">
+                        <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=1342&amp;c=12075805&amp;h=4Vq24cWx1KqWiN1XiHtzzTYH7-sQ2imkhln23ZDCxBNi0hDM" style="width: 170px; height: 32px;"/>
+                    </td>
+                    
+                    <!-- RIGHT SECTION: COMPANY NAME -->
+                    <td style="width: 30%; text-align: right; vertical-align: bottom;">
+                        <table class="no-border">
+                            <tr>
+                                <td align="right">
+                                    <span class="blue-text" style="font-size: 11px;">For SJS Enersol Engineering Works L.L.C.</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            
+            <!-- BLUE BOTTOM BAR -->
+            <table class="no-border" style="width: 100%; background-color: #2e5190; margin-top: 5px;">
+                <tr>
+                    <td align="center" style="color: #ffffff; font-weight: bold; font-size: 10pt; padding: 4px;">
+                        Hex Bolt, Stud Bolt, Anchor Bolt And Heavy Engineering Construction
+                    </td>
+                </tr>
+            </table>
+            </#if>
+        </macro>
+    </macrolist>
+</head>
+
+<body header="nlheader" header-height="110pt" footer="nlfooter" footer-height="115pt" padding="0.5in" size="A4">
+
+<#list record.item?chunk(15) as itemBatch>
+    <!-- DOCUMENT TITLE -->
+    <table class="no-border" style="margin-bottom: 10px;">
+        <tr>
+            <td align="center" class="header-title">Delivery Order</td>
+        </tr>
+    </table>
+
+    <!-- INFO SECTION -->
+    <table class="no-border" style="margin-bottom: 15px;">
+        <tr>
+            <td width="60%" style="vertical-align: top;">
+                <span style="font-weight: bold; font-style: italic; font-size: 11pt;">
+                    <#if record.entity.companyname?has_content>
+                        ${record.entity.companyname}
+                    <#else>
+                        ${(record.entity!"")?replace("^([a-zA-Z0-9_-]+)\\s+", "", "r")}
+                    </#if>
+                </span>
+                
+                <#assign addressText = record.shipaddr1!"" />
+                <#assign poBox = "" />
+                <#list addressText?matches("(?i)P\\.?O\\.?\\s*BOX\\s*:?\\s*\\d+") as match>
+                    <#assign poBox = match />
+                </#list>
+                <#assign addText = addressText?replace("(?i)P\\.?O\\.?\\s*BOX\\s*:?\\s*\\d+", "", "r") />
+                <#assign addText = addText?replace("\\s*\\|\\s*", ", ", "r")?replace("^[,\\s]+", "", "r")?trim />
+                
+                <table class="no-border" style="margin-top: 4px;">
+                    <#if addText?has_content>
+                    <tr>
+                        <td class="label" style="width: 60px;">Add</td>
+                        <td style="width: 10px;" align="center">:</td>
+                        <td>${addText}</td>
+                    </tr>
+                    </#if>
+                    <#if poBox?has_content>
+                    <tr>
+                        <td class="label" style="width: 60px;">P.O BOX</td>
+                        <td style="width: 10px;" align="center">:</td>
+                        <td>${poBox?replace("(?i)P\\.?O\\.?\\s*BOX\\s*:?\\s*", "", "r")}</td>
+                    </tr>
+                    </#if>
+                    <tr>
+                        <td class="label" style="width: 60px;">Tel</td>
+                        <td style="width: 10px;" align="center">:</td>
+                        <td>${record.phone}</td>
+                    </tr>
+                </table>
+            </td>
+            <td width="40%" style="vertical-align: top;">
+                <table class="no-border">
+                    <tr>
+                        <td class="label" style="width: 60px;">Date</td>
+                        <td style="width: 10px;" align="center">:</td>
+                        <td>${record.trandate}</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="width: 60px;">DO No.</td>
+                        <td style="width: 10px;" align="center">:</td>
+                        <td>${record.tranid}</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="width: 60px; vertical-align: top;">Order No</td>
+                        <td style="width: 10px; vertical-align: top;" align="center">:</td>
+                        <td style="vertical-align: top;">${record.custbody_njt_item_po}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ITEM TABLE -->
+    <table class="item-table">
+        <thead>
+            <tr>
+                <th width="8%">S. No.</th>
+                <th width="62%" align="left">Description</th>
+                <th width="12%">Units</th>
+                <th width="18%" align="right">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list itemBatch as item>
+            <tr>
+                <td align="center">${item_index + 1 + (itemBatch?index * 15)}</td>
+                <td align="left">${item.custcol_njt_podesc}</td>
+                <!-- UNITS CENTERED AGAIN -->
+                <td align="center">${item.unitsdisplay}</td>
+                <td align="right">${item.quantity?string(",##0.00")}</td>
+            </tr>
+            </#list>
+        </tbody>
+        <#if itemBatch?has_next>
+            <tr><td colspan="4" style="border-top: 0.5pt solid black; height: 1px; padding: 0;"></td></tr>
+        </#if>
+    </table>
+
+    <#if !itemBatch?has_next>
+        <!-- NOTE SECTION: MINIMUM GAP TO TABLE -->
+        <table class="no-border" style="margin-top: 2px; width: 100%;">
+            <tr>
+                <td style="font-size: 9pt; font-style: italic; vertical-align: top; padding-top: 8px;">
+                    Note: Any shortfalls or rejections after 7days of supply are not acceptable.
+                </td>
+                <td align="right" style="vertical-align: top;">
+                    <!-- STAMP POSITIONED TO MATCH SCREENSHOT GAP -->
+                    <#if record.subsidiary == "SJS Enersol LLC">
+                        <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=2612&amp;c=12075805&amp;h=aSxLVjuxt-21ptRX30lX5_2a8i13hkkFj8WSvkLOb9dlYyGE" style="width: 150px; height: 100px; margin-top: -3px;"/>
+                    <#else>
+                        <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=1341&amp;c=12075805&amp;h=p6n_1j8Du-e12Nvqgxvj2CNQf9B1_hxXyQ14-EmkGkEMEBwU" style="width: 90px; height: 90px; margin-top: -3px;" />
+                    </#if>
+                </td>
+            </tr>
+        </table>
+    <#else>
+        <pbr />
+    </#if>
+</#list>
+
+</body>
+</pdf>

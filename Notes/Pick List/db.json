@@ -1,0 +1,75 @@
+{
+  "scripts": {
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Pick List Report/pick list report sl.js": {
+      "name": "pick list report sl.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Pick List Report/pick list report sl.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Pick List Report",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "pick_list_report_sl_4b6b5f.md"
+    },
+    "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/Objects/customrecord_njt_pick_list.xml": {
+      "name": "customrecord_njt_pick_list.xml",
+      "fullPath": "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/Objects/customrecord_njt_pick_list.xml",
+      "relativePath": "../../SJS PICK-PACK v0.01/pick-packv0.001/src/Objects/customrecord_njt_pick_list.xml",
+      "directory": "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/Objects",
+      "extension": ".xml",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "customrecord_njt_pick_list_3e68a7.md"
+    },
+    "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/Objects/customrecord_njt_pick_details.xml": {
+      "name": "customrecord_njt_pick_details.xml",
+      "fullPath": "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/Objects/customrecord_njt_pick_details.xml",
+      "relativePath": "../../SJS PICK-PACK v0.01/pick-packv0.001/src/Objects/customrecord_njt_pick_details.xml",
+      "directory": "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/Objects",
+      "extension": ".xml",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "customrecord_njt_pick_details_179df3.md"
+    },
+    "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/FileCabinet/SuiteScripts/Pick and Pack Scripts/Pick List Wizard Scripts/Pick List Wizard Filter.js": {
+      "name": "Pick List Wizard Filter.js",
+      "fullPath": "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/FileCabinet/SuiteScripts/Pick and Pack Scripts/Pick List Wizard Scripts/Pick List Wizard Filter.js",
+      "relativePath": "../../SJS PICK-PACK v0.01/pick-packv0.001/src/FileCabinet/SuiteScripts/Pick and Pack Scripts/Pick List Wizard Scripts/Pick List Wizard Filter.js",
+      "directory": "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/FileCabinet/SuiteScripts/Pick and Pack Scripts/Pick List Wizard Scripts",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "Pick_List_Wizard_Filter_311f03.md"
+    },
+    "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/FileCabinet/SuiteScripts/Pick and Pack Scripts/Pick List Wizard Scripts/Pick List Wizard Sut.js": {
+      "name": "Pick List Wizard Sut.js",
+      "fullPath": "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/FileCabinet/SuiteScripts/Pick and Pack Scripts/Pick List Wizard Scripts/Pick List Wizard Sut.js",
+      "relativePath": "../../SJS PICK-PACK v0.01/pick-packv0.001/src/FileCabinet/SuiteScripts/Pick and Pack Scripts/Pick List Wizard Scripts/Pick List Wizard Sut.js",
+      "directory": "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/FileCabinet/SuiteScripts/Pick and Pack Scripts/Pick List Wizard Scripts",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "Pick_List_Wizard_Sut_1578f5.md"
+    }
+  },
+  "logs": {
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Pick List Report/pick list report sl.js": [],
+    "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/Objects/customrecord_njt_pick_list.xml": [],
+    "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/Objects/customrecord_njt_pick_details.xml": [],
+    "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/FileCabinet/SuiteScripts/Pick and Pack Scripts/Pick List Wizard Scripts/Pick List Wizard Filter.js": [],
+    "C:/Users/EDWIN/Documents/SJS PICK-PACK v0.01/pick-packv0.001/src/FileCabinet/SuiteScripts/Pick and Pack Scripts/Pick List Wizard Scripts/Pick List Wizard Sut.js": []
+  }
+}

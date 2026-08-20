@@ -1,0 +1,90 @@
+{
+  "scripts": {
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice_sl.js": {
+      "name": "tax_proforma_invoice_sl.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice_sl.js",
+      "relativePath": "tax_proforma_invoice_sl.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "tax_proforma_invoice_sl_7490a4.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice_outside_sl.js": {
+      "name": "tax_proforma_invoice_outside_sl.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice_outside_sl.js",
+      "relativePath": "tax_proforma_invoice_outside_sl.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "tax_proforma_invoice_outside_sl_429d3e.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice_outside.xml": {
+      "name": "tax_proforma_invoice_outside.xml",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice_outside.xml",
+      "relativePath": "tax_proforma_invoice_outside.xml",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice",
+      "extension": ".xml",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "tax_proforma_invoice_outside_4c13b2.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice.xml": {
+      "name": "tax_proforma_invoice.xml",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice.xml",
+      "relativePath": "tax_proforma_invoice.xml",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice",
+      "extension": ".xml",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "tax_proforma_invoice_4f535a.md"
+    }
+  },
+  "logs": {
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice_sl.js": [
+      {
+        "timestamp": "2026-08-19T07:33:00.000Z",
+        "args": "Execution",
+        "status": "success",
+        "notes": "Success"
+      }
+    ],
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice_outside_sl.js": [
+      {
+        "timestamp": "2026-08-19T07:26:00.000Z",
+        "args": "Updated",
+        "status": "success",
+        "notes": "correctly executed"
+      }
+    ],
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice_outside.xml": [
+      {
+        "timestamp": "2026-08-19T07:25:00.000Z",
+        "args": "Execution",
+        "status": "success",
+        "notes": "Discription is displaying from new field"
+      }
+    ],
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Proforma Invoice/tax_proforma_invoice.xml": [
+      {
+        "timestamp": "2026-08-19T07:33:00.000Z",
+        "args": "Execution",
+        "status": "success",
+        "notes": "Description Changed"
+      }
+    ]
+  }
+}

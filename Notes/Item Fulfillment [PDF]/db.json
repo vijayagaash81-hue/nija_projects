@@ -1,0 +1,69 @@
+{
+  "scripts": {
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]/a4 and a5 print sl.js": {
+      "name": "a4 and a5 print sl.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]/a4 and a5 print sl.js",
+      "relativePath": "a4 and a5 print sl.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "a4_and_a5_print_sl_115bdc.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]/do a4 with logo format xml.xml": {
+      "name": "do a4 with logo format xml.xml",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]/do a4 with logo format xml.xml",
+      "relativePath": "do a4 with logo format xml.xml",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]",
+      "extension": ".xml",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "do_a4_with_logo_format_xml_1391c3.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]/Do a5 without logo format xml.xml": {
+      "name": "Do a5 without logo format xml.xml",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]/Do a5 without logo format xml.xml",
+      "relativePath": "Do a5 without logo format xml.xml",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]",
+      "extension": ".xml",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "Do_a5_without_logo_format_xml_6993ee.md"
+    }
+  },
+  "logs": {
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]/a4 and a5 print sl.js": [
+      {
+        "timestamp": "2026-08-19T08:55:00.000Z",
+        "args": "Executed",
+        "status": "success",
+        "notes": "Description Change Execution"
+      }
+    ],
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]/do a4 with logo format xml.xml": [
+      {
+        "timestamp": "2026-08-19T08:59:00.000Z",
+        "args": "Executed",
+        "status": "success",
+        "notes": "Description Changed"
+      }
+    ],
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Item Fulfillment [PDF]/Do a5 without logo format xml.xml": [
+      {
+        "timestamp": "2026-08-19T09:00:00.000Z",
+        "args": "Executed",
+        "status": "success",
+        "notes": "Description Changed"
+      }
+    ]
+  }
+}

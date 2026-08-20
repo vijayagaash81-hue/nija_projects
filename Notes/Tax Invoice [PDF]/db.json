@@ -1,0 +1,34 @@
+{
+  "scripts": {
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Invoice [PDF]/tax invoice sl.js": {
+      "name": "tax invoice sl.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Invoice [PDF]/tax invoice sl.js",
+      "relativePath": "tax invoice sl.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Invoice [PDF]",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "tax_invoice_sl_77301e.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Invoice [PDF]/tax invoice aed xml.xml": {
+      "name": "tax invoice aed xml.xml",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Invoice [PDF]/tax invoice aed xml.xml",
+      "relativePath": "tax invoice aed xml.xml",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Invoice [PDF]",
+      "extension": ".xml",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "tax_invoice_aed_xml_384394.md"
+    }
+  },
+  "logs": {
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Invoice [PDF]/tax invoice sl.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/Notes/Tax Invoice [PDF]/tax invoice aed xml.xml": []
+  }
+}

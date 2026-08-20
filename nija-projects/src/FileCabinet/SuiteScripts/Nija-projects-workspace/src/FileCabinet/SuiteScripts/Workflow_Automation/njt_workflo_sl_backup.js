@@ -464,19 +464,16 @@ define(['N/record', 'N/search', 'N/redirect', 'N/runtime', 'N/email'], (
                 subject = 'Document Approved - ' + tranId;
             }
 
-            var hardcodedTo = [
-                'personnel@alfareedagroupintl.com',
-                'personnelexec@alfareedagroupintl.com',
-                'payroll@alfareedagroupintl.com',
-                'abu@alfareedagroupintl.com'
-            ];
+            var ccRecipient = mappings.email_cc || [];
 
-            sendApprovalEmail(
-                hardcodedTo,
-                subject,
-                emailHtml,
-                recipient
-            );
+            if (recipient) {
+                sendApprovalEmail(
+                    recipient,
+                    subject,
+                    emailHtml,
+                    ccRecipient
+                );
+            }
 
             // Role-based notification dynamically configured on the Approval Setup record
             var notifyRole = setupRec.getValue('custrecord_as_email_notifying_role');
@@ -576,42 +573,40 @@ define(['N/record', 'N/search', 'N/redirect', 'N/runtime', 'N/email'], (
             });
         }
 
-        var tranId = rec.getValue('tranid') || rec.getValue('name') || rec.id;
-        var emailHtml = '';
-        var subject = '';
+        if (recipient) {
 
-        if (mappings.email_template_rejected) {
-            var template = mappings.email_template_rejected;
-            var parsedBody = fillTemplate(template.body, rec);
-            var parsedSubject = fillTemplate(template.subject, rec);
+            var tranId = rec.getValue('tranid') || rec.getValue('name') || rec.id;
+            var emailHtml = '';
+            var subject = '';
 
-            emailHtml = buildSimpleHtmlEmail(parsedBody);
-            subject = parsedSubject || ('Document Rejected - ' + tranId);
-        } else {
-            var bodyText = '<p>Hello,</p><p>Your document has been <strong>rejected</strong>.</p>' +
-                '<table style="width:100%; border-collapse: collapse; margin-top:15px; margin-bottom:15px;">' +
-                '<tr><td style="padding:8px 0; border-bottom:1px solid #e5e7eb; color:#4b5563; width:140px;"><strong>Document Number:</strong></td><td style="padding:8px 0; border-bottom:1px solid #e5e7eb; color:#111827;"><strong>' + tranId + '</strong></td></tr>' +
-                '</table>' +
-                '<div style="background-color: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin-top: 15px; color: #991b1b;">' +
-                '<strong style="display:block; margin-bottom:4px;">Reason for Rejection:</strong>' + (reason || 'No reason provided.') + '</div>' +
-                '<p style="margin-top:20px;">Please review the comments and make the necessary corrections before resubmitting.</p>';
-            emailHtml = buildHtmlEmail('Document Rejected', bodyText, '#ef4444');
-            subject = 'Document Rejected - ' + tranId;
+            if (mappings.email_template_rejected) {
+                var template = mappings.email_template_rejected;
+                var parsedBody = fillTemplate(template.body, rec);
+                var parsedSubject = fillTemplate(template.subject, rec);
+
+                emailHtml = buildSimpleHtmlEmail(parsedBody);
+                subject = parsedSubject || ('Document Rejected - ' + tranId);
+            } else {
+                var bodyText = '<p>Hello,</p><p>Your document has been <strong>rejected</strong>.</p>' +
+                    '<table style="width:100%; border-collapse: collapse; margin-top:15px; margin-bottom:15px;">' +
+                    '<tr><td style="padding:8px 0; border-bottom:1px solid #e5e7eb; color:#4b5563; width:140px;"><strong>Document Number:</strong></td><td style="padding:8px 0; border-bottom:1px solid #e5e7eb; color:#111827;"><strong>' + tranId + '</strong></td></tr>' +
+                    '</table>' +
+                    '<div style="background-color: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin-top: 15px; color: #991b1b;">' +
+                    '<strong style="display:block; margin-bottom:4px;">Reason for Rejection:</strong>' + (reason || 'No reason provided.') + '</div>' +
+                    '<p style="margin-top:20px;">Please review the comments and make the necessary corrections before resubmitting.</p>';
+                emailHtml = buildHtmlEmail('Document Rejected', bodyText, '#ef4444');
+                subject = 'Document Rejected - ' + tranId;
+            }
+
+            var ccRecipient = mappings.email_cc || [];
+
+            sendApprovalEmail(
+                recipient,
+                subject,
+                emailHtml,
+                ccRecipient
+            );
         }
-
-        var hardcodedTo = [
-            'personnel@alfareedagroupintl.com',
-            'personnelexec@alfareedagroupintl.com',
-            'payroll@alfareedagroupintl.com',
-            'abu@alfareedagroupintl.com'
-        ];
-
-        sendApprovalEmail(
-            hardcodedTo,
-            subject,
-            emailHtml,
-            recipient
-        );
 
         rec.save();
     }
@@ -704,69 +699,29 @@ define(['N/record', 'N/search', 'N/redirect', 'N/runtime', 'N/email'], (
         return employeeIds;
     }
 
-    function getValidEmail(idOrEmail) {
-        if (!idOrEmail) return null;
-        if (typeof idOrEmail === 'string' && idOrEmail.indexOf('@') > -1) {
-            return idOrEmail;
-        }
-        try {
-            var lookup = search.lookupFields({
-                type: search.Type.EMPLOYEE,
-                id: idOrEmail,
-                columns: ['email']
-            });
-            return lookup.email || null;
-        } catch (e) {
-            log.error('Error looking up email for ID: ' + idOrEmail, e);
-            return null;
-        }
-    }
-
-    function filterValidRecipients(recipientsInput) {
-        if (!recipientsInput) return [];
-        var inputs = [];
-        if (Array.isArray(recipientsInput)) {
-            inputs = recipientsInput;
-        } else if (typeof recipientsInput === 'string' && recipientsInput.indexOf(',') > -1) {
-            inputs = recipientsInput.split(',').map(function (item) { return item.trim(); });
-        } else {
-            inputs = [recipientsInput];
-        }
-
-        var valid = [];
-        for (var i = 0; i < inputs.length; i++) {
-            if (getValidEmail(inputs[i])) {
-                valid.push(inputs[i]);
-            }
-        }
-        return valid;
-    }
-
     function sendApprovalEmail(recipient, subject, body, cc) {
 
         try {
 
-            var validRecipients = filterValidRecipients(recipient);
-
-            if (validRecipients.length === 0) {
-                log.debug('Email Check', 'Recipient ID ' + recipient + ' does not have a valid email. Using hardcoded fallback recipient list.');
-                validRecipients = [
-                    'vijay@nijatech.com',
-                    'sundari@nijatech.in',
-                ];
-            }
-
-            var validCc = filterValidRecipients(cc);
-
             var emailOptions = {
-                author: 8220,
-                recipients: validRecipients,
+                author: runtime.getCurrentUser().id,
+                recipients: recipient,
                 subject: subject,
                 body: body
             };
 
-            if (validCc.length > 0) {
-                emailOptions.cc = validCc;
+            if (cc) {
+                if (typeof cc === 'string') {
+                    if (cc.indexOf(',') > -1) {
+                        emailOptions.cc = cc.split(',').map(function (item) { return item.trim(); });
+                    } else if (cc.trim() !== '') {
+                        emailOptions.cc = [cc.trim()];
+                    }
+                } else if (Array.isArray(cc) && cc.length > 0) {
+                    emailOptions.cc = cc;
+                } else if (typeof cc === 'number') {
+                    emailOptions.cc = [cc];
+                }
             }
 
             email.send(emailOptions);

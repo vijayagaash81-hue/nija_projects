@@ -174,19 +174,21 @@
         <thead>
             <tr>
                 <th align="center" style="width:5%;">S. No.</th>
-                <th align="center" style="width:30%;">Description</th>
-                <th align="center" style="width:8%;">Units</th>
-                <th align="center" style="width:10%;">Quantity</th>
-                <th align="center" style="width:12%;">Rate ${record.currency}</th>
-                <th align="center" style="width:12%;">Total ${record.currency}</th>
+                <th align="center" style="width:18%;">Description</th>
+                <th align="center" style="width:18%;">Description as per PO</th>
+                <th align="center" style="width:6%;">Units</th>
+                <th align="center" style="width:9%;">Quantity</th>
+                <th align="center" style="width:11%;">Rate ${record.currency}</th>
+                <th align="center" style="width:11%;">Total ${record.currency}</th>
                 <th align="center" style="width:10%;">5% VAT ${record.currency}</th>
-                <th align="center" style="width:13%;">Net Total ${record.currency}</th>
+                <th align="center" style="width:12%;">Net Total ${record.currency}</th>
             </tr>
         </thead>
         <#list itemBatch as item>
         <tr>
             <td align="center">${item_index + 1 + (itemBatch?index * 10)}</td>
-            <td align="left">${item.description}</td>
+            <td align="left" style="white-space: normal; word-wrap: break-word;">${item.description}</td>
+            <td align="left" style="white-space: normal; word-wrap: break-word;">${item.custcol_njt_podesc}</td>
             <td align="center">${item.units}</td>
             <td align="right">${item.quantity?string("0.00")}</td>
             <td align="right">${item.rate?string("0.00")}</td>
@@ -199,7 +201,7 @@
         <#if !itemBatch?has_next>
         <!-- TOTAL LINE ONLY ON LAST PAGE -->
         <tr class="total-row">
-            <td colspan="5" align="left">Total</td>
+            <td colspan="6" align="left">Total</td>
             <td align="right">${record.subtotal?string("0.00")}</td>
             <td align="right">${record.taxtotal?string("0.00")}</td>
             <td align="right">${record.total?string("0.00")}</td>
@@ -207,7 +209,7 @@
         <#else>
         <!-- Bottom border for the table on intermediate pages -->
         <tr>
-            <td colspan="8" style="border-top: 0.1pt solid black; height: 1px; padding: 0;"></td>
+            <td colspan="9" style="border-top: 0.1pt solid black; height: 1px; padding: 0;"></td>
         </tr>
         </#if>
     </table>

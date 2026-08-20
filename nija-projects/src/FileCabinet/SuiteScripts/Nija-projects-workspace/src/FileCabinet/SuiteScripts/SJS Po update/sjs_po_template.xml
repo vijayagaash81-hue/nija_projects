@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+
+<style type="text/css">
+
+    body{
+        font-family: Helvetica, sans-serif;
+        font-size: 9pt;
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+    }
+
+    .no-border td{
+        border:none;
+    }
+
+    .main-table{
+        width:100%;
+        border-collapse:collapse;
+        border:0.5pt solid #000;
+    }
+
+    .main-table th{
+        border:0.5pt solid #000;
+        background-color:#f2f2f2;
+        padding:5px;
+        font-size:10pt;
+        font-weight:bold;
+        text-align:center;
+    }
+
+    .main-table td{
+        border:0.5pt solid #000;
+        padding:5px;
+        font-size:9pt;
+    }
+
+    .label{
+        font-weight:bold;
+        font-size:9pt;
+        white-space:nowrap;
+    }
+
+    .title{
+        align:center;
+        font-size:22pt;
+        font-weight:bold;
+        text-align:center;
+        padding-top:-10px;
+        padding-bottom:15px;
+    }
+
+    .section-title{
+        font-size:11pt;
+        font-weight:bold;
+        padding-top:-50px;
+    }
+
+    .summary-table{
+        width:35%;
+        align:right;
+        border-collapse:collapse;
+        margin-top:5px;
+        
+        
+        
+    }
+
+    .summary-table td{
+        border-bottom:0.5pt solid #000;
+        padding:5px;
+        font-size:10pt;
+    }
+
+    .terms{
+        padding-top:-120px;
+        font-size:10pt;
+    }
+
+    .signature-table td{
+        border-top:0.5pt solid #000;
+        text-align:center;
+        align:center;
+        font-weight:bold;
+    }
+
+</style>
+
+<macrolist>
+
+    <!-- WATERMARK -->
+    <macro id="draft_watermark">
+        <#if record.custbody_hris_sales_approval_status?has_content && (record.custbody_hris_sales_approval_status?string?lower_case == "pending approval" || record.custbody_hris_sales_approval_status?string == "1")>
+            <p align="center" valign="middle" rotate="-45" style="font-size: 125pt; color: #e5e5e5; font-weight: bold; letter-spacing: 5px; opacity: 0.25;">DRAFT</p>
+        </#if>
+    </macro>
+
+    <!-- HEADER -->
+    <macro id="nlheader">
+
+        <table class="no-border">
+
+            <tr>
+                <td align="center">
+
+                    <#if record.subsidiary == "SJS Enersol LLC">
+
+                        <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=2609&amp;c=12075805&amp;h=O64SxlG4LsWpTQ7LCnBKMcYi6jP9FLl-CoauR7s9agUSaA-D"
+                             style="width:740px;height:160px;padding-top:-60px;" />
+
+                    <#else>
+
+                        <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=2619&amp;c=12075805&amp;h=lASWwe_0oZq1SqApNwf7Jqg-8vu504mSGH7thyIidSx1320v"
+                             style="width:600px;height:90px; padding-top:-40px;padding-left:-20px;" />
+
+                    </#if>
+
+                </td>
+            </tr>
+
+        </table>
+
+    </macro>
+
+    <!-- FOOTER -->
+    <macro id="nlfooter">
+<!-- SIGNATURE -->
+
+<table class="signature-table" style="padding-top:-40px;">
+
+    <tr>
+
+        <td>Prepared By</td>
+
+        <td>Approved By</td>
+
+        <td>Accounts</td>
+
+        <td>Checked By</td>
+
+    </tr>
+
+</table>
+        <#if record.subsidiary == "SJS Enersol LLC">
+            
+
+            <table class="no-border" style="width:100%;">
+
+                <tr>
+                    <td align="center">
+                        <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=2610&amp;c=12075805&amp;h=XRONrANM19yECUoemjt7hHesM43YYYJpoDKZiz3h5ZvaZA1P"
+                             style="width:580px;height:55px;" />
+                    </td>
+                </tr>
+
+            </table>
+
+        <#else>
+
+            <table class="no-border" style="width:100%;">
+
+                <tr>
+
+                    <td style="width:45%;">
+                        <span style="font-size:9pt;font-weight:bold;color:#2e5190;">
+                            Name and Mobile Number:
+                        </span><br/>
+
+                        <span style="font-size:9pt;font-weight:bold;color:#2e5190;">
+                            Receiver's Signature: ___________________
+                        </span>
+                    </td>
+
+                    <td style="width:25%;" align="center">
+
+                        <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=1342&amp;c=12075805&amp;h=4Vq24cWx1KqWiN1XiHtzzTYH7-sQ2imkhln23ZDCxBNi0hDM"
+                             style="width:180px;height:35px;" />
+
+                    </td>
+
+                    <td style="width:30%;" align="right">
+
+                        <span style="font-size:10pt;font-weight:bold;color:#2e5190;">
+                            For SJS Enersol Engineering Works L.L.C.
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+            <table class="no-border"
+                   style="background-color:#2e5190;width:100%;margin-top:5px;">
+
+                <tr>
+
+                    <td align="center"
+                        style="color:#ffffff;font-weight:bold;font-size:10pt;padding:4px;">
+
+                        Hex Bolt, Stud Bolt, Anchor Bolt And Heavy Engineering Construction
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </#if>
+
+    </macro>
+
+</macrolist>
+
+</head>
+
+<body header="nlheader"
+      header-height="90pt"
+      footer="nlfooter"
+      footer-height="45pt"
+      padding="0.5in"
+      background-macro="draft_watermark">
+
+<#list record.item?chunk(5) as itemBatch>
+
+<!-- TITLE -->
+
+<table class="no-border">
+
+    <tr>
+        <td class="title">
+            Purchase Order
+        </td>
+    </tr>
+
+</table>
+
+<!-- TOP DETAILS -->
+
+<table class="no-border" style="margin-top:10px;padding-top:-20px;table-layout:fixed;">
+
+    <tr>
+
+        <!-- LEFT -->
+
+        <td style="width:55%;vertical-align:top;">
+
+            <table class="no-border">
+
+                <tr>
+                    <td class="label">Purchase Order No:</td>
+                    <td>${record.tranid}</td>
+                </tr>
+
+                <tr>
+                    <td class="label">RFQ REF No:</td>
+                    <td>${record.custbody_njt_purc_qout!""}</td>
+                </tr>
+
+                <tr>
+                    <td class="label">Delivery Point:</td>
+                    <td>${record.custbody_delivery_point!""}</td>
+                </tr>
+
+                <tr>
+                    <td class="label">Delivery Location:</td>
+                    <td>${record.custbody_delivery_location!""}</td>
+                </tr>
+
+                <tr>
+                    <td class="label">Delivery Date:</td>
+                    <td>${record.duedate!""}</td>
+                </tr>
+
+                <tr>
+                    <td class="label">Request By:</td>
+                    <td>${(record.employee!"")?replace("^([A-Z0-9_-]+)\\s+", "", "r")}</td>
+                </tr>
+
+                <tr>
+                    <td class="label">Store Person Name:</td>
+                    <td>${(record.custbody4!"")?replace("^([A-Z0-9_-]+)\\s+", "", "r")}</td>
+                </tr>
+
+                <tr>
+                    <td class="label">Store Person Contact:</td>
+                    <td>${record.custbody4.phone!""}</td>
+                </tr>
+
+            </table>
+
+        </td>
+
+        <!-- RIGHT -->
+
+        <td style="width:45%;vertical-align:top;">
+
+            <table class="no-border">
+
+                <tr>
+                    <td class="label">Date:</td>
+                    <td>${record.trandate}</td>
+                </tr>
+
+                <tr>
+                    <td class="label">Payment Terms:</td>
+                    <td>${record.terms!""}</td>
+                </tr>
+
+                <tr>
+                    <td class="label">Delivery Terms:</td>
+                    <td>${record.incoterm!""}</td>
+                </tr>
+
+                <tr>
+                    <td class="label">Division:</td>
+                    <td>${record.class!""}</td>
+                </tr>
+
+                <tr>
+                    <td class="label">Atten To:</td>
+                    <td><#if record.custbody6?contains(":")>
+            ${record.custbody6?split(":")[1]?trim}
+        <#else>
+            ${record.custbody6!""}
+        </#if></td>
+                </tr>
+
+                <tr>
+                    <td class="label">Contact Person:</td>
+                    <td>${record.custbody7!""}</td>
+                </tr>
+
+            </table>
+
+        </td>
+
+    </tr>
+
+</table>
+
+<!-- ORDER BY / ORDER TO -->
+
+<table class="no-border" style="margin-top:-20px;table-layout:fixed;">
+
+    <tr>
+
+        <!-- ORDER BY -->
+
+        <td style="width:55%;vertical-align:top;">
+
+            <span class="section-title">ORDER BY:</span><br/>
+
+            <b>${record.subsidiary}</b><br/>
+
+            ${(subsidiary.mainaddress_text!"")?replace(record.subsidiary, "")?replace("^(<br\\s*\\/?>\\s*)+", "", "r")?trim}<br/>
+
+            <b>VAT/TRN:</b> ${subsidiary.federalidnumber!""}
+
+        </td>
+
+        <!-- ORDER TO -->
+
+        <td style="width:45%;vertical-align:top;">
+
+            <span class="section-title">ORDER TO:</span><br/>
+
+            <b>${(record.entity!"")?replace("^([A-Z0-9_-]+)\\s+", "", "r")}</b><br/>
+
+            ${(record.billaddress!"")?replace("^.*?(<br\\s*\\/?>)", "", "r")}<br/>
+
+            <b>VAT Number:</b> ${record.entity.vatregnumber!""}
+
+        </td>
+
+    </tr>
+
+</table>
+
+<!-- ITEM TABLE -->
+
+<table class="main-table" style="margin-top:20px;white-space:nowrap; ">
+
+    <thead>
+
+        <tr>
+
+            <th style="width:5%;">S.NO</th>
+            <th style="width:28%;">Description</th>
+            <th style="width:10%;">UOM</th>
+            <th style="width:10%;">Quantity</th>
+            <th style="width:10%;">Rate</th>
+            <th style="width:12%;">Amount</th>
+            <th style="width:8%;">Tax Rate</th>
+            <th style="width:8%;">Tax Amount</th>
+            <th style="width:9%;">Total</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        <#list itemBatch as item>
+
+        <tr>
+
+            <td align="center">${item_index + 1 + (itemBatch?index * 5)}</td>
+
+            <td>${item.description!item.item}</td>
+
+            <td align="center">${item.units!""}</td>
+
+            <td align="right">${item.quantity?string("0.00")}</td>
+
+            <td align="right">${item.rate?string(",##0.00")}</td>
+
+            <td align="right">${item.amount?string(",##0.00")}</td>
+
+            <td align="center">5%</td>
+
+            <td align="right">${item.tax1amt?string(",##0.00")}</td>
+
+            <td align="right">${item.grossamt?string(",##0.00")}</td>
+
+        </tr>
+
+        </#list>
+
+        <#if itemBatch?size lt 5>
+
+            <#list 1..(5-itemBatch?size) as x>
+
+            <tr>
+
+                <td>&nbsp;</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              
+
+            </tr>
+
+            </#list>
+
+        </#if>
+
+    </tbody>
+
+</table>
+
+<!-- TOTAL IN WORDS (SEPARATED) -->
+<!-- TOTAL IN WORDS -->
+
+<table class="main-table" style="margin-top:5px; white-space:nowrap;">
+
+    <tr>
+
+        <!-- S.NO -->
+        <!-- <td style="width:0%;border:none;"></td> -->
+
+        <!-- DESCRIPTION -->
+        <td style="width:61.5%;">
+            <b>${record.currency}</b>
+            Total in Words:
+            ${record.custbody_njt_tran_tiw!""}
+        </td>
+
+        <!-- UOM -->
+        <!-- <td style="width:10%;"></td> -->
+
+        <!-- QTY -->
+        <!-- <td style="width:10%;"></td> -->
+
+        <!-- RATE -->
+        <!-- <td style="width:10%;"></td> -->
+
+        <!-- AMOUNT -->
+        <td style="width:11.5%;" align="right">
+            ${record.subtotal?string(",##0.00")}
+        </td>
+
+        <!-- TAX RATE -->
+        <td style="width:10%;"></td>
+
+        <!-- TAX AMOUNT -->
+        <td style="width:12.8%;" align="right">
+            ${record.taxtotal?string(",##0.00")}
+        </td>
+
+        <!-- TOTAL -->
+        <td style="width:8.3%;" align="right">
+            ${record.total?string(",##0.00")}
+        </td>
+
+    </tr>
+
+</table>
+
+<!-- SUMMARY -->
+
+<table class="summary-table">
+
+    <tr>
+        <td style="border:none;"><b>Amount</b></td>
+        <td align="right" style="border:none;">${record.subtotal?string(",##0.00")}</td>
+    </tr>
+
+    <tr>
+        <td><b>TAX Amount</b></td>
+        <td align="right">${record.taxtotal?string(",##0.00")}</td>
+    </tr>
+
+    <tr>
+        <td><b>Total (${record.currency})</b></td>
+        <td align="right"><b>${record.total?string(",##0.00")}</b></td>
+    </tr>
+
+</table>
+
+<br/><br/><br/>
+
+<!-- TERMS -->
+
+<div class="terms">
+
+    <b>Terms and Conditions</b><br/>
+    1.MTC Required upon delivery
+
+    ${record.custbody5!""}
+
+    <br/><br/>
+
+    <b>Additional Notes</b><br/>
+
+    <#if record.custbody_additional_notes?has_content>
+        ${record.custbody_additional_notes}<br/>
+    </#if>
+    
+    1. Above Purchase Order No Must Appear on all invoices or correspondence.<br/>
+    2. Mail One Copy of Your Invoice.<br/>
+    3. Our Standard Conditions of Purchase Apply.
+
+</div>
+
+<#if itemBatch?has_next>
+    <pbr/>
+</#if>
+</#list>
+
+</body>
+</pdf> 
