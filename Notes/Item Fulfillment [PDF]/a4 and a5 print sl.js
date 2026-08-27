@@ -12,13 +12,14 @@ define([
 
     function onRequest(context) {
         if (context.request.method === "GET") {
-            
+
             // 1. Retrieve parameters from the Client Script URL
             var recId = context.request.parameters.recId;
             var layout = context.request.parameters.layout; // 'A4' or 'A5'
             var showLogo = context.request.parameters.showLogo; // 'T' or 'F'
-            
-            log.debug("Params Received", "ID: " + recId + " | Layout: " + layout + " | Logo: " + showLogo);
+            var debug = context.request.parameters.debug; // 'T' or 'F'
+
+            log.debug("Params Received", "ID: " + recId + " | Layout: " + layout + " | Logo: " + showLogo + " | Debug: " + debug);
 
             if (recId) {
                 try {
@@ -26,18 +27,102 @@ define([
                     var fulfillmentRecord = record.load({
                         type: record.Type.ITEM_FULFILLMENT,
                         id: recId,
-                        isDynamic: true,
+                        isDynamic: false,
                     });
-                    var customer= fulfillmentRecord.getValue({
-                      fieldId:'entity'
+
+                    // Build filtered items list (amount > 0 and item is received/fulfilled)
+                    var filteredItemsList = [];
+                    var lineCount = fulfillmentRecord.getLineCount({ sublistId: "item" });
+                    log.debug("Total Line Count", lineCount);
+                    for (var i = 0; i < lineCount; i++) {
+                        var isReceived = fulfillmentRecord.getSublistValue({
+                            sublistId: "item",
+                            fieldId: "itemreceive",
+                            line: i
+                        });
+                        var amountVal = fulfillmentRecord.getSublistValue({
+                            sublistId: "item",
+                            fieldId: "itemfxamount",
+                            line: i
+                        });
+                        var qtyVal = fulfillmentRecord.getSublistValue({
+                            sublistId: "item",
+                            fieldId: "quantity",
+                            line: i
+                        });
+
+                        log.debug("Line " + i, "Amount: " + amountVal + " | Quantity: " + qtyVal + " | Received: " + isReceived);
+
+                        var hasAmount = false;
+                        if (amountVal !== null && amountVal !== undefined && amountVal !== "") {
+                            var parsedAmount = parseFloat(amountVal);
+                            if (!isNaN(parsedAmount) && parsedAmount > 0) {
+                                hasAmount = true;
+                            }
+                        }
+                        var isLineFulfilled = (isReceived === true || isReceived === "T");
+
+                        if (isLineFulfilled && hasAmount) {
+                            filteredItemsList.push({
+                                custcol_njt_podesc: fulfillmentRecord.getSublistValue({
+                                    sublistId: "item",
+                                    fieldId: "custcol_njt_podesc",
+                                    line: i
+                                }) || "",
+                                unitsdisplay: fulfillmentRecord.getSublistValue({
+                                    sublistId: "item",
+                                    fieldId: "unitsdisplay",
+                                    line: i
+                                }) || "",
+                                qty: formatNumber(qtyVal)
+                            });
+                        }
+                    }
+                    if (filteredItemsList.length === 0) {
+                        filteredItemsList.push({
+                            custcol_njt_podesc: "",
+                            unitsdisplay: "",
+                            qty: ""
+                        });
+                    }
+                    log.debug("Filtered Line Count", filteredItemsList.length);
+
+                    if (debug === "T") {
+                        context.response.setHeader({
+                            name: "Content-Type",
+                            value: "application/json"
+                        });
+                        context.response.write(JSON.stringify({
+                            lineCount: lineCount,
+                            filteredItemsList: filteredItemsList,
+                            rawLines: (function () {
+                                var lines = [];
+                                for (var idx = 0; idx < lineCount; idx++) {
+                                    lines.push({
+                                        index: idx,
+                                        isReceived: fulfillmentRecord.getSublistValue({ sublistId: "item", fieldId: "itemreceive", line: idx }),
+                                        amountVal: fulfillmentRecord.getSublistValue({ sublistId: "item", fieldId: "itemfxamount", line: idx }),
+                                        qtyVal: fulfillmentRecord.getSublistValue({ sublistId: "item", fieldId: "quantity", line: idx }),
+                                        qtyRemaining: fulfillmentRecord.getSublistValue({ sublistId: "item", fieldId: "quantityremaining", line: idx }),
+                                        description: fulfillmentRecord.getSublistValue({ sublistId: "item", fieldId: "custcol_njt_podesc", line: idx })
+                                    });
+                                }
+                                return lines;
+                            })()
+                        }));
+                        return;
+                    }
+
+                    var customer = fulfillmentRecord.getValue({
+                        fieldId: 'entity'
                     });
                     var customerRecord = record.load({
-                      type: record.Type.CUSTOMER,
-                      id: customer,
-                      isDynamic: true,
+                        type: record.Type.CUSTOMER,
+                        id: customer,
+                        isDynamic: true,
                     });
-                    var companyName= customerRecord.getValue({
-                      fieldId:'companyname'
+                    var companyName = customerRecord.getValue({
+                        fieldId: 'companyname'
                     });
                     // var createdfrom = fulfillmentRecord.getValue({
                     //   fieldId:'createdfrom'
@@ -58,7 +143,7 @@ define([
                     if (layout === "A4") {
                         xmlFilePath = "SuiteScripts/Layouts/do a4 with logo format xml.xml";
                     } else {
-                        xmlFilePath = "SuiteScripts/Layouts/Do a5 without logo format xml.xml"; 
+                        xmlFilePath = "SuiteScripts/Layouts/Do a5 without logo format xml.xml";
                     }
 
                     // 4. Get the XML content using the helper function
@@ -72,6 +157,15 @@ define([
                     renderer.addRecord({
                         templateName: "record",
                         record: fulfillmentRecord,
+                    });
+
+                    // Add the filtered items as a custom data source
+                    renderer.addCustomDataSource({
+                        format: render.DataSource.OBJECT,
+                        alias: "filteredItems",
+                        data: {
+                            list: filteredItemsList
+                        }
                     });
 
                     // 7. Add the custom parameter for the Logo logic
@@ -114,6 +208,19 @@ define([
             id: filePath,
         });
         return templateFile.getContents();
+    }
+
+    /**
+     * Helper Function to format number as a string with 2 decimal places and thousands separator
+     * @param {number|string} num
+     * @returns {string}
+     */
+    function formatNumber(num) {
+        var val = parseFloat(num);
+        if (isNaN(val)) return "0.00";
+        var parts = val.toFixed(2).split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
     }
 
     return {

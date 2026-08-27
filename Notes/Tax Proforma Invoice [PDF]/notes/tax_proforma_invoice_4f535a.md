@@ -13,6 +13,9 @@
 - Wrapped numeric and serial number cells in a check to print completely blank cells for the dummy fallback row.
 - Added a fallback to item.description for the DESCRIPTION column if custcol_njt_podesc is empty.
 
+**21/08/2026:**
+- Fixed dummy item check `!(item.isDummy??)` evaluating to false for real items by refactoring to use a standard property check `item.quantity?has_content`. In NetSuite's custom FreeMarker implementation, referencing non-existent properties (like `isDummy`) on wrapped record objects triggers internal property exceptions that render the entire cell blank. By removing `isDummy` and verifying if the standard `quantity` field has content, we cleanly identify the dummy row without causing exceptions on real items.
+
 **Code Changes:**
 *Pagination Block:*
 ```xml
@@ -26,7 +29,7 @@
     </#if>
 </#list>
 <#if filteredItems?size == 0>
-    <#assign filteredItems = [ { "custcol_njt_podesc": "", "description": "", "units": "", "quantity": 0, "rate": 0, "amount": 0, "tax1amt": 0, "grossamt": 0, "isDummy": true } ] />
+    <#assign filteredItems = [ { "custcol_njt_podesc": "", "description": "", "units": "" } ] />
 </#if>
 <#list filteredItems?chunk(10) as itemBatch>
 ```
@@ -35,14 +38,14 @@
 ```xml
         <#list itemBatch as item>
         <tr>
-            <td align="center"><#if !(item.isDummy??)>${item_index + 1 + (itemBatch?index * 10)}</#if></td>
+            <td align="center"><#if item.quantity?has_content>${item_index + 1 + (itemBatch?index * 10)}</#if></td>
             <td align="left"><#if item.custcol_njt_podesc?has_content>${item.custcol_njt_podesc}<#else>${item.description}</#if></td>
             <td align="center">${item.units}</td>
-            <td align="right"><#if !(item.isDummy??)>${item.quantity?string("0.00")}</#if></td>
-            <td align="right"><#if !(item.isDummy??)>${item.rate?string("#,##0.00")}</#if></td>
-            <td align="right"><#if !(item.isDummy??)>${item.amount?string("#,##0.00")}</#if></td>
-            <td align="right"><#if !(item.isDummy??)>${item.tax1amt?string("#,##0.00")}</#if></td>
-            <td align="right"><#if !(item.isDummy??)>${item.grossamt?string("#,##0.00")}</#if></td>
+            <td align="right"><#if item.quantity?has_content>${item.quantity?string("0.00")}</#if></td>
+            <td align="right"><#if item.quantity?has_content>${item.rate?string("#,##0.00")}</#if></td>
+            <td align="right"><#if item.quantity?has_content>${item.amount?string("#,##0.00")}</#if></td>
+            <td align="right"><#if item.quantity?has_content>${item.tax1amt?string("#,##0.00")}</#if></td>
+            <td align="right"><#if item.quantity?has_content>${item.grossamt?string("#,##0.00")}</#if></td>
         </tr>
         </#list>
 ```

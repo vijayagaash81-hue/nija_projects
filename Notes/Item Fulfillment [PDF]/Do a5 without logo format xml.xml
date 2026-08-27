@@ -125,17 +125,19 @@
             </tr>
         </thead>
         <tbody>
-            <#list record.item as item>
+            <#list filteredItems.list as item>
+            <#if item.custcol_njt_podesc?has_content || item.qty?has_content>
             <tr>
                 <td align="center"><i>${item_index + 1}</i></td>
                 <td align="left"><i>${item.custcol_njt_podesc}</i></td>
                 <td align="left"><i>${item.unitsdisplay}</i></td>
-                <td align="right" class="last-col"><i>${item.quantity?string(",##0.00")}</i></td>
+                <td align="right" class="last-col"><i>${item.qty}</i></td>
             </tr>
+            </#if>
             </#list>
             
             <!-- Spacer rows to maintain table structure height if needed -->
-            <#if (record.item?size < 10)>
+            <#if (filteredItems.list?size < 10)>
             <tr>
                 <td height="200pt">&#160;</td>
                 <td>&#160;</td>

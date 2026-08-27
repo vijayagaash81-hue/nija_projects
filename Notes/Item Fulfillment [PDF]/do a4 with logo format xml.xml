@@ -122,7 +122,7 @@
 
 <body header="nlheader" header-height="110pt" footer="nlfooter" footer-height="115pt" padding="0.5in" size="A4">
 
-<#list record.item?chunk(15) as itemBatch>
+<#list filteredItems.list?chunk(15) as itemBatch>
     <!-- DOCUMENT TITLE -->
     <table class="no-border" style="margin-bottom: 10px;">
         <tr>
@@ -206,13 +206,15 @@
         </thead>
         <tbody>
             <#list itemBatch as item>
+            <#if item.custcol_njt_podesc?has_content || item.qty?has_content>
             <tr>
                 <td align="center">${item_index + 1 + (itemBatch?index * 15)}</td>
                 <td align="left">${item.custcol_njt_podesc}</td>
                 <!-- UNITS CENTERED AGAIN -->
                 <td align="center">${item.unitsdisplay}</td>
-                <td align="right">${item.quantity?string(",##0.00")}</td>
+                <td align="right">${item.qty}</td>
             </tr>
+            </#if>
             </#list>
         </tbody>
         <#if itemBatch?has_next>

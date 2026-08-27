@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SJS Enersol - Material Request Back Order Report</title>
+    <!-- Modern Typography -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --primary-light: rgba(2, 132, 199, 0.1);
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success: #10b981;
+            --success-light: #dcfce7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --amber-bg: #fffbeb;
+        }
+
+        body {
+            font-family: "Inter", -apple-system, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Premium Header Styling */
+        .app-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title h1 span {
+            color: var(--primary);
+            font-weight: 400;
+        }
+
+        .header-subtitle {
+            margin: 4px 0 0 0;
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        /* Filter Controls */
+        .filter-panel {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 32px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .filter-panel select {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: var(--text-main);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            min-width: 200px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-panel select:hover, .filter-panel select:focus {
+            border-color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        /* Dashboard Metrics Grid */
+        .dashboard-metrics {
+            display: flex;
+            gap: 20px;
+            padding: 24px 32px;
+            overflow-x: auto;
+        }
+
+        .metric-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.08);
+            border-color: #cbd5e1;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .metric-card.lines::before { background-color: #3b82f6; }
+        .metric-card.required::before { background-color: var(--primary); }
+        .metric-card.stock::before { background-color: var(--success); }
+        .metric-card.needed::before { background-color: #f59e0b; }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Main Workspace & Grid Toolbar */
+        .report-section {
+            background-color: var(--card-bg);
+            margin: 0 32px 32px 32px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+        }
+
+        .report-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: #fafbfc;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container input {
+            padding: 10px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            width: 320px;
+            font-size: 13px;
+            outline: none;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .search-container input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            width: 360px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        .btn-export {
+            background-color: #ffffff;
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .btn-export:hover {
+            background-color: var(--success);
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Interactive Grid Styling */
+        .grid-container {
+            overflow-x: auto;
+            max-height: 60vh;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 20px;
+            border-bottom: 2px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-align: left;
+            user-select: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        th:hover {
+            background-color: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        th:active {
+            background-color: #e2e8f0;
+        }
+
+        td {
+            padding: 14px 20px;
+            font-size: 13px;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+            border-right: 1px solid #f1f5f9;
+            vertical-align: middle;
+            background-color: #ffffff;
+            transition: background-color 0.15s ease;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        tr.row-needed td {
+            background-color: var(--amber-bg);
+        }
+
+        tr.row-needed:hover td {
+            background-color: #fffbeb;
+        }
+
+        .sno-col {
+            text-align: center;
+            font-weight: 500;
+            color: var(--text-muted);
+            width: 60px;
+        }
+
+        .num {
+            text-align: right;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13.5px;
+            font-weight: 500;
+        }
+
+        /* Badges */
+        .badge {
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            display: inline-block;
+            text-align: center;
+            letter-spacing: -0.2px;
+        }
+
+        .badge-alert {
+            color: var(--danger);
+            background-color: var(--danger-light);
+        }
+
+        .badge-ok {
+            color: var(--success);
+            background-color: var(--success-light);
+        }
+
+        .mr-link {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px dashed transparent;
+            transition: all 0.15s ease;
+        }
+
+        .mr-link:hover {
+            color: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+
+        .btn-view-stock {
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(2, 132, 199, 0.05);
+        }
+
+        .btn-view-stock:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(2, 132, 199, 0.15);
+        }
+
+        .btn-view-stock:active {
+            transform: translateY(0);
+        }
+
+        .welcome-msg {
+            padding: 80px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        /* Premium Modal Layout */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            width: 480px;
+            max-width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-color);
+            transform: scale(0.95);
+            transition: transform 0.2s ease-in-out;
+            overflow: hidden;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 18px 24px;
+            background-color: #fafbfc;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.15s ease;
+            line-height: 1;
+        }
+
+        .modal-close-btn:hover {
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 24px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .modal-table th {
+            padding: 10px 12px;
+            font-size: 11px;
+            background-color: #ffffff;
+            border-bottom: 2px solid var(--border-color);
+            border-right: none;
+            cursor: default;
+        }
+
+        .modal-table td {
+            padding: 12px;
+            font-size: 13px;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+            border-right: none;
+            background-color: #ffffff;
+        }
+
+        .modal-table tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="header-title">
+            <h1>SJS ENERSOL <span>| Material Request Back Order Report</span></h1>
+            <p class="header-subtitle">Interactive Consolidated and Detailed Material Request Stock Matching Dashboard</p>
+        </div>
+        <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="toggleViewType()" id="btnViewToggle">
+                Switch to Consolidated View
+            </button>
+        </div>
+    </header>
+
+    <!-- Filters Section -->
+    <section class="filter-panel">
+        <div class="filter-group">
+            <label class="filter-label" for="filter_subsidiary">Subsidiary</label>
+            <select id="filter_subsidiary" onchange="applyFilters()">
+                <option value="">All Subsidiaries</option>
+                <!-- Sourced dynamically -->
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label" for="filter_itemtype">Item Type</label>
+            <select id="filter_itemtype" onchange="applyFilters()">
+                <option value="">All Item Types</option>
+                <!-- Sourced dynamically -->
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label" for="filter_division">Division</label>
+            <select id="filter_division" onchange="applyFilters()">
+                <option value="">All Divisions</option>
+                <!-- Sourced dynamically -->
+            </select>
+        </div>
+    </section>
+
+    <!-- KPI Dashboard Cards -->
+    <section class="dashboard-metrics">
+        <div class="metric-card lines">
+            <span class="metric-value" id="kpiOpenLines">0</span>
+            <span class="metric-label">Total Open Lines</span>
+        </div>
+        <div class="metric-card required">
+            <span class="metric-value" id="kpiRequiredQty">0</span>
+            <span class="metric-label">Total Required Qty</span>
+        </div>
+        <div class="metric-card stock">
+            <span class="metric-value" id="kpiQtyOnHand">0</span>
+            <span class="metric-label">Total Qty on Hand</span>
+        </div>
+        <div class="metric-card needed">
+            <span class="metric-value" id="kpiNeededQty">0</span>
+            <span class="metric-label">Total Needed Qty</span>
+        </div>
+    </section>
+
+    <!-- Data Report Grid -->
+    <section class="report-section">
+        <div class="report-toolbar">
+            <div class="search-container">
+                <input type="text" id="reportSearch" placeholder="Search item, MR or location..." oninput="applyFilters()">
+            </div>
+            <button class="btn btn-export" onclick="exportCSV()">
+                Export to CSV
+            </button>
+        </div>
+
+        <div class="grid-container">
+            <table id="reportTable">
+                <thead>
+                    <tr id="tableHeaderRow">
+                        <!-- Dynamic columns -->
+                    </tr>
+                </thead>
+                <tbody id="reportTableBody">
+                    <!-- Dynamic rows -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Stock Details Modal Popup -->
+    <div id="stockModal" class="modal-overlay" onclick="closeStockModalOutside(event)">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">Location Stock Breakdown</h3>
+                <button type="button" class="modal-close-btn" onclick="closeStockModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <table class="modal-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">Location Name</th>
+                            <th style="text-align: right; width: 120px;">Qty On Hand</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalTableBody">
+                        <!-- Dynamic rows inserted via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Block containing Sample Database and Report Logic -->
+    <script>
+        // --- 1. SAMPLE DATA SIMULATING NETSUITE DATABASE ---
+        const FILTER_OPTIONS = {
+            subsidiaries: [
+                { id: "1", name: "SJS Enersol Dubai" },
+                { id: "2", name: "SJS Enersol Abu Dhabi" },
+                { id: "3", name: "SJS Enersol Saudi Arabia" }
+            ],
+            itemTypes: [
+                { id: "10", name: "Raw Material" },
+                { id: "11", name: "Fasteners" },
+                { id: "12", name: "Pipes & Fittings" }
+            ],
+            divisions: [
+                { id: "100", name: "Steel Division" },
+                { id: "101", name: "Assembly Division" },
+                { id: "102", name: "Piping Division" }
+            ]
+        };
+
+        const REPORT_RAW_DATA = [
+            {
+                line_id: 1001,
+                parent_name: "MR-2026-0001",
+                parent_link: "https://system.netsuite.com/app/common/custom/custrecordentry.nl?id=101",
+                subsidiary_id: "1",
+                subsidiary_name: "SJS Enersol Dubai",
+                division_id: "100",
+                division_name: "Steel Division",
+                item_id: "2001",
+                item_name: "PLMSA36 Plate MS A36 10mm",
+                item_type_id: "10",
+                item_type_name: "Raw Material",
+                req_qty: 150,
+                loc_id: "3001",
+                loc_name: "SJSENERSOL-OLD FACTORY",
+                qty_on_hand: 50,
+                needed_qty: 100,
+                stock_locations: [
+                    { id: "3001", name: "SJSENERSOL-OLD FACTORY", qty: 50 },
+                    { id: "3002", name: "SJSENERSOL-MAIN WH", qty: 25 },
+                    { id: "3003", name: "SJSENERSOL-STORE", qty: 10 }
+                ]
+            },
+            {
+                line_id: 1002,
+                parent_name: "MR-2026-0001",
+                parent_link: "https://system.netsuite.com/app/common/custom/custrecordentry.nl?id=101",
+                subsidiary_id: "1",
+                subsidiary_name: "SJS Enersol Dubai",
+                division_id: "100",
+                division_name: "Steel Division",
+                item_id: "2002",
+                item_name: "BEAMH100 H-Beam 100mm",
+                item_type_id: "10",
+                item_type_name: "Raw Material",
+                req_qty: 80,
+                loc_id: "3001",
+                loc_name: "SJSENERSOL-OLD FACTORY",
+                qty_on_hand: 120,
+                needed_qty: 0,
+                stock_locations: [
+                    { id: "3001", name: "SJSENERSOL-OLD FACTORY", qty: 120 },
+                    { id: "3002", name: "SJSENERSOL-MAIN WH", qty: 60 }
+                ]
+            },
+            {
+                line_id: 1003,
+                parent_name: "MR-2026-0002",
+                parent_link: "https://system.netsuite.com/app/common/custom/custrecordentry.nl?id=102",
+                subsidiary_id: "2",
+                subsidiary_name: "SJS Enersol Abu Dhabi",
+                division_id: "101",
+                division_name: "Assembly Division",
+                item_id: "2003",
+                item_name: "BOLTM12 Hex Bolt M12",
+                item_type_id: "11",
+                item_type_name: "Fasteners",
+                req_qty: 1200,
+                loc_id: "3002",
+                loc_name: "SJSENERSOL-MAIN WH",
+                qty_on_hand: 400,
+                needed_qty: 800,
+                stock_locations: [
+                    { id: "3002", name: "SJSENERSOL-MAIN WH", qty: 400 },
+                    { id: "3003", name: "SJSENERSOL-STORE", qty: 300 }
+                ]
+            },
+            {
+                line_id: 1004,
+                parent_name: "MR-2026-0002",
+                parent_link: "https://system.netsuite.com/app/common/custom/custrecordentry.nl?id=102",
+                subsidiary_id: "2",
+                subsidiary_name: "SJS Enersol Abu Dhabi",
+                division_id: "101",
+                division_name: "Assembly Division",
+                item_id: "2004",
+                item_name: "NUTM12 Hex Nut M12",
+                item_type_id: "11",
+                item_type_name: "Fasteners",
+                req_qty: 1000,
+                loc_id: "3002",
+                loc_name: "SJSENERSOL-MAIN WH",
+                qty_on_hand: 1500,
+                needed_qty: 0,
+                stock_locations: [
+                    { id: "3002", name: "SJSENERSOL-MAIN WH", qty: 1500 }
+                ]
+            },
+            {
+                line_id: 1005,
+                parent_name: "MR-2026-0003",
+                parent_link: "https://system.netsuite.com/app/common/custom/custrecordentry.nl?id=103",
+                subsidiary_id: "1",
+                subsidiary_name: "SJS Enersol Dubai",
+                division_id: "102",
+                division_name: "Piping Division",
+                item_id: "2005",
+                item_name: "PIPE3IN Galvanized Steel Pipe 3in",
+                item_type_id: "12",
+                item_type_name: "Pipes & Fittings",
+                req_qty: 75,
+                loc_id: "3003",
+                loc_name: "SJSENERSOL-STORE",
+                qty_on_hand: 20,
+                needed_qty: 55,
+                stock_locations: [
+                    { id: "3003", name: "SJSENERSOL-STORE", qty: 20 },
+                    { id: "3002", name: "SJSENERSOL-MAIN WH", qty: 15 }
+                ]
+            },
+            {
+                line_id: 1006,
+                parent_name: "MR-2026-0004",
+                parent_link: "https://system.netsuite.com/app/common/custom/custrecordentry.nl?id=104",
+                subsidiary_id: "3",
+                subsidiary_name: "SJS Enersol Saudi Arabia",
+                division_id: "100",
+                division_name: "Steel Division",
+                item_id: "2001",
+                item_name: "PLMSA36 Plate MS A36 10mm",
+                item_type_id: "10",
+                item_type_name: "Raw Material",
+                req_qty: 90,
+                loc_id: "3002",
+                loc_name: "SJSENERSOL-MAIN WH",
+                qty_on_hand: 25,
+                needed_qty: 65,
+                stock_locations: [
+                    { id: "3001", name: "SJSENERSOL-OLD FACTORY", qty: 50 },
+                    { id: "3002", name: "SJSENERSOL-MAIN WH", qty: 25 }
+                ]
+            }
+        ];
+
+        // --- 2. GLOBAL STATE ---
+        let currentViewType = 'detailed'; // 'detailed' or 'consolidated'
+        let filteredDataset = [];
+        let sortDirections = {};
+
+        // --- 3. ON PAGE LOAD ---
+        window.addEventListener('DOMContentLoaded', () => {
+            initFilterOptions();
+            applyFilters();
+        });
+
+        // Populate Dropdowns
+        function initFilterOptions() {
+            const subDropdown = document.getElementById('filter_subsidiary');
+            FILTER_OPTIONS.subsidiaries.forEach(s => {
+                subDropdown.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+            });
+
+            const typeDropdown = document.getElementById('filter_itemtype');
+            FILTER_OPTIONS.itemTypes.forEach(t => {
+                typeDropdown.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+            });
+
+            const divDropdown = document.getElementById('filter_division');
+            FILTER_OPTIONS.divisions.forEach(d => {
+                divDropdown.innerHTML += `<option value="${d.id}">${d.name}</option>`;
+            });
+        }
+
+        // Toggle View Type
+        function toggleViewType() {
+            currentViewType = currentViewType === 'detailed' ? 'consolidated' : 'detailed';
+            
+            // Update button label
+            const btn = document.getElementById('btnViewToggle');
+            if (currentViewType === 'consolidated') {
+                btn.innerHTML = 'Switch to Detailed View';
+            } else {
+                btn.innerHTML = 'Switch to Consolidated View';
+            }
+
+            applyFilters();
+        }
+
+        // --- 4. BUSINESS LOGIC: FILTERS & DATA PROCESSORS ---
+        function applyFilters() {
+            const subsidiaryFilter = document.getElementById('filter_subsidiary').value;
+            const itemtypeFilter = document.getElementById('filter_itemtype').value;
+            const divisionFilter = document.getElementById('filter_division').value;
+            const searchVal = document.getElementById('reportSearch').value.toLowerCase();
+
+            // Filter Raw Data
+            let data = REPORT_RAW_DATA.filter(row => {
+                const matchesSub = !subsidiaryFilter || row.subsidiary_id === subsidiaryFilter;
+                const matchesType = !itemtypeFilter || row.item_type_id === itemtypeFilter;
+                const matchesDiv = !divisionFilter || row.division_id === divisionFilter;
+                
+                const matchesSearch = !searchVal || 
+                    (row.parent_name && row.parent_name.toLowerCase().includes(searchVal)) ||
+                    (row.item_name && row.item_name.toLowerCase().includes(searchVal)) ||
+                    (row.loc_name && row.loc_name.toLowerCase().includes(searchVal)) ||
+                    (row.subsidiary_name && row.subsidiary_name.toLowerCase().includes(searchVal)) ||
+                    (row.item_type_name && row.item_type_name.toLowerCase().includes(searchVal));
+
+                return matchesSub && matchesType && matchesDiv && matchesSearch;
+            });
+
+            // Process View Logic
+            if (currentViewType === 'consolidated') {
+                filteredDataset = consolidateReportData(data);
+            } else {
+                filteredDataset = data;
+            }
+
+            // Recalculate Dashboard KPIs
+            updateDashboardKPIs();
+
+            // Render Table
+            renderTableGrid();
+        }
+
+        // Consolidate Data Logic
+        function consolidateReportData(data) {
+            const grouped = {};
+            data.forEach(row => {
+                const key = row.item_id || '';
+                if (!grouped[key]) {
+                    grouped[key] = {
+                        item_id: row.item_id,
+                        item_name: row.item_name,
+                        item_type_id: row.item_type_id,
+                        item_type_name: row.item_type_name,
+                        req_qty: 0,
+                        qty_on_hand: 0,
+                        needed_qty: 0,
+                        stock_locations: row.stock_locations || []
+                    };
+                }
+                grouped[key].req_qty += row.req_qty;
+            });
+
+            return Object.keys(grouped).map(key => {
+                const row = grouped[key];
+                
+                // Sum stock across ALL locations for this consolidated item
+                let totalStock = 0;
+                row.stock_locations.forEach(s => {
+                    totalStock += s.qty;
+                });
+                row.qty_on_hand = totalStock;
+                row.needed_qty = Math.max(0, row.req_qty - row.qty_on_hand);
+                
+                return row;
+            });
+        }
+
+        // Update KPI Metrics Cards
+        function updateDashboardKPIs() {
+            let totalOpenLines = filteredDataset.length;
+            let totalRequiredQty = 0;
+            let totalQtyOnHand = 0;
+            let totalNeededQty = 0;
+
+            if (currentViewType === 'consolidated') {
+                filteredDataset.forEach(row => {
+                    totalRequiredQty += row.req_qty;
+                    totalQtyOnHand += row.qty_on_hand;
+                    totalNeededQty += row.needed_qty;
+                });
+            } else {
+                // In detailed view, total stock is counted uniquely by Item & Location
+                const uniqueStock = {};
+                filteredDataset.forEach(row => {
+                    totalRequiredQty += row.req_qty;
+                    
+                    const key = `${row.item_id}_${row.loc_id}`;
+                    if (!(key in uniqueStock)) {
+                        uniqueStock[key] = row.qty_on_hand;
+                    }
+                });
+
+                for (const key in uniqueStock) {
+                    totalQtyOnHand += uniqueStock[key];
+                }
+                totalNeededQty = Math.max(0, totalRequiredQty - totalQtyOnHand);
+            }
+
+            document.getElementById('kpiOpenLines').innerText = totalOpenLines;
+            document.getElementById('kpiRequiredQty').innerText = totalRequiredQty.toLocaleString();
+            document.getElementById('kpiQtyOnHand').innerText = totalQtyOnHand.toLocaleString();
+            document.getElementById('kpiNeededQty').innerText = totalNeededQty.toLocaleString();
+        }
+
+        // --- 5. GRID RENDERING & SORTING ---
+        function renderTableGrid() {
+            const headerRow = document.getElementById('tableHeaderRow');
+            const tableBody = document.getElementById('reportTableBody');
+
+            // Columns Header Markup
+            if (currentViewType === 'consolidated') {
+                headerRow.innerHTML = `
+                    <th style="width: 60px; text-align: center;">S.No</th>
+                    <th onclick="sortTable(1)">Item Type</th>
+                    <th onclick="sortTable(2)">Item Description</th>
+                    <th onclick="sortTable(3)" style="text-align: right;">Required Qty</th>
+                    <th onclick="sortTable(4)" style="text-align: right;">Qty On Hand</th>
+                    <th onclick="sortTable(5)" style="text-align: right;">Needed Qty</th>
+                    <th style="text-align: center; width: 160px;">Stock Breakdowns</th>
+                `;
+            } else {
+                headerRow.innerHTML = `
+                    <th style="width: 60px; text-align: center;">S.No</th>
+                    <th onclick="sortTable(1)">Material Request</th>
+                    <th onclick="sortTable(2)">Subsidiary</th>
+                    <th onclick="sortTable(3)">Division</th>
+                    <th onclick="sortTable(4)">Item Description</th>
+                    <th onclick="sortTable(5)">Item Type</th>
+                    <th onclick="sortTable(6)" style="text-align: right;">Required Qty</th>
+                    <th onclick="sortTable(7)">MR Destination Location</th>
+                    <th onclick="sortTable(8)" style="text-align: right;">Qty On Hand</th>
+                    <th onclick="sortTable(9)" style="text-align: right;">Needed Qty</th>
+                `;
+            }
+
+            // Grid Rows Markup
+            let rowsHtml = '';
+            filteredDataset.forEach((row, idx) => {
+                const isBackordered = row.needed_qty > 0;
+                const rowClass = isBackordered ? 'row-needed' : '';
+                const badgeClass = isBackordered ? 'badge badge-alert' : 'badge badge-ok';
+
+                if (currentViewType === 'consolidated') {
+                    const stockJson = JSON.stringify(row.stock_locations).replace(/"/g, '&quot;');
+                    rowsHtml += `
+                        <tr class="${rowClass}">
+                            <td class="sno-col">${idx + 1}</td>
+                            <td>${row.item_type_name}</td>
+                            <td style="font-weight: 600;">${row.item_name}</td>
+                            <td class="num">${row.req_qty.toLocaleString()}</td>
+                            <td class="num">${row.qty_on_hand.toLocaleString()}</td>
+                            <td class="num"><span class="${badgeClass}">${row.needed_qty.toLocaleString()}</span></td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-view-stock" 
+                                        data-item="${row.item_name.replace(/"/g, '&quot;')}" 
+                                        data-stock="${stockJson}" 
+                                        onclick="openStockModalFromButton(this)">View Stock</button>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    rowsHtml += `
+                        <tr class="${rowClass}">
+                            <td class="sno-col">${idx + 1}</td>
+                            <td><a href="${row.parent_link}" class="mr-link" onclick="event.preventDefault(); alert('Redirecting to NetSuite record: ' + '${row.parent_name}')">${row.parent_name}</a></td>
+                            <td>${row.subsidiary_name}</td>
+                            <td>${row.division_name}</td>
+                            <td style="font-weight: 600;">${row.item_name}</td>
+                            <td>${row.item_type_name}</td>
+                            <td class="num">${row.req_qty.toLocaleString()}</td>
+                            <td>${row.loc_name}</td>
+                            <td class="num">${row.qty_on_hand.toLocaleString()}</td>
+                            <td class="num"><span class="${badgeClass}">${row.needed_qty.toLocaleString()}</span></td>
+                        </tr>
+                    `;
+                }
+            });
+
+            if (filteredDataset.length === 0) {
+                const colsSpan = currentViewType === 'consolidated' ? 7 : 10;
+                rowsHtml = `
+                    <tr>
+                        <td colspan="${colsSpan}" class="welcome-msg">No material requests matching the criteria were found.</td>
+                    </tr>
+                `;
+            }
+
+            tableBody.innerHTML = rowsHtml;
+        }
+
+        // Sorting Logic
+        function sortTable(colIdx) {
+            const isConsolidated = currentViewType === 'consolidated';
+            const isAsc = !sortDirections[colIdx];
+            sortDirections[colIdx] = isAsc;
+
+            filteredDataset.sort((a, b) => {
+                let valA, valB;
+
+                if (isConsolidated) {
+                    const keys = ['', 'item_type_name', 'item_name', 'req_qty', 'qty_on_hand', 'needed_qty'];
+                    valA = a[keys[colIdx]];
+                    valB = b[keys[colIdx]];
+                } else {
+                    const keys = ['', 'parent_name', 'subsidiary_name', 'division_name', 'item_name', 'item_type_name', 'req_qty', 'loc_name', 'qty_on_hand', 'needed_qty'];
+                    valA = a[keys[colIdx]];
+                    valB = b[keys[colIdx]];
+                }
+
+                if (typeof valA === 'string') {
+                    return isAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                } else {
+                    return isAsc ? valA - valB : valB - valA;
+                }
+            });
+
+            renderTableGrid();
+        }
+
+        // --- 6. STOCK MODAL CONTROLLER ---
+        function openStockModalFromButton(buttonEl) {
+            const itemName = buttonEl.getAttribute('data-item');
+            const stockJsonText = buttonEl.getAttribute('data-stock');
+            const stockLocations = JSON.parse(stockJsonText);
+
+            document.getElementById('modalTitle').innerText = `Location Stock - ${itemName}`;
+            const modalBody = document.getElementById('modalTableBody');
+            
+            let modalRows = '';
+            stockLocations.forEach(loc => {
+                modalRows += `
+                    <tr>
+                        <td>${loc.name}</td>
+                        <td class="num" style="text-align: right; font-weight: 600;">${loc.qty.toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+
+            if (stockLocations.length === 0) {
+                modalRows = `
+                    <tr>
+                        <td colspan="2" class="welcome-msg" style="padding: 20px;">No stock available in any inventory location.</td>
+                    </tr>
+                `;
+            }
+
+            modalBody.innerHTML = modalRows;
+            
+            const modalOverlay = document.getElementById('stockModal');
+            modalOverlay.style.display = 'flex';
+            // Trigger animation thread
+            setTimeout(() => {
+                modalOverlay.classList.add('active');
+            }, 10);
+        }
+
+        function closeStockModal() {
+            const modalOverlay = document.getElementById('stockModal');
+            modalOverlay.classList.remove('active');
+            setTimeout(() => {
+                modalOverlay.style.display = 'none';
+            }, 200);
+        }
+
+        function closeStockModalOutside(event) {
+            if (event.target.id === 'stockModal') {
+                closeStockModal();
+            }
+        }
+
+        // --- 7. EXPORT DATA TO CSV ---
+        function exportCSV() {
+            let csv = '\uFEFF'; // UTF-8 BOM
+            
+            if (currentViewType === 'consolidated') {
+                csv += 'S.No,Item Type,Item,Required Qty,Qty On Hand,Needed Qty\n';
+                filteredDataset.forEach((row, idx) => {
+                    csv += `"${idx + 1}","${row.item_type_name}","${row.item_name}","${row.req_qty}","${row.qty_on_hand}","${row.needed_qty}"\n`;
+                });
+            } else {
+                csv += 'S.No,Material Request,Subsidiary,Division,Item,Item Type,Required Qty,MR Location,Qty On Hand,Needed Qty\n';
+                filteredDataset.forEach((row, idx) => {
+                    csv += `"${idx + 1}","${row.parent_name}","${row.subsidiary_name}","${row.division_name}","${row.item_name}","${row.item_type_name}","${row.req_qty}","${row.loc_name}","${row.qty_on_hand}","${row.needed_qty}"\n`;
+                });
+            }
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", `Material_Request_Back_Order_Report_${currentViewType}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    </script>
+</body>
+</html>

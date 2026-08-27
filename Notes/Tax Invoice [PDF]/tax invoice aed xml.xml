@@ -128,12 +128,30 @@
 <!-- FILTER OUT ITEMS WHERE AMOUNT IS ZERO -->
 <#assign filteredItems = [] />
 <#list record.item as rawItem>
-    <#if rawItem.amount?has_content && rawItem.amount != 0>
-        <#assign filteredItems = filteredItems + [rawItem] />
-    <#elseif !rawItem.amount?has_content>
+    <#assign includeItem = true />
+    <#if rawItem.amount??>
+        <#assign amtVal = 0 />
+        <#if rawItem.amount?is_number>
+            <#assign amtVal = rawItem.amount />
+        <#else>
+            <#assign amtStr = rawItem.amount?string?replace(",", "")?trim />
+            <#if amtStr?has_content>
+                <#assign amtVal = amtStr?number />
+            <#else>
+                <#assign amtVal = 999999 />
+            </#if>
+        </#if>
+        <#if amtVal == 0>
+            <#assign includeItem = false />
+        </#if>
+    </#if>
+    <#if includeItem>
         <#assign filteredItems = filteredItems + [rawItem] />
     </#if>
 </#list>
+<#if filteredItems?size == 0>
+    <#assign filteredItems = [ { "custcol_njt_podesc": "", "description": "", "units": "" } ] />
+</#if>
 
 <!-- PAGINATION LOGIC: 5 ITEMS PER PAGE -->
 <#list filteredItems?chunk(5) as itemBatch>
@@ -244,16 +262,15 @@
         </thead>
         <#list itemBatch as item>
          <tr>
-            <td align="center">${sn}</td>
-            <#assign sn = sn + 1 />
-            <td align="left" style="white-space: normal; word-wrap: break-word;">${item.custcol_njt_podesc}</td>
-            <td align="center">${item.units}</td>
-            <td align="right">${item.quantity?string("0.00")}</td>
-            <td align="right">${item.rate?string("#,##0.00")}</td>
-            <td align="right">${item.amount?string("#,##0.00")}</td>
-            <td align="center">${item.taxrate1}</td>
-            <td align="right">${item.tax1amt?string("#,##0.00")}</td>
-            <td align="right">${item.grossamt?string("#,##0.00")}</td>
+            <td align="center"><#if item.quantity?has_content>${sn}<#assign sn = sn + 1 /></#if></td>
+            <td align="left" style="white-space: normal; word-wrap: break-word;"><#if item.custcol_njt_podesc?has_content>${item.custcol_njt_podesc}</#if></td>
+            <td align="center"><#if item.units?has_content>${item.units}</#if></td>
+            <td align="right"><#if item.quantity?has_content>${item.quantity?string("0.00")}</#if></td>
+            <td align="right"><#if item.quantity?has_content>${item.rate?string("#,##0.00")}</#if></td>
+            <td align="right"><#if item.quantity?has_content>${item.amount?string("#,##0.00")}</#if></td>
+            <td align="center"><#if item.quantity?has_content>${item.taxrate1}</#if></td>
+            <td align="right"><#if item.quantity?has_content>${item.tax1amt?string("#,##0.00")}</#if></td>
+            <td align="right"><#if item.quantity?has_content>${item.grossamt?string("#,##0.00")}</#if></td>
         </tr>
         <tr>
             <td></td>
