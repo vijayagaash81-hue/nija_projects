@@ -1,0 +1,34 @@
+{
+  "scripts": {
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Time Sheet ENT to timebill rec/njt_timesheet_approval_ue.js": {
+      "name": "njt_timesheet_approval_ue.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Time Sheet ENT to timebill rec/njt_timesheet_approval_ue.js",
+      "relativePath": "njt_timesheet_approval_ue.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Time Sheet ENT to timebill rec",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "njt_timesheet_approval_ue_eae173.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Time Sheet ENT to timebill rec/njt_timesheet_timebill_mr.js": {
+      "name": "njt_timesheet_timebill_mr.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Time Sheet ENT to timebill rec/njt_timesheet_timebill_mr.js",
+      "relativePath": "njt_timesheet_timebill_mr.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Time Sheet ENT to timebill rec",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "njt_timesheet_timebill_mr_2cea95.md"
+    }
+  },
+  "logs": {
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Time Sheet ENT to timebill rec/njt_timesheet_approval_ue.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Time Sheet ENT to timebill rec/njt_timesheet_timebill_mr.js": []
+  }
+}

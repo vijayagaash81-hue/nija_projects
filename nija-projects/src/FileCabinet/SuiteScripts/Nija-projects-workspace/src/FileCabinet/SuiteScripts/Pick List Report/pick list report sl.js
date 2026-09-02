@@ -5,7 +5,7 @@
 define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, render, url, runtime) => {
 
     const onRequest = (scriptContext) => {
-        if (scriptContext.request.method === 'GET') {
+        if (scriptContext.request.method === 'GET' || scriptContext.request.method === 'POST') {
             try {
                 // 1. SQL Query (Kept exactly as provided)
                 let sql = `
@@ -25,6 +25,7 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
                     FROM customrecord_njt_pick_list A 
                     INNER JOIN customrecord_pick_list_details B ON B.custrecord_pl_det_parent_link = A.id 
                     INNER JOIN customrecord_cuctom_inv_det C ON C.custrecord_cust_inv_pick_list = A.id 
+                        AND C.custrecord_cust_inv_det_item = B.custrecord_pl_det_item
                     INNER JOIN customrecord_inv_bin_lot_det D ON D.custrecord_inv_bin_lot_det_parent_link = C.id
                     LEFT JOIN item E ON E.id = B.custrecord_pl_det_item
                     LEFT JOIN customer F ON F.id = B.custrecord_pl_det_customer`;
@@ -39,6 +40,21 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
                     let k = `${item.picklist_no}|${item.salesorder}|${item.item}|${item.bin}|${item.qty_to_pick}`;
                     return seen.hasOwnProperty(k) ? false : (seen[k] = true);
                 });
+
+                // Filter by visible keys if parameter is present (passed from front-end search/filter)
+                const visibleKeysParam = scriptContext.request.parameters.visible_keys;
+                if (visibleKeysParam) {
+                    try {
+                        let visibleKeys = JSON.parse(visibleKeysParam);
+                        let keySet = new Set(visibleKeys);
+                        results = results.filter(item => {
+                            let k = `${item.picklist_no || ''}||${item.salesorder || ''}||${item.item || ''}||${item.bin || ''}`;
+                            return keySet.has(k);
+                        });
+                    } catch (err) {
+                        log.error("Error parsing visible_keys", err);
+                    }
+                }
 
                 const isPrint = scriptContext.request.parameters.print === 'T';
                 const scriptUrl = url.resolveScript({
@@ -63,6 +79,7 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
                         
                         /* Solid Header Design: No spaces between columns */
                         thead th { 
+                            cursor: pointer !important;
                             background-color: #1b3f6b !important; 
                             color: #ffffff !important; 
                             font-size: 11px !important; 
@@ -165,20 +182,21 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
                         </tr>`;
                     } else {
                         let rowSpacer = isNewPick && i > 0 ? 'picklist-spacer' : '';
+                        let rowKey = `${row.picklist_no || ''}||${row.salesorder || ''}||${row.item || ''}||${row.bin || ''}`;
                         tableRows += `
-                        <tr class="${rowSpacer}">
-                            <td class="group-col ${isEndItem ? 'group-end' : ''}" data-search="${row.picklist_no || ''}">${isNewPick ? `<p class="so-badge">${row.picklist_no || '\u2014'}</p>` : ''}</td>
-                            <td class="group-col ${isEndItem ? 'group-end' : ''}" data-search="#${row.salesorder || ''} ${row.salesorder || ''}">${isNewSO ? `<p class="so-badge">#${row.salesorder || 'N/A'}</p>` : ''}</td>
-                            <td class="group-col ${isEndItem ? 'group-end' : ''}" data-search="${row.customer || ''}">${isNewSO ? `<span class="item-name">${row.customer || '\u2014'}</span>` : ''}</td>
-                            <td class="group-col ${isEndItem ? 'group-end' : ''}" data-search="${itemDesc} ${row.item || ''}">${isNewItem ? `<span class="item-name">${itemDesc}</span>` : ''}</td>
-                            <td><div class="bin-container"><span class="bin-icon">&#128230;</span> ${row.bin || '\u2014'}</div></td>
-                            <td align="center"><b>${row.inv_qty || 0}</b></td>
-                            <td align="center"><b>${row.available || 0}</b></td>
-                            <td align="center">
+                        <tr class="${rowSpacer}" data-row-key="${rowKey}">
+                            <td class="group-col ${isEndItem ? 'group-end' : ''}" data-order="${row.picklist_no || ''}" data-search="${row.picklist_no || ''}">${isNewPick ? `<p class="so-badge">${row.picklist_no || '\u2014'}</p>` : ''}</td>
+                            <td class="group-col ${isEndItem ? 'group-end' : ''}" data-order="${row.salesorder || ''}" data-search="#${row.salesorder || ''} ${row.salesorder || ''}">${isNewSO ? `<p class="so-badge">#${row.salesorder || 'N/A'}</p>` : ''}</td>
+                            <td class="group-col ${isEndItem ? 'group-end' : ''}" data-order="${row.customer || ''}" data-search="${row.customer || ''}">${isNewSO ? `<span class="item-name">${row.customer || '\u2014'}</span>` : ''}</td>
+                            <td class="group-col ${isEndItem ? 'group-end' : ''}" data-order="${itemDesc || ''}" data-search="${itemDesc} ${row.item || ''}">${isNewItem ? `<span class="item-name">${itemDesc}</span>` : ''}</td>
+                            <td data-order="${row.bin || ''}"><div class="bin-container"><span class="bin-icon">&#128230;</span> ${row.bin || '\u2014'}</div></td>
+                            <td align="center" data-order="${parseFloat(row.inv_qty) || 0}"><b>${row.inv_qty || 0}</b></td>
+                            <td align="center" data-order="${parseFloat(row.available) || 0}"><b>${row.available || 0}</b></td>
+                            <td align="center" data-order="${pickPct}">
                                 <p class="progress-text">${qtyDone} / ${qtyToPick}</p>
                                 <div class="progress-container"><div class="progress-fill" style="width: ${pickPct}%;"></div></div>
                             </td>
-                            <td align="center"><p class="status-pill ${isDone ? 'status-picked' : 'status-pending'}">${isDone ? 'Picked' : 'Pending'}</p></td>
+                            <td align="center" data-order="${isDone ? 'Picked' : 'Pending'}"><p class="status-pill ${isDone ? 'status-picked' : 'status-pending'}">${isDone ? 'Picked' : 'Pending'}</p></td>
                         </tr>`;
                     }
                 }
@@ -190,7 +208,7 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
                 let contentHtml = `
                     <div class="page-header">
                         <h1>PICK LIST REPORT</h1>
-                        ${!isPrint ? `<a href="${scriptUrl}&print=T" class="btn-download">Download PDF</a>` : ''}
+                        ${!isPrint ? `<a href="javascript:void(0)" onclick="downloadFilteredPdf()" class="btn-download">Download PDF</a>` : ''}
                     </div>
                     <table id="reportTable" class="table table-hover" style="${isPrint ? 'border-collapse:collapse; width:100%; border:1px solid #d1d5db; background-color:#ffffff;' : ''}">
                         <thead>
@@ -245,7 +263,8 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
                             $(document).ready(function() {
                                 $('#reportTable').DataTable({
                                     pageLength: 50,
-                                    ordering: false,
+                                    ordering: true,
+                                    order: [],
                                     dom: '<"d-flex justify-content-between mb-4"f l>rt<"d-flex justify-content-between mt-4"i p>',
                                     language: { 
                                         search: "", 
@@ -254,6 +273,35 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
                                     }
                                 });
                             });
+
+                            function downloadFilteredPdf() {
+                                var table = $('#reportTable').DataTable();
+                                var visibleKeys = [];
+                                
+                                // Get keys of rows that are currently visible/applied search filters
+                                table.rows({ search: 'applied' }).every(function() {
+                                    var node = this.node();
+                                    var key = $(node).attr('data-row-key');
+                                    if (key) {
+                                        visibleKeys.push(key);
+                                    }
+                                });
+
+                                // Create a form dynamically to send visible keys via POST
+                                var form = document.createElement('form');
+                                form.method = 'POST';
+                                form.action = window.location.href + (window.location.href.indexOf('?') === -1 ? '?' : '&') + 'print=T';
+                                
+                                var input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = 'visible_keys';
+                                input.value = JSON.stringify(visibleKeys);
+                                form.appendChild(input);
+                                
+                                document.body.appendChild(form);
+                                form.submit();
+                                document.body.removeChild(form);
+                            }
                         </script>
                     </body>
                     </html>`;

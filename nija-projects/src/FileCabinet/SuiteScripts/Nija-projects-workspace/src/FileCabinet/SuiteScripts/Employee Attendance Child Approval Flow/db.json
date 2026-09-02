@@ -1,0 +1,76 @@
+{
+  "scripts": {
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/employee daily atten reg post.js": {
+      "name": "employee daily atten reg post.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/employee daily atten reg post.js",
+      "relativePath": "employee daily atten reg post.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "employee_daily_atten_reg_post_230939.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/regulaze mr in daily attendance.js": {
+      "name": "regulaze mr in daily attendance.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/regulaze mr in daily attendance.js",
+      "relativePath": "regulaze mr in daily attendance.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "regulaze_mr_in_daily_attendance_5930ef.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/line manager approval reg sl.js": {
+      "name": "line manager approval reg sl.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/line manager approval reg sl.js",
+      "relativePath": "line manager approval reg sl.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "line_manager_approval_reg_sl_6b0e0a.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/line manager approval reg mr.js": {
+      "name": "line manager approval reg mr.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/line manager approval reg mr.js",
+      "relativePath": "line manager approval reg mr.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "line_manager_approval_reg_mr_6b5fdc.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/hod reg approval process sl.js": {
+      "name": "hod reg approval process sl.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/hod reg approval process sl.js",
+      "relativePath": "hod reg approval process sl.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "hod_reg_approval_process_sl_35d84a.md"
+    }
+  },
+  "logs": {
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/employee daily atten reg post.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/regulaze mr in daily attendance.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/line manager approval reg sl.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/line manager approval reg mr.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/hod reg approval process sl.js": []
+  }
+}
