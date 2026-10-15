@@ -1,0 +1,35 @@
+<!--
+    File Name: transaction_results_template.html
+    Folder: SuiteScripts/Modular/
+    Description: Standalone HTML template for transaction search results UI.
+-->
+<div class="transaction-search-container">
+    <div class="search-header">
+        <h2>Transaction Search</h2>
+        <span class="results-count">Total: ${totalRecords} records</span>
+    </div>
+    
+    <table class="search-results-table">
+        <thead>
+            <tr>
+                <th>Doc #</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Entity</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dynamic rows populated via Suitelet / Module -->
+            <tr class="result-row">
+                <td><a href="/app/accounting/transactions/transaction.nl?id=${id}">${tranId}</a></td>
+                <td>${type}</td>
+                <td>${date}</td>
+                <td>${entity}</td>
+                <td class="amount">${amount}</td>
+                <td><span class="status-badge">${status}</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

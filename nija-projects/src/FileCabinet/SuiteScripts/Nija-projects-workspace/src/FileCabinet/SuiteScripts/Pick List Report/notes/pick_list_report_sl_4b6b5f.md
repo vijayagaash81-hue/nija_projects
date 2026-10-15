@@ -8,6 +8,13 @@
 
 ## Log of Changes & Implementation Notes
 
+### 12/10/2026:
+- **Added UOM Column**:
+  - **Enhancement**: Added a dedicated "UOM" column positioned next to "Item Details".
+  - Sourced from child sublist `recmachcustrecord_pl_det_parent_link` (`customrecord_pick_list_details B`) via `BUILTIN.DF(B.custrecord_pl_det_units)` for display name ("Nos") with fallback to `B.custrecord_pl_det_units` ("3").
+  - Included sorting (`data-order`) and searching (`data-search`) metadata for DataTables interactivity.
+  - Formatted across both the interactive HTML UI and the downloadable PDF report with responsive column widths.
+
 ### 01/09/2026:
 - **Interactive Header Sorting (Ascending / Descending)**:
   - **Before Update**: DataTables option `ordering: false` was set, which completely disabled header clicking and sorting for all table columns.

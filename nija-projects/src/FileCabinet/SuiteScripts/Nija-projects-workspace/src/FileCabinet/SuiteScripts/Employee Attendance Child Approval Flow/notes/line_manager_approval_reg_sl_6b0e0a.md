@@ -5,7 +5,7 @@
 **Description:** Suitelet (SuiteScript 2.1) displaying pending attendance regularization records (`custrecord_hris_overall_status = 4`) for employees reporting to the logged-in Line Manager. Allows Line Manager review and submission to next approval stage.
 
 ---
-
+[[line manager approval reg mr.js]]
 ## Log of Changes & Implementation Notes
 
 ### 01/09/2026:

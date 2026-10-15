@@ -1,0 +1,290 @@
+<customrecordtype scriptid="customrecord_cseg_hris_empdept">
+  <allowattachments>F</allowattachments>
+  <allowinlinedeleting>F</allowinlinedeleting>
+  <allowinlinedetaching>F</allowinlinedetaching>
+  <allowinlineediting>F</allowinlineediting>
+  <allowquickadd>F</allowquickadd>
+  <allowquicksearch>F</allowquicksearch>
+  <customsegment>[type=customsegment, scriptid=cseg_hris_empdept]</customsegment>
+  <enabledle>F</enabledle>
+  <enablekeywords>T</enablekeywords>
+  <enablemailmerge>F</enablemailmerge>
+  <enableoptimisticlocking>F</enableoptimisticlocking>
+  <enablesystemnotes>T</enablesystemnotes>
+  <icon></icon>
+  <iconbuiltin>T</iconbuiltin>
+  <iconindex></iconindex>
+  <includeinsearchmenu>T</includeinsearchmenu>
+  <showcreationdate>F</showcreationdate>
+  <showcreationdateonlist>F</showcreationdateonlist>
+  <showlastmodified>F</showlastmodified>
+  <showlastmodifiedonlist>F</showlastmodifiedonlist>
+  <shownotes>T</shownotes>
+  <showowner>F</showowner>
+  <showownerallowchange>F</showownerallowchange>
+  <showowneronlist>F</showowneronlist>
+  <instances>
+    <instance scriptid="val_29834_2772245_166">
+      <isinactive>F</isinactive>
+      <name>Administration</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_29844_2772245_460">
+      <isinactive>F</isinactive>
+      <name>Rental</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_29845_2772245_303">
+      <isinactive>F</isinactive>
+      <name>Workshop</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_29846_2772245_405">
+      <isinactive>F</isinactive>
+      <name>Purchase - Store</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_29847_2772245_794">
+      <isinactive>F</isinactive>
+      <name>Sales</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_29848_2772245_265">
+      <isinactive>F</isinactive>
+      <name>Accounts</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_29849_2772245_707">
+      <isinactive>F</isinactive>
+      <name>Common</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_29850_2772245_617">
+      <isinactive>F</isinactive>
+      <name>House Maid</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_29851_2772245_111">
+      <isinactive>F</isinactive>
+      <name>IT</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_29852_2772245_210">
+      <isinactive>F</isinactive>
+      <name>Operations and Logistics</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55750_11929899_949">
+      <isinactive>F</isinactive>
+      <name>MECHANICAL, ELECTRICAL &amp; PLUMBING</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55751_11929899_105">
+      <isinactive>F</isinactive>
+      <name>MANAGEMENT STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55752_11929899_577">
+      <isinactive>F</isinactive>
+      <name>RECRUITMENT STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55753_11929899_607">
+      <isinactive>F</isinactive>
+      <name>HOUSEKEEPING STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55754_11929899_877">
+      <isinactive>F</isinactive>
+      <name>TRANSPORT STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55755_11929899_762">
+      <isinactive>F</isinactive>
+      <name>SECURITY</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55756_11929899_417">
+      <isinactive>F</isinactive>
+      <name>HOUSE KEEPING</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55757_11929899_678">
+      <isinactive>F</isinactive>
+      <name>SECURITY STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55758_11929899_651">
+      <isinactive>F</isinactive>
+      <name>TRANSPORT</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55759_11929899_766">
+      <isinactive>F</isinactive>
+      <name>CAMP ADMIN</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55760_11929899_176">
+      <isinactive>F</isinactive>
+      <name>ROPEACCESS</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55761_11929899_302">
+      <isinactive>F</isinactive>
+      <name>PESTCONTROL</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55762_11929899_511">
+      <isinactive>F</isinactive>
+      <name>MEP STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55763_11929899_422">
+      <isinactive>F</isinactive>
+      <name>VALET PARKING</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55764_11929899_963">
+      <isinactive>F</isinactive>
+      <name>CUSTOMER CARE STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55765_11929899_247">
+      <isinactive>F</isinactive>
+      <name>CONTRACTS STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55766_11929899_316">
+      <isinactive>F</isinactive>
+      <name>INFORMATION TECHNOLOGY STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55767_11929899_483">
+      <isinactive>F</isinactive>
+      <name>PROCUREMENT STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55768_11929899_294">
+      <isinactive>F</isinactive>
+      <name>VALET PARKING STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55769_11929899_335">
+      <isinactive>F</isinactive>
+      <name>ROPEACCESS STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55770_11929899_257">
+      <isinactive>F</isinactive>
+      <name>PROCUREMENT</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55771_11929899_878">
+      <isinactive>F</isinactive>
+      <name>STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55772_11929899_744">
+      <isinactive>F</isinactive>
+      <name>HUMAN RESOURCES STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55773_11929899_192">
+      <isinactive>F</isinactive>
+      <name>MARKETING STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55774_11929899_764">
+      <isinactive>F</isinactive>
+      <name>PEST CONTROL STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55775_11929899_321">
+      <isinactive>F</isinactive>
+      <name>QHSE STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55776_11929899_847">
+      <isinactive>F</isinactive>
+      <name>CAMP ADMINISTRATOR STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55777_11929899_220">
+      <isinactive>F</isinactive>
+      <name>FINANCE STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55778_11929899_688">
+      <isinactive>F</isinactive>
+      <name>EMIRATI - STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55779_11929899_846">
+      <isinactive>F</isinactive>
+      <name>PVT STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_55780_11929899_680">
+      <isinactive>F</isinactive>
+      <name>DESERT OASIS STAFF</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_74507_11951030_590">
+      <isinactive>F</isinactive>
+      <name>Management</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_74508_11951030_895">
+      <isinactive>F</isinactive>
+      <name>Business Support</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_74509_11951030_751">
+      <isinactive>F</isinactive>
+      <name>Architecture</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_74510_11951030_224">
+      <isinactive>F</isinactive>
+      <name>Site Supervision</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_84017_11951030_710">
+      <isinactive>F</isinactive>
+      <name>Interior Architecture</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_84018_11951030_388">
+      <isinactive>F</isinactive>
+      <name>Interior Design</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_84019_11951030_873">
+      <isinactive>F</isinactive>
+      <name>FF&amp;E</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_84020_11951030_490">
+      <isinactive>F</isinactive>
+      <name>Visualization</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_84021_11951030_178">
+      <isinactive>F</isinactive>
+      <name>Design Support</name>
+      <parent></parent>
+    </instance>
+    <instance scriptid="val_84022_11951030_825">
+      <isinactive>F</isinactive>
+      <name>Design Team</name>
+      <parent></parent>
+    </instance>
+  </instances>
+  <links>
+    <link>
+      <linkcategory>BASICSETUPCOMPANY</linkcategory>
+      <linklabel></linklabel>
+      <linktasktype>LIST</linktasktype>
+    </link>
+  </links>
+</customrecordtype>

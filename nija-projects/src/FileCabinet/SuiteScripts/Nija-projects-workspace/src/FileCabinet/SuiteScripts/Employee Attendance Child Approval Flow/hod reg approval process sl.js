@@ -218,7 +218,7 @@ define(["N/ui/serverWidget", "N/search", "N/log", "N/task", "N/redirect", "N/rec
             
             // 1. Total Hours: ENTRY (Set to ENTRY to make it editable)
             salesSublist.addField({ id: "custpage_total", type: serverWidget.FieldType.TEXT, label: "Total Hours" })
-                .updateDisplayType({ displayType: serverWidget.FieldDisplayType.ENTRY });
+                .updateDisplayType({ displayType: serverWidget.FieldDisplayType.DISABLED });
             
             // 2. Regularization IN/OUT: ENTRY
             salesSublist.addField({ id: "custpage_regnor_in", type: serverWidget.FieldType.TIMEOFDAY, label: "Regularization IN" })

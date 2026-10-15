@@ -1,0 +1,13 @@
+<manifest projecttype="ACCOUNTCUSTOMIZATION">
+  <projectname>employeehandbook</projectname>
+  <frameworkversion>1.0</frameworkversion>
+  <dependencies>
+    <features>
+      <feature required="true">SERVERSIDESCRIPTING</feature>
+      <feature required="false">CRM</feature>
+    </features>
+    <objects>
+      <object>customrecordhris_employee_handbook</object>
+    </objects>
+  </dependencies>
+</manifest>

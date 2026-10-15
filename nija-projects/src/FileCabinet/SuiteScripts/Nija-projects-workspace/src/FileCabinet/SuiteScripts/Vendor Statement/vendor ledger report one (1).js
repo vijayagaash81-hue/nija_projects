@@ -357,151 +357,160 @@ define(['./moment.js', 'N/ui/serverWidget', 'N/file', 'N/encode', 'N/query', 'N/
             return parsed.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
+        function getAgeingDetails(query, pvendorid, Subid, sqlToDate) {
+            try {
+                var resultArray = [];
+                var amtCalc = "(NVL(e.credit, 0) - NVL(e.debit, 0))";
+                var asOfDate = "TO_DATE('" + sqlToDate + "', 'YYYY-MM-DD')";
+                
+                var subClause = "";
+                if (Subid) {
+                    subClause = " AND EXISTS (SELECT 1 FROM transactionline tl WHERE tl.transaction = a.id AND tl.subsidiary = " + Subid + ") ";
+                }
+
+                var SQL = "SELECT " +
+                    "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) <= 60 THEN " + amtCalc + " ELSE 0 END) AS balance60, " +
+                    "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) BETWEEN 61 AND 90 THEN " + amtCalc + " ELSE 0 END) AS balance90, " +
+                    "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) BETWEEN 91 AND 120 THEN " + amtCalc + " ELSE 0 END) AS balance120, " +
+                    "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) BETWEEN 121 AND 150 THEN " + amtCalc + " ELSE 0 END) AS balance150, " +
+                    "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) BETWEEN 151 AND 180 THEN " + amtCalc + " ELSE 0 END) AS balance180, " +
+                    "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) > 180 THEN " + amtCalc + " ELSE 0 END) AS balance180plus, " +
+                    "SUM(" + amtCalc + ") AS total " +
+                    "FROM transactionaccountingline e " +
+                    "JOIN account acc ON acc.id = e.account " +
+                    "JOIN transaction a ON a.id = e.transaction " +
+                    "WHERE acc.accttype IN ('AcctPay') " +
+                    "AND a.trandate <= " + asOfDate + " " +
+                    "AND a.entity = " + pvendorid +
+                    subClause;
+
+                log.debug("query-Ageing", SQL);
+                // Run the query.
+                var queryResults = query.runSuiteQL({ query: SQL });
+                var records = queryResults.asMappedResults();
+                log.debug('records', JSON.stringify(records));
+                if (records.length > 0) {
+                    for (var r = 0; r < records.length; r++) {
+                        var record = records[r];
+                        resultArray.push({
+                            'customer': record.vendor || '',
+                            'balance60': record.balance60,
+                            'balance90': record.balance90,
+                            'balance120': record.balance120,
+                            'balance150': record.balance150,
+                            'balance180': record.balance180,
+                            'balance180plus': record.balance180plus,
+                            'total': record.total,
+                        });
+                    }
+                }
+                return resultArray;
+            } catch (e) {
+                log.error('Error in getAgeingDetails', e);
+            }
+        }
+
+        function getTransactionDetails(query, sqlToDate, pvendorid, psubid) {
+            try {
+                var resultArray = [];
+                
+                var subClause = "";
+                if (psubid) {
+                    subClause = "              AND EXISTS (SELECT 1 FROM transactionline tl WHERE tl.transaction = a.id AND tl.subsidiary = " + psubid + ") ";
+                }
+
+                var SQL = "SELECT invid, invnum, trandate, recid, foreigntotal, paidamount, duedate, duedays, recordtype, status, posting, " +
+                          "(SELECT MAX(subsidiary) FROM transactionline WHERE transaction = invid AND mainline='T') AS transubsidiary, " +
+                          "documentno, ponum, memo, openingamt, appliedamt, pendingamt, " +
+                          "SUM(NVL(foreigntotal, 0) - NVL(paidamount, 0)) OVER (ORDER BY NVL(invid, NULL)) AS RTotal " +
+                          "FROM ( " +
+                              "SELECT a.id AS invid, " +
+                                     "a.tranid AS invnum, " +
+                                     "a.trandate, " +
+                                     "a.id AS recid, " +
+                                     "SUM(NVL(e.debit, 0) - NVL(e.credit, 0)) AS foreigntotal, " +
+                                     "0 AS paidamount, " +
+                                     "a.duedate, " +
+                                     "(TO_DATE('" + sqlToDate + "', 'YYYY-MM-DD') - NVL(a.duedate, a.trandate)) AS duedays, " +
+                                     "a.recordtype, " +
+                                     "a.status, " +
+                                         "a.posting, " +
+                                     "a.trandisplayname AS documentno, " +
+                                     "a.otherrefnum AS ponum, " +
+                                     "a.memo, " +
+                                     "SUM(COALESCE(e.credit, 0)) AS openingamt, " +
+                                     "SUM(COALESCE(e.debit, 0)) AS appliedamt, " +
+                                     "SUM(COALESCE(e.debit, 0) - COALESCE(e.credit, 0)) AS pendingamt " +
+                              "FROM transactionaccountingline e " +
+                              "JOIN account acc ON acc.id = e.account " +
+                              "JOIN transaction a ON a.id = e.transaction " +
+                              "WHERE a.trandate <= TO_DATE('" + sqlToDate + "', 'YYYY-MM-DD') " +
+                              "AND acc.accttype IN ('AcctPay') " +
+                              "AND a.entity = " + pvendorid + " " +
+                              subClause +
+                              "GROUP BY a.tranid, a.trandate, a.duedate, " +
+                                       "(TO_DATE('" + sqlToDate + "', 'YYYY-MM-DD') - NVL(a.duedate, a.trandate)), " +
+                                       "a.id, a.recordtype, " +
+                                       "a.trandisplayname, a.otherrefnum, a.trandate, " +
+                                       "a.duedate, a.memo, a.status, a.posting " +
+                          ") " +
+                         "ORDER BY trandate, invid";
+
+                log.debug("query", SQL);
+                // Run the query.
+                var queryResults = query.runSuiteQL({
+                    query: SQL
+                });
+
+                var records = queryResults.asMappedResults();
+                log.debug('records', JSON.stringify(records));
+                log.debug('records.length', records.length);
+                if (records.length > 0) {
+                    for (r = 0; r < records.length; r++) {
+                        // Get the record.
+                        var record = records[r];
+                        var recid = record.recid;
+                        log.debug("invoiceid",recid);
+                        var trandate = record.trandate;
+                        var duedate = record.duedate;
+                        var recordtype = record.recordtype;
+                        var documentno = record.documentno;
+                        var ponum = record.ponum;
+                        var paidamount = record.paidamount;
+                        log.debug("ponum of sql", ponum);
+                        var memo = record.memo;
+                        var openingamt = record.openingamt;
+                        var appliedamt = record.appliedamt;
+                        var pendingamt = record.pendingamt;
+                        var foreigntotal = record.foreigntotal;
+                        var rtotal = record.rtotal;
+                        
+                        resultArray.push({
+                            'recid': recid,
+                            'trandate': trandate,
+                            'duedate': duedate,
+                            'duedays': record.duedays,
+                            'recordtype': recordtype,
+                            'documentno': documentno,
+                            'ponum': ponum,
+                            'memo': memo,
+                            'openingamt': openingamt,
+                            'appliedamt': appliedamt,
+                            'pendingamt': pendingamt,
+                            'paidamount': record.paidamount,
+                            'foreigntotal': foreigntotal,
+                            'rtotal': rtotal,
+                        })
+                    }
+                }
+                return resultArray;
+            } catch (e) {
+                log.error('Error in getTransactionDetails', e);
+            }
+        }
+
         return {
             onRequest: onRequest
         };
 
     });
-    
-function getAgeingDetails(query, pvendorid, Subid, sqlToDate) {
-    try {
-        var resultArray = [];
-        var amtCalc = "(NVL(e.credit, 0) - NVL(e.debit, 0))";
-        var asOfDate = "TO_DATE('" + sqlToDate + "', 'YYYY-MM-DD')";
-        
-        var SQL = "SELECT " +
-            "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) <= 60 THEN " + amtCalc + " ELSE 0 END) AS balance60, " +
-            "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) BETWEEN 61 AND 90 THEN " + amtCalc + " ELSE 0 END) AS balance90, " +
-            "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) BETWEEN 91 AND 120 THEN " + amtCalc + " ELSE 0 END) AS balance120, " +
-            "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) BETWEEN 121 AND 150 THEN " + amtCalc + " ELSE 0 END) AS balance150, " +
-            "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) BETWEEN 151 AND 180 THEN " + amtCalc + " ELSE 0 END) AS balance180, " +
-            "SUM(CASE WHEN (" + asOfDate + " - NVL(a.duedate, a.trandate)) > 180 THEN " + amtCalc + " ELSE 0 END) AS balance180plus, " +
-            "SUM(" + amtCalc + ") AS total " +
-            "FROM transactionaccountingline e " +
-            "JOIN account acc ON acc.id = e.account " +
-            "JOIN transaction a ON a.id = e.transaction " +
-            "WHERE acc.accttype IN ('AcctPay') " +
-            "AND a.trandate <= " + asOfDate + " " +
-            "AND a.entity = " + pvendorid;
-
-        log.debug("query-Ageing", SQL);
-        // Run the query.
-        var queryResults = query.runSuiteQL({ query: SQL });
-        var records = queryResults.asMappedResults();
-        log.debug('records', JSON.stringify(records));
-        
-        if (records.length > 0) {
-            for (var r = 0; r < records.length; r++) {
-                var record = records[r];
-                resultArray.push({
-                            'customer': record.vendor || '',
-                    'balance60': record.balance60,
-                    'balance90': record.balance90,
-                    'balance120': record.balance120,
-                    'balance150': record.balance150,
-                    'balance180': record.balance180,
-                    'balance180plus': record.balance180plus,
-                    'total': record.total,
-                });
-            }
-        }
-        return resultArray;
-    } catch (e) {
-        log.error('Error in getAgeingDetails', e);
-    }
-}
-
-function getTransactionDetails(query, sqlToDate, pvendorid, psubid) {
-    try {
-        var resultArray = [];
- var SQL = "SELECT invid, invnum, trandate, recid, foreigntotal, paidamount, duedate, duedays, recordtype, status, posting, " +
-          "(SELECT MAX(subsidiary) FROM transactionline WHERE transaction = invid AND mainline='T') AS transubsidiary, " +
-          "documentno, ponum, memo, openingamt, appliedamt, pendingamt, " +
-          "SUM(NVL(foreigntotal, 0) - NVL(paidamount, 0)) OVER (ORDER BY NVL(invid, NULL)) AS RTotal " +
-          "FROM ( " +
-              "SELECT a.id AS invid, " +
-                     "a.tranid AS invnum, " +
-                     "a.trandate, " +
-                     "a.id AS recid, " +
-                     "SUM(NVL(e.debit, 0) - NVL(e.credit, 0)) AS foreigntotal, " +
-                     "0 AS paidamount, " +
-                     "a.duedate, " +
-                     "(TO_DATE('" + sqlToDate + "', 'YYYY-MM-DD') - NVL(a.duedate, a.trandate)) AS duedays, " +
-                     "a.recordtype, " +
-                     "a.status, " +
-                         "a.posting, " +
-                     "a.trandisplayname AS documentno, " +
-                     "a.otherrefnum AS ponum, " +
-                     "a.memo, " +
-                     "SUM(COALESCE(e.credit, 0)) AS openingamt, " +
-                     "SUM(COALESCE(e.debit, 0)) AS appliedamt, " +
-                     "SUM(COALESCE(e.debit, 0) - COALESCE(e.credit, 0)) AS pendingamt " +
-              "FROM transactionaccountingline e " +
-              "JOIN account acc ON acc.id = e.account " +
-              "JOIN transaction a ON a.id = e.transaction " +
-              "WHERE a.trandate <= TO_DATE('" + sqlToDate + "', 'YYYY-MM-DD') " +
-              "AND acc.accttype IN ('AcctPay') " +
-              "AND a.entity = " + pvendorid + " " +
-              "GROUP BY a.tranid, a.trandate, a.duedate, " +
-                       "(TO_DATE('" + sqlToDate + "', 'YYYY-MM-DD') - NVL(a.duedate, a.trandate)), " +
-                       "a.id, a.recordtype, " +
-                       "a.trandisplayname, a.otherrefnum, a.trandate, " +
-                       "a.duedate, a.memo, a.status, a.posting " +
-          ") " +
-         "ORDER BY trandate, invid";
-
-
-
-        log.debug("query", SQL);
-        // Run the query.
-        var queryResults = query.runSuiteQL({
-            query: SQL
-        });
-
-        var records = queryResults.asMappedResults();
-        log.debug('records', JSON.stringify(records));
-        log.debug('records.length', records.length);
-        if (records.length > 0) {
-            for (r = 0; r < records.length; r++) {
-                // Get the record.
-                var record = records[r];
-                // log.debug('record in ' + (r + 0), record);
-                var recid = record.recid;
-              log.debug("invoiceid",recid);
-                var trandate = record.trandate;
-                var duedate = record.duedate;
-                var recordtype = record.recordtype;
-                var documentno = record.documentno;
-                var ponum = record.ponum;
-                var paidamount = record.paidamount;
-                log.debug("ponum of sql", ponum);
-                var memo = record.memo;
-                var openingamt = record.openingamt;
-                var appliedamt = record.appliedamt;
-                var pendingamt = record.pendingamt;
-                var foreigntotal = record.foreigntotal;
-                var rtotal = record.rtotal;
-                
-                resultArray.push({
-                    'recid': recid,
-                    'trandate': trandate,
-                    'duedate': duedate,
-                    'duedays': record.duedays,
-                    'recordtype': recordtype,
-                    'documentno': documentno,
-                    'ponum': ponum,
-                    'memo': memo,
-                    'openingamt': openingamt,
-                    'appliedamt': appliedamt,
-                    'pendingamt': pendingamt,
-                    'paidamount': record.paidamount,
-                    'foreigntotal': foreigntotal,
-                    'rtotal': rtotal,
-                })
-            }
-        }
-        return resultArray;
-    } catch (e) {
-        log.error('Error in getTransactionDetails', e);
-    }
-}

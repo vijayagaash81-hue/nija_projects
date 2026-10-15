@@ -5,6 +5,7 @@
 **Description:** Map/Reduce script (SuiteScript 2.1) processing approvals submitted by Line Managers in `line manager approval reg sl.js`. Updates child record status, forwards next approver to HOD, and sends a single consolidated email with direct Suitelet URL link to the HOD.
 
 ---
+[[hod reg approval process sl.js]]
 
 ## Log of Changes & Implementation Notes
 

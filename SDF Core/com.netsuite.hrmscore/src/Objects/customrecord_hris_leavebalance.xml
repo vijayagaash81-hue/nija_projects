@@ -1,0 +1,3005 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<customrecordtype scriptid="customrecord_hris_leavebalance">
+      
+    <accesstype>CUSTRECORDENTRYPERM</accesstype>
+      
+  
+    <allowattachments>T</allowattachments>
+      
+    <allowinlinedeleting>F</allowinlinedeleting>
+      
+    <allowinlinedetaching>T</allowinlinedetaching>
+      
+    <allowinlineediting>F</allowinlineediting>
+      
+    <allowmobileaccess>F</allowmobileaccess>
+      
+    <allownumberingoverride>F</allownumberingoverride>
+      
+    <allowquickadd>T</allowquickadd>
+      
+    <allowquicksearch>F</allowquicksearch>
+      
+    <allowuiaccess>T</allowuiaccess>
+      
+    <customsegment/>
+      
+    <description/>
+      
+    <enabledle>T</enabledle>
+      
+    <enablekeywords>T</enablekeywords>
+      
+    <enablemailmerge>F</enablemailmerge>
+      
+    <enablenametranslation>F</enablenametranslation>
+      
+    <enablenumbering>F</enablenumbering>
+      
+    <enableoptimisticlocking>T</enableoptimisticlocking>
+      
+    <enablesystemnotes>T</enablesystemnotes>
+      
+    <hierarchical>F</hierarchical>
+      
+    <icon/>
+      
+    <iconbuiltin>T</iconbuiltin>
+      
+    <iconindex/>
+      
+    <includeinsearchmenu>T</includeinsearchmenu>
+      
+    <includename>F</includename>
+      
+    <isinactive>F</isinactive>
+      
+    <isordered>F</isordered>
+      
+    <numberinginit/>
+      
+    <numberingmindigits/>
+      
+    <numberingprefix/>
+      
+    <numberingsuffix/>
+      
+    <recordname>HRIS  Leave Balance</recordname>
+      
+    <showcreationdate>F</showcreationdate>
+      
+    <showcreationdateonlist>F</showcreationdateonlist>
+      
+    <showid>T</showid>
+      
+    <showlastmodified>F</showlastmodified>
+      
+    <showlastmodifiedonlist>F</showlastmodifiedonlist>
+      
+    <shownotes>T</shownotes>
+      
+    <showowner>F</showowner>
+      
+    <showownerallowchange>F</showownerallowchange>
+      
+    <showowneronlist>F</showowneronlist>
+      
+    <customrecordcustomfields>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_employee_name">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>T</isparent>
+                  
+            <label>Employee Name</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>SET_NULL</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>-4</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_leave_type">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Leave Type </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customrecord_hris_leaveconfig]</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_annual_leave_bal">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>T</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Yearly Leave Balance </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_leave_balance_cred">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>T</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Leave Balance Credited </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_leave_balance_take">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Leave Balance Taken </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_total_applied_days">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>TEXT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Total applied days </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_available_leave_ba">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Available Leave Balance </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_encashable_days">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Encashable Days </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_employee_location_">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Employee Location </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>-103</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>STDENTITYLOCATION</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_employee_gender">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Employee Gender </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customlist_hris_gender]</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>[scriptid=custentity_hris_empgender]</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_leave_balance_carr">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Leave Balance Carry Forward </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_leave_balance_laps">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Leave Balance Laps </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_employee_code">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>TEXT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Employee Code </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>[scriptid=custentity_hris_empcode]</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_employee_religion">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Employee Religion </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customlist_hris_religion_list]</selectrecordtype>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>[scriptid=custentity_hris_empreligion]</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_employee_marital">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Employee Marital Status </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customlist_hris_emp_maritalstatus]</selectrecordtype>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>[scriptid=custentity_hris_empmaritalstatus]</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_weekly_off_criteri">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Weekly Off Criteria </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customlist_hris_empweeklyoffcriteria]</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>[scriptid=custentity_hris_empweeklyoffcriteria]</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_employee_work_regi">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Employee Work Region </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customrecord_hris_region_country_master]</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>[scriptid=custentity_hris_empworkinglocation]</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_encashable_days_ta">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Encashable Days Taken </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_additional_encasha">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Additional Encashable Days</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_nationality">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Nationality (Omani/ Non-Omani) </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customlist_hris_omani_nonomani_list]</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_remark">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>TEXTAREA</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Remark </label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_encashment_msi">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>CHECKBOX</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>RT- Encashment MSI Created</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_leave_credited">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Leave Balance Credited Old</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_available_lve_bal">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Available Leave Balance old</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_lve_bal_taken_old">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Leave Balance Taken Old</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_lve_bal_carry_2021">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Leave Balance Carry Forward 2021</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_rt_basic_pay_msi_created">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>CHECKBOX</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>RT Basic Pay MSI Created</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lve_bal_old_int_id">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>TEXT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Old Internal Id</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_obdate">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>DATE</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>OB Date</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_openingbalance">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>FLOAT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Opening Balance</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_subdepartment">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>HR Subdepartment</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customrecord_cseg_hris_empsubdpt]</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>[scriptid=custentity_hris_empsubdepartment__]</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_department">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>HR Department</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customrecord_cseg_hris_empdept]</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>[scriptid=custentity_hris_empdepartment_new]</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_department_n">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Department(new)</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customrecord_cseg_hris_empdept]</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>[scriptid=custentity_hris_empdepartment_new]</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_subsidiary">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>LOCKED</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Subsidiary</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>T</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>-117</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>STDENTITYSUBSIDIARY</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_employee_location">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Employee Location New</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customrecord_cseg_hris_emploc]</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>[scriptid=custentity_hris_empdlocation_new]</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_lvbal_employee_category">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>LOCKED</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Employee Category</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customrecord_hris_employeecategory]</selectrecordtype>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom>[scriptid=custentity_hris_empcategory]</sourcefrom>
+                  
+            <sourcelist>[scriptid=customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name]</sourcelist>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+          
+    </customrecordcustomfields>
+      
+    <permissions>
+            
+        <permission>
+                  
+            <permittedlevel>FULL</permittedlevel>
+                  
+            <permittedrole>[scriptid=customrole_hris_hradmin]</permittedrole>
+                  
+            <restriction/>
+                
+        </permission>
+            
+        <permission>
+                  
+            <permittedlevel>FULL</permittedlevel>
+                  
+            <permittedrole>[scriptid=customrole_hr_admin_eileen]</permittedrole>
+                  
+            <restriction/>
+                
+        </permission>
+            
+        <permission>
+                  
+            <permittedlevel>FULL</permittedlevel>
+                  
+            <permittedrole>[scriptid=customrole_hr_admin_eleveight]</permittedrole>
+                  
+            <restriction/>
+                
+        </permission>
+          
+    </permissions>
+    
+</customrecordtype>

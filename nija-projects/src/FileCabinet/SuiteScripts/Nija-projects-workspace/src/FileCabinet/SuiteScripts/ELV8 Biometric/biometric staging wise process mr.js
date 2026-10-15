@@ -23,8 +23,18 @@ define(['N/https', 'N/record', 'N/log', 'N/format', 'N/search'], (https, record,
 
             // 2. FETCH DATA
             const dataUrl = 'https://63.biocloud.me:8194/api_gettransactions';
-            let targetDate = '2026-07-29'; // Update as needed
+            // let targetDate = '2026-08-06'; // Update as needed
+          let today = new Date();
 
+          let year = today.getFullYear();
+          let month = String(today.getMonth() + 1).padStart(2, '0');
+          let day = String(today.getDate()).padStart(2, '0');  
+          let startDate = `${year}-${month}-${day}`;
+          let endDate = `${year}-${month}-${day}`;
+          log.debug("StartDate",startDate);
+          log.debug("EndDate",endDate);
+          // let startDate = '2026-09-01';
+          //   let endDate = '2026-09-04';
             let dataBody = {};
 
             let dataResponse = https.post({
@@ -40,10 +50,10 @@ define(['N/https', 'N/record', 'N/log', 'N/format', 'N/search'], (https, record,
             let filteredTransactions = transactions.filter(txn => {
                 if (!txn.VerifyTime) return false;
                 let txnDate = txn.VerifyTime.split('T')[0];
-                return txnDate === targetDate;
+                return txnDate >= startDate && txnDate <= endDate;
             });
 
-            log.audit('Data Fetch Summary', `Total transactions retrieved: ${transactions.length}. Filtered for date ${targetDate}: ${filteredTransactions.length}`);
+            // log.audit('Data Fetch Summary', `Total transactions retrieved: ${transactions.length}. Filtered for date ${targetDate}: ${filteredTransactions.length}`);
 
             return filteredTransactions;
 
@@ -65,7 +75,7 @@ define(['N/https', 'N/record', 'N/log', 'N/format', 'N/search'], (https, record,
             let alreadyExists = false;
             search.create({
                 type: 'customrecord_hris_biometric_staging',
-                filters: [['externalid', 'is', externalId]]
+                filters: [['custrecord_externalid', 'is', externalId]]
             }).run().each(result => {
                 alreadyExists = true;
                 return false; // Stop search iteration
@@ -87,7 +97,7 @@ define(['N/https', 'N/record', 'N/log', 'N/format', 'N/search'], (https, record,
                 isDynamic: true
             });
 
-            rec.setValue({ fieldId: 'externalid', value: externalId });
+            rec.setValue({ fieldId: 'custrecord_externalid', value: externalId });
             rec.setValue({ fieldId: 'custrecord_hris_biostage_date', value: nsDate });
             rec.setValue({ fieldId: 'custrecord_hris_biostage_requestapi', value: 'https://63.biocloud.me:8194/api_gettransactions' });
             rec.setValue({ fieldId: 'custrecord_hris_biostage_response', value: JSON.stringify(punchData) });

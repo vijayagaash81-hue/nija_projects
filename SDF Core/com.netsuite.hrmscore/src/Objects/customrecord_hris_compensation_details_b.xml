@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<customrecordtype scriptid="customrecord_hris_compensation_details_b">
+      
+    <accesstype>CUSTRECORDENTRYPERM</accesstype>
+      
+  
+    <allowattachments>T</allowattachments>
+      
+    <allowinlinedeleting>F</allowinlinedeleting>
+      
+    <allowinlinedetaching>T</allowinlinedetaching>
+      
+    <allowinlineediting>T</allowinlineediting>
+      
+    <allowmobileaccess>F</allowmobileaccess>
+      
+    <allownumberingoverride>F</allownumberingoverride>
+      
+    <allowquickadd>T</allowquickadd>
+      
+    <allowquicksearch>F</allowquicksearch>
+      
+    <allowuiaccess>T</allowuiaccess>
+      
+    <customsegment/>
+      
+    <description/>
+      
+    <enabledle>T</enabledle>
+      
+    <enablekeywords>T</enablekeywords>
+      
+    <enablemailmerge>F</enablemailmerge>
+      
+    <enablenametranslation>F</enablenametranslation>
+      
+    <enablenumbering>F</enablenumbering>
+      
+    <enableoptimisticlocking>T</enableoptimisticlocking>
+      
+    <enablesystemnotes>T</enablesystemnotes>
+      
+    <hierarchical>F</hierarchical>
+      
+    <icon/>
+      
+    <iconbuiltin>T</iconbuiltin>
+      
+    <iconindex/>
+      
+    <includeinsearchmenu>T</includeinsearchmenu>
+      
+    <includename>F</includename>
+      
+    <isinactive>F</isinactive>
+      
+    <isordered>F</isordered>
+      
+    <numberinginit/>
+      
+    <numberingmindigits/>
+      
+    <numberingprefix/>
+      
+    <numberingsuffix/>
+      
+    <recordname>HRIS Compensation Details Benefits</recordname>
+      
+    <showcreationdate>F</showcreationdate>
+      
+    <showcreationdateonlist>F</showcreationdateonlist>
+      
+    <showid>F</showid>
+      
+    <showlastmodified>F</showlastmodified>
+      
+    <showlastmodifiedonlist>F</showlastmodifiedonlist>
+      
+    <shownotes>T</shownotes>
+      
+    <showowner>F</showowner>
+      
+    <showownerallowchange>F</showownerallowchange>
+      
+    <showowneronlist>F</showowneronlist>
+      
+    <customrecordcustomfields>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_employee_datachangeint">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>T</isparent>
+                  
+            <label>Employee Data Change Internal ID</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab>[scriptid=customrecord_hris_employee_compen_change.tab_590_5250636_sb2_915]</parentsubtab>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customrecord_hris_employee_compen_change]</selectrecordtype>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_cdb_pay_group">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Pay Group</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customrecord_hris_process_groupmaster]</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_cdb_payroll_component">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Payroll Component</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>[scriptid=customrecord_hris_payroll_component]</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_cdb_monthly">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <currencysymbolfield/>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>CURRENCY</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Monthly</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_cdb_annually">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <currencysymbolfield/>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>CURRENCY</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Annually</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_cdb_test">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>TEXT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>test</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+          
+    </customrecordcustomfields>
+      
+    <permissions>
+            
+        <permission>
+                  
+            <permittedlevel>FULL</permittedlevel>
+                  
+            <permittedrole>[scriptid=customrole_hris_hradmin]</permittedrole>
+                  
+            <restriction/>
+                
+        </permission>
+            
+        <permission>
+                  
+            <permittedlevel>FULL</permittedlevel>
+                  
+            <permittedrole>[scriptid=customrole_hr_admin_eileen]</permittedrole>
+                  
+            <restriction/>
+                
+        </permission>
+            
+        <permission>
+                  
+            <permittedlevel>FULL</permittedlevel>
+                  
+            <permittedrole>[scriptid=customrole_hr_admin_eleveight]</permittedrole>
+                  
+            <restriction/>
+                
+        </permission>
+          
+    </permissions>
+    
+</customrecordtype>

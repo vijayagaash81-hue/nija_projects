@@ -1,0 +1,37 @@
+<scheduledscript scriptid="customscript_hris_comp_annment_sch">
+  <description></description>
+  <isinactive>F</isinactive>
+  <name>Company Announcements SCH</name>
+  <notifyadmins>F</notifyadmins>
+  <notifyemails></notifyemails>
+  <notifyowner>T</notifyowner>
+  <scriptfile>[/SuiteScripts/HRMS Api/hris_comp_announcement.js]</scriptfile>
+    <scriptdeployments>
+    <scriptdeployment scriptid="customdeploy_hris_comp_annment_sch">
+      <isdeployed>T</isdeployed>
+      <loglevel>DEBUG</loglevel>
+      <status>NOTSCHEDULED</status>
+      <title>Company Announcements SCH</title>
+      <recurrence>
+        <single>
+          <repeat></repeat>
+          <startdate>2025-09-19</startdate>
+          <starttime>14:00:00Z</starttime>
+        </single>
+      </recurrence>
+    </scriptdeployment>
+    <scriptdeployment scriptid="customdeploy_hris_comp_annment_sch2">
+      <isdeployed>T</isdeployed>
+      <loglevel>DEBUG</loglevel>
+      <status>NOTSCHEDULED</status>
+      <title>Company Announcements SCH 2</title>
+      <recurrence>
+        <single>
+          <repeat></repeat>
+          <startdate>2025-09-22</startdate>
+          <starttime>14:00:00Z</starttime>
+        </single>
+      </recurrence>
+    </scriptdeployment>
+  </scriptdeployments>
+</scheduledscript>

@@ -275,6 +275,7 @@ define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/u
         function sendHodNotificationEmail(recipientEmail, recipientName, count, fromDate, toDate, empFilter) {
             try {
                 var currentUser = runtime.getCurrentUser();
+                var lmName = currentUser.name || "Name";
 
                 // Construct Suitelet Link for the Approver
                 var suiteletUrl = url.resolveScript({
@@ -290,13 +291,20 @@ define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/u
 
                 var subject = 'Attendance Regularization Approved';
 
-                // Specific Content Requested
-                var body = 'Dear ' + (recipientName || 'HOD') + ',<br><br>' +
-                    'Attendance regularization has been approved for <b>' + count + '</b> employee(s) reporting to you.<br><br>' +
-                    'You can view the details by clicking the link below:<br>' +
-                    '<a href="' + fullLink + '">View Attendance Regularization</a><br><br>' +
-                    'Regards,<br>' +
-                    currentUser.name;
+                var periodText = '';
+                if (fromDate && toDate) {
+                    periodText = fromDate + ' to ' + toDate;
+                } else if (fromDate) {
+                    periodText = fromDate;
+                } else {
+                    periodText = 'N/A';
+                }
+
+                // Specific Content Requested (Image 2)
+                var body = '<b>Dear HOD,</b> (Month wise approval) (This email should trigger on 26th of every month)<br><br>' +
+                    'Attendance regularization has been reviewed and verified by the <b>Line Manager (' + lmName + ')</b> for the period from <b>' + periodText + '</b> for further review and verification.<br>' +
+                    'Please ensure that the required review and verification are completed within 24 hours.<br>' +
+                    '<a href="' + fullLink + '">(Attach Link)</a>';
 
                 email.send({
                     author: currentUser.id, // Sent by the current user (Line Manager)

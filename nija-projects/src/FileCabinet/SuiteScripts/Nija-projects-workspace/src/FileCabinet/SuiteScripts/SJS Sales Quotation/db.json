@@ -1,0 +1,48 @@
+{
+  "scripts": {
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation/sjs_sales_quotation_cs.js": {
+      "name": "sjs_sales_quotation_cs.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation/sjs_sales_quotation_cs.js",
+      "relativePath": "sjs_sales_quotation_cs.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "Client Script to trigger PDF generation Suitelet for SJS Sales Quotation.",
+      "dependencies": [],
+      "noteFile": "sjs_sales_quotation_cs_75d372.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation/sjs_sales_quotation_sl.js": {
+      "name": "sjs_sales_quotation_sl.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation/sjs_sales_quotation_sl.js",
+      "relativePath": "sjs_sales_quotation_sl.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "Suitelet to generate and render SJS Sales Quotation PDF document.",
+      "dependencies": [],
+      "noteFile": "sjs_sales_quotation_sl_74f529.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation/sjs_sales_quotation_ue.js": {
+      "name": "sjs_sales_quotation_ue.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation/sjs_sales_quotation_ue.js",
+      "relativePath": "sjs_sales_quotation_ue.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "Adds custom \"Print Sales Quotation\" button on Estimate (Sales Quotation) record in View mode.",
+      "dependencies": [],
+      "noteFile": "sjs_sales_quotation_ue_74dc28.md"
+    }
+  },
+  "logs": {
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation/sjs_sales_quotation_cs.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation/sjs_sales_quotation_sl.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Sales Quotation/sjs_sales_quotation_ue.js": []
+  }
+}

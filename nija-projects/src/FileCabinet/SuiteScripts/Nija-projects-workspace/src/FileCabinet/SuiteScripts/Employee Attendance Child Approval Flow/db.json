@@ -64,6 +64,32 @@
       "description": "No description provided.",
       "dependencies": [],
       "noteFile": "hod_reg_approval_process_sl_35d84a.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/employee reg total time ue.js": {
+      "name": "employee reg total time ue.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/employee reg total time ue.js",
+      "relativePath": "employee reg total time ue.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "employee_reg_total_time_ue_4cf7c1.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/hod reg approval mr.js": {
+      "name": "hod reg approval mr.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/hod reg approval mr.js",
+      "relativePath": "hod reg approval mr.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "hod_reg_approval_mr_7338a4.md"
     }
   },
   "logs": {
@@ -71,6 +97,8 @@
     "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/regulaze mr in daily attendance.js": [],
     "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/line manager approval reg sl.js": [],
     "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/line manager approval reg mr.js": [],
-    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/hod reg approval process sl.js": []
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/hod reg approval process sl.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/employee reg total time ue.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/Employee Attendance Child Approval Flow/hod reg approval mr.js": []
   }
 }

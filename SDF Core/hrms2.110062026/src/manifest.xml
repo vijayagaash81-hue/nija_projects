@@ -1,0 +1,258 @@
+<manifest projecttype="ACCOUNTCUSTOMIZATION">
+  <projectname>hrms2.110062026</projectname>
+  <frameworkversion>1.0</frameworkversion>
+  <dependencies>
+    <features>
+      <feature required="true">CLASSES</feature>
+      <feature required="false">WEBSITE</feature>
+      <feature required="true">DEPARTMENTS</feature>
+      <feature required="true">ACCOUNTING</feature>
+      <feature required="false">CRM</feature>
+      <feature required="true">SUBSIDIARIES</feature>
+      <feature required="true">ADVANCEDJOBS</feature>
+      <feature required="true">PAYABLES</feature>
+      <feature required="false">EXTREMELIST</feature>
+      <feature required="true">INVENTORY</feature>
+      <feature required="false">MAILMERGE</feature>
+      <feature required="true">MULTILOCINVT</feature>
+      <feature required="true">CUSTOMSEGMENTS</feature>
+      <feature required="true">OPPORTUNITIES</feature>
+      <feature required="true">RECEIVABLES</feature>
+      <feature required="true">CUSTOMRECORDS</feature>
+      <feature required="true">ADVRECEIVING</feature>
+      <feature required="true">TIMETRACKING</feature>
+      <feature required="true">APPROVALROUTING</feature>
+      <feature required="true">BILLINGCLASSES</feature>
+      <feature required="true">EXPREPORTS</feature>
+      <feature required="false">WEBSERVICES</feature>
+      <feature required="true">LOCATIONS</feature>
+      <feature required="false">SUBSCRIPTIONBILLING</feature>
+      <feature required="true">MULTILANGUAGE</feature>
+      <feature required="true">ADDRESSCUSTOMIZATION</feature>
+      <feature required="true">JOBS</feature>
+      <feature required="true">MULTICURRENCY</feature>
+    </features>
+    <objects>
+      <object>customrecord_hris_asset_issues_form</object>
+      <object>customrecord_emp_grp_mstr</object>
+      <object>customrecord_hris_emp_qualification.custrecord_hris_emp_qm_link</object>
+      <object>customrecord_hris_leave_register</object>
+      <object>customrecord_ess_daily_timesheet</object>
+      <object>customrecord_hr_rework_report</object>
+      <object>custentity_hris_empmname</object>
+      <object>customrecord_hris_costcenter</object>
+      <object>custentity_njt_emp_process_status</object>
+      <object>custentity_hris_empbankacctno</object>
+      <object>customrecord_hris_staff_evaluation_form.custrecord_hris_performance_templ_in</object>
+      <object>custtab_6_2772245_149</object>
+      <object>customrecord_hris_asset_type_list</object>
+      <object>customrecord_attach_docs.custrecord_customer_doc</object>
+      <object>customrecord_hris_leaveconfig.custrecord_hris_lveconfig_rotationlve</object>
+      <object>customrecord_hris_employee_subcategory</object>
+      <object>custentity_hris_empfname</object>
+      <object>customrecord_hris_calculation_type.val_21501_2772245_325</object>
+      <object>customrecord_hris_confirm_pay_process</object>
+      <object>customrecord_hris_monthlysalinput</object>
+      <object>customrecord_hris_process_groupmaster</object>
+      <object>customrecord_hris_dependent_documents.custrecord_hris_link_</object>
+      <object>customrecord_hris_appraisal_competency_m</object>
+      <object>custentity_hris_empholiday</object>
+      <object>customrecord_hris_lveapprovalhistory.custrecord_hris_lveapphis_approvedby</object>
+      <object>customrecord_hris_employee_exit_type</object>
+      <object>customrecord_hris_other_request</object>
+      <object>customrecord_hris_dependent_documents</object>
+      <object>customrecord_hris_emp_skill_name_list</object>
+      <object>customsearch165</object>
+      <object>customrecord_hris_calculation_type.val_21500_2772245_894</object>
+      <object>customrecord_hris_emp_skill.custrecord_hris_emp_skilldet_link</object>
+      <object>customrecord_hris_citycntrymap_city_coun</object>
+      <object>customrecord_njt_emp_daily_attendance</object>
+      <object>customrecord_hris_weekly_offs</object>
+      <object>custsublist_9_2772245_869</object>
+      <object>customrecord_hris_staff_employee_eva</object>
+      <object>customrole1002</object>
+      <object>custentity_hris_pfapplicable</object>
+      <object>customrecord_hris_employee_support_docum</object>
+      <object>custentity_njt_monthly_gross_sal</object>
+      <object>customrecord_hris_timesheet_allowancedet</object>
+      <object>customrecord_hris_script_version</object>
+      <object>custentity_hris_emprelationship</object>
+      <object>customrecord_hris_monthlysalinput.custrecord_hris_mthsal_empname</object>
+      <object>customrecord_hris_asset_req_form</object>
+      <object>customrecord_hris_pay_process</object>
+      <object>customrecord_hris_visa_type_master</object>
+      <object>customrecord_hris_workflow_set_up</object>
+      <object>custentity_njt_emp_api_method</object>
+      <object>customrecord_hris_calculation_type</object>
+      <object>customrecord_njt_daily_attendance_bio.custrecord_njt_bio_date</object>
+      <object>customrecordnjt_hr_employee_grievance_</object>
+      <object>customrole1016</object>
+      <object>custentity_hris_emp_isptapplicable</object>
+      <object>customrecord_hris_leaveapplication</object>
+      <object>customrecord_hris_emp_employee_dependent</object>
+      <object>customrecord_hris_emp_corporate_title</object>
+      <object>customrecord_hris_dailytimesheet_allowan</object>
+      <object>customrecord_hris_empdocumentmanagement.custrecord_hris_emplink3</object>
+      <object>customrole1010</object>
+      <object>customrecord_hris_appraisal_time_ta</object>
+      <object>customrecord_hris_approvalstatus</object>
+      <object>customrecord_hris_processing_status.val_54156030_6519690_sb1_956</object>
+      <object>customrecord_hris_holidaydetails</object>
+      <object>custentity_hris_inline_eva_type</object>
+      <object>customrecord_hris_designation</object>
+      <object>custentity_hris_emplname</object>
+      <object>customrecord_hris_payslipsignaturedetail</object>
+      <object>customrecord_hris_emp_id_info.custrecord_hris_emp_link</object>
+      <object>customrecord_ess_travel_requisition_form</object>
+      <object>customrecord_hris_loan_master</object>
+      <object>custtab_165_2772245_748</object>
+      <object>custentity_hris_test_sal</object>
+      <object>customrecord_hris_unpaid_arrear_entry</object>
+      <object>customrecord_cseg_hris_empdept</object>
+      <object>custtab_407_6945883_sb1_655</object>
+      <object>customrecord_hris_asset_handover</object>
+      <object>customrecord_hris_emp_payslip_monh.custrecord_hris_emp_payslip_emplink</object>
+      <object>custentity_hris_empholidays</object>
+      <object>customrecord_njt_daily_attendance_bio</object>
+      <object>customrecord_cseg_hris_emploc</object>
+      <object>custentity_njt_emp_api_url</object>
+      <object>customrecord_timesheet_project_list</object>
+      <object>customrecord_hris_emp_training_course_na</object>
+      <object>customrecord_hris_empchange_loan_applicn.custrecord_hris_loan_emp_name</object>
+      <object>custentity_njt_emp_json_data</object>
+      <object>customrecordhris_idcardmaster</object>
+      <object>customrecord_njt_daily_attendance_bio.custrecord_njt_employee_name</object>
+      <object>custentity_hris_empptlocation</object>
+      <object>customrecord_hr_exit_interview_form</object>
+      <object>customrecord_hris_global_parameter</object>
+      <object>customrecord_hris_employee_compensation</object>
+      <object>customrecord_hris_compensation_details_b</object>
+      <object>customrecord_hris_designation_master</object>
+      <object>customrecord_hris_bank_master</object>
+      <object>customrecord_hris_emp_training_certifica</object>
+      <object>customrecord_hris_appraisal_goals</object>
+      <object>customrecord_hris_leavebalance</object>
+      <object>customrecord_hris_calculation_type.val_21502_2772245_226</object>
+      <object>customrecord_hris_compensation_details_e</object>
+      <object>customrecord_hris_asset_req_form.custrecord_hris_asset_emp_name</object>
+      <object>customrecord_hris_paygroup</object>
+      <object>customrecord_hris_bank_master.custrecord_hris_bank_routing_no_swift</object>
+      <object>customrecord_hris_empdependentiddetails.custrecord_hris_empdepidlink</object>
+      <object>customrecord_hris_overtime_details</object>
+      <object>custtab_700_5250636_sb2_426</object>
+      <object>custentity_hris_employeecode</object>
+      <object>customrecord_hris_leavebalance.custrecord_hris_lvbal_employee_name</object>
+      <object>cseg_hris_empdeptt_</object>
+      <object>custentity_njt_emp_response_status</object>
+      <object>customrecord_hris_appraisal_competency</object>
+      <object>customrecord_hris_employeecategory</object>
+      <object>customrecord_hris_expense_claim_form</object>
+      <object>customrecord_hris_corporatetitle</object>
+      <object>customrecord_hris_employeedatasourcing</object>
+      <object>customrecord_hris_empdependentiddetails</object>
+      <object>customrecord_hris_employee_compen_change</object>
+      <object>customrecord_hris_approval_request_type</object>
+      <object>customrecord_hris_leave_credit_configura</object>
+      <object>customrecord_hr_incident_report</object>
+      <object>customrecord_hris_calculation_type.val_21499_2772245_773</object>
+      <object>customrecord_hris_leave_calender_year</object>
+      <object>customrecord_njt_project_budget</object>
+      <object>customrecord_hris_unpaid_arrear_entry.custrecord_hris_uae_employee_name</object>
+      <object>customrecord_hris_emp_skill</object>
+      <object>customrecord_njt_vendor_attendance</object>
+      <object>customrecord_hris_apprwrkdetails</object>
+      <object>customrecord_hris_payroll_component</object>
+      <object>customrecord_hris_pay_process_frequency.val_21470_2772245_624</object>
+      <object>customrecord_hris_asset_category_rec</object>
+      <object>customrecord_njt_hr_shortlist_candidate</object>
+      <object>customrecord_hris_asset_master</object>
+      <object>customrecord_hris_assetapproval_history</object>
+      <object>customrecord_hris_employee_compensation.custrecord_hris_employee_name_</object>
+      <object>custtab_167_5250636_sb1_414</object>
+      <object>customrecord_hris_staff_employee_eva.custrecord_hris_staff_employee_link</object>
+      <object>customrecordgrade_master</object>
+      <object>customrecord_hris_confirm_process_record</object>
+      <object>customrecord_hris_gratuity_slab</object>
+      <object>custentity_njt_effective_from_dte</object>
+      <object>customrecord_hris_empdocumentmanagement</object>
+      <object>customrecord_ncfar_asset.custrecord_assetcaretaker</object>
+      <object>customrecord_hris_region_country_master</object>
+      <object>customrecord_hris_salary_adjustment_type</object>
+      <object>custtab_160_2772245_857</object>
+      <object>custentity_hris_emp_timesheet_entries</object>
+      <object>customrecord_hris_emp_leave_type_master</object>
+      <object>custentity_njt_annual_gross_salary</object>
+      <object>customrecord_hris_pre_pay_process_record</object>
+      <object>customrecord_hris_employee_compen_change.custrecord_hris_empchange_employee_nam</object>
+      <object>customrecord_hris_test</object>
+      <object>customrecord_hris_emp_id_info</object>
+      <object>customrecord_hris_unique_reference_numbe</object>
+      <object>customrecord_hris_compensation_detail_de</object>
+      <object>customrecord_hris_work_expirence.custrecord_hris_we_link</object>
+      <object>customrecord_hris_matirial_request</object>
+      <object>customrecord_hris_nationality</object>
+      <object>customrecord_hris_staff_evaluation_form</object>
+      <object>customrecord_hris_country</object>
+      <object>customrecord_hris_confirm_process</object>
+      <object>customrecord_hris_emp_employee_dependent.custrecord_hris_emp_employeedependenlink</object>
+      <object>customrecord_hr_shortlist_candid_mapped</object>
+      <object>customrole_hris_demo</object>
+      <object>customrecord_hris_pay_process_frequency</object>
+      <object>custtab_695_5250636_sb2_474</object>
+      <object>customrole_hris_admin</object>
+      <object>customrecord_ob_org_tree</object>
+      <object>customrecord_hris_unpaid_leave_entry.custrecord_hris_ule_employee_name</object>
+      <object>customrecord_hris_payroll_financial_year</object>
+      <object>customrecord_ess_new_employee_joining_fo</object>
+      <object>customrecord_njt_sub_band</object>
+      <object>customrecord_hris_script_version.val_26818_2772245_106</object>
+      <object>customsearch4513</object>
+      <object>custtab_355_2772245_621</object>
+      <object>customrecord_hris_lve_travel_request</object>
+      <object>customrecord_hris_holiday_master</object>
+      <object>customrecord_ess_commercial_lease_approv</object>
+      <object>customrecord_hris_claimtype</object>
+      <object>custtab_166_2772245_506</object>
+      <object>customrecord_hris_appraisal_goal_master</object>
+      <object>customsearch_hris_pastleavehistory</object>
+      <object>customrecord_hris_approvalworkflowsetup</object>
+      <object>cseg_hris_emploc_t_</object>
+      <object>customrecord_hris_unpaid_leave_entry</object>
+      <object>customrecord_cseg_hris_empsubdpt</object>
+      <object>customrole_hris_hr_admin</object>
+      <object>customrecord_fam_leasecontract</object>
+      <object>customrecord_hris_salary_adjustment_type.custrecord_hris_salary_adjustment_form</object>
+      <object>custentity_hris_employeepaymentmode</object>
+      <object>customrecord_hris_leaveconfig</object>
+      <object>custentity_njt_emp_response_code</object>
+      <object>customrecord_njt_visaprocessingchklist</object>
+      <object>customrecord_hris_rotational_leave_roste</object>
+      <object>customrecord_hris_appraisal</object>
+      <object>customrecord_hris_pullback_lveapplicatio</object>
+      <object>customrecord_hris_lve_letter_req</object>
+      <object>customrecord_hris_emp_qualification</object>
+      <object>customrecord_hris_empallocationtransfer.custrecord_hris_alloc_empid</object>
+      <object>customrecord_njt_sub_band.custrecord_hris_band</object>
+      <object>customrecord_njt_hr_recruitement_form</object>
+      <object>custtab_17_3776644_208</object>
+      <object>customrecord_hris_component_type</object>
+      <object>custentity_hris_pfnumber</object>
+      <object>custtab_181_5250636_898</object>
+      <object>customrecord_hris_asset_allocation</object>
+      <object>customrecord_ess_approval_req_form</object>
+      <object>custentity_njt_emp_response_msg</object>
+      <object>customrecord_hris_time_workinghour</object>
+      <object>customrecord_hris_ss_financial_year</object>
+      <object>customrecord_hris_settlement_process</object>
+      <object>custtab_694_5250636_sb2_174</object>
+      <object>customrecord_hris_pay_frequency</object>
+      <object>customrecord_hris_wage_period_details</object>
+      <object>customrecord_njt_hr_req_form_child</object>
+      <object>customrecord_hris_approvalstatus.val_18398_2772245_676</object>
+      <object>customrecord_hris_timesheet</object>
+      <object>customrecord_hris_compensation_detail_ot</object>
+      <object>customrecord_hris_lve_raise_comp_off</object>
+      <object>customrecord_njt_emp_daily_atten_ch</object>
+    </objects>
+  </dependencies>
+</manifest>

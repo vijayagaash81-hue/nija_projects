@@ -366,6 +366,55 @@ define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/q
         }
 
         /**
+         * Helper: Extract Month and Year string (e.g. "August 2026")
+         */
+        function getMonthYearString(approvedRecords) {
+            var monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            try {
+                var dateStr = "";
+                if (approvedRecords && approvedRecords.length > 0) {
+                    var firstRec = approvedRecords[0];
+                    dateStr = firstRec.date || firstRec.fromPost || firstRec.toPost || "";
+                }
+                if (dateStr) {
+                    var parts = dateStr.split('/');
+                    if (parts.length === 3) {
+                        var m = parseInt(parts[1], 10) - 1;
+                        var y = parseInt(parts[2], 10);
+                        if (m >= 0 && m < 12 && y > 2000) {
+                            return monthNames[m] + ' ' + y;
+                        }
+                    }
+                    var parts2 = dateStr.split('-');
+                    if (parts2.length === 3) {
+                        if (parts2[0].length === 4) { // YYYY-MM-DD
+                            var m2 = parseInt(parts2[1], 10) - 1;
+                            var y2 = parseInt(parts2[0], 10);
+                            if (m2 >= 0 && m2 < 12 && y2 > 2000) {
+                                return monthNames[m2] + ' ' + y2;
+                            }
+                        } else { // DD-MM-YYYY
+                            var m3 = parseInt(parts2[1], 10) - 1;
+                            var y3 = parseInt(parts2[2], 10);
+                            if (m3 >= 0 && m3 < 12 && y3 > 2000) {
+                                return monthNames[m3] + ' ' + y3;
+                            }
+                        }
+                    }
+                    var d = new Date(dateStr);
+                    if (!isNaN(d.getTime())) {
+                        return monthNames[d.getMonth()] + ' ' + d.getFullYear();
+                    }
+                }
+            } catch (e) {
+                log.error('Error parsing month year', e.toString());
+            }
+            var now = new Date();
+            return monthNames[now.getMonth()] + ' ' + now.getFullYear();
+        }
+
+        /**
          * Helper: Send consolidated email to HR Admin employees (excluding Nijatech employees)
          */
         function sendHrAdminConsolidatedEmail(approvedRecords) {
@@ -415,46 +464,12 @@ define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/q
                     return;
                 }
 
-                // Construct Consolidated HTML Email Table
                 var subject = "Consolidated Attendance Regularization Approved Notification";
-                
-                var tableRowsHtml = "";
-                for (var j = 0; j < approvedRecords.length; j++) {
-                    var rec = approvedRecords[j];
-                    tableRowsHtml += "<tr style='text-align: center;'>" +
-                        "<td>" + (j + 1) + "</td>" +
-                        "<td style='text-align: left;'>" + (rec.employeeName || "-") + "</td>" +
-                        "<td>" + (rec.date || "-") + "</td>" +
-                        "<td>" + (rec.nin || "-") + "</td>" +
-                        "<td>" + (rec.ouut || "-") + "</td>" +
-                        "<td>" + (rec.totalhr || "-") + "</td>" +
-                        "<td>" + (rec.othrours || "-") + "</td>" +
-                        "</tr>";
-                }
+                var monthYear = getMonthYearString(approvedRecords);
 
-                var bodyHtml = "<div style='font-family: Arial, sans-serif; font-size: 14px; color: #333;'>" +
-                    "<p>Dear HR Admin Team,</p>" +
-                    "<p>The following employee attendance regularization request(s) have been <b>Fully Approved</b>:</p>" +
-                    "<table border='1' cellpadding='8' cellspacing='0' style='border-collapse: collapse; font-family: Arial, sans-serif; font-size: 13px; width: 100%; border: 1px solid #ddd;'>" +
-                    "<thead>" +
-                    "<tr style='background-color: #0056b3; color: white; text-align: center;'>" +
-                    "<th>#</th>" +
-                    "<th>Employee Name</th>" +
-                    "<th>Date</th>" +
-                    "<th>Reg IN</th>" +
-                    "<th>Reg OUT</th>" +
-                    "<th>Total Hours</th>" +
-                    "<th>OT Hours</th>" +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody>" +
-                    tableRowsHtml +
-                    "</tbody>" +
-                    "</table>" +
-                    "<br>" +
-                    "<p>This is a consolidated automated notification from the HRMS Attendance System.</p>" +
-                    "<p>Regards,<br>HRMS System</p>" +
-                    "</div>";
+                // Email template matching Image 3
+                var bodyHtml = "<b>Dear HR Dept,</b><br><br>" +
+                    "Regularization for attend & OT for the month of " + monthYear + " is approved. Please disperse.";
 
                 try {
                     email.send({
@@ -495,4 +510,4 @@ define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/q
             reduce: reduce,
             summarize: summarize
         };
-    });
+    });

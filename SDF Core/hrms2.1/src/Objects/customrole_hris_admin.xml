@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='utf-8'?>
+<role scriptid="customrole_hris_admin">
+  <centertype>[scriptid=custcenter2]</centertype>
+  <coreadminpermission>F</coreadminpermission>
+  <custrecord_njt_role_lob />
+  <employeerestriction>NONE</employeerestriction>
+  <employeeselectionunrestricted>F</employeeselectionunrestricted>
+  <isinactive>F</isinactive>
+  <issalesrole>F</issalesrole>
+  <issinglesignononly>F</issinglesignononly>
+  <issupportrole>F</issupportrole>
+  <iswebserviceonlyrole>F</iswebserviceonlyrole>
+  <name>HRIS Admin</name>
+  <parentrolescriptid />
+  <restrictbydevice>F</restrictbydevice>
+  <restricttimeandexpenses>F</restricttimeandexpenses>
+  <subsidiaryoption>ALL</subsidiaryoption>
+  <subsidiaryviewingallowed>T</subsidiaryviewingallowed>
+  <tfaduration>720</tfaduration>
+  <tfarequired>OFF</tfarequired>
+  <permissions>
+    <permission>
+      <permkey>TRAN_TIMECALC</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>TRAN_FIND</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>TRAN_JOURNAL</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>TRAN_TIMEPOST</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>TRAN_TIMER</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>TRAN_TIMEBILL</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_ACCOUNT</permkey>
+      <permlevel>VIEW</permlevel>
+    </permission>
+    <permission>
+      <permkey>REGT_ACCTPAY</permkey>
+      <permlevel>VIEW</permlevel>
+    </permission>
+    <permission>
+      <permkey>REGT_ACCTREC</permkey>
+      <permlevel>VIEW</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_CLASS</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_CONTACT</permkey>
+      <permlevel>VIEW</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_CURRENCY</permkey>
+      <permlevel>VIEW</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_CUSTRECORDENTRY</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_DEPARTMENT</permkey>
+      <permlevel>VIEW</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_EMPLOYEE_RECORD</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_EMPLOYEE</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_EXPORT</permkey>
+      <permlevel>CREATE</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_LOCATION</permkey>
+      <permlevel>VIEW</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_HISTORY</permkey>
+      <permlevel>VIEW</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_FIND</permkey>
+      <permlevel>VIEW</permlevel>
+    </permission>
+    <permission>
+      <permkey>LIST_SUBSIDIARY</permkey>
+      <permlevel>VIEW</permlevel>
+    </permission>
+    <permission>
+      <permkey>ADMI_COMPANY</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>ADMI_WEBSERVICESOVERRIDESSTRIG</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>ADMI_IMPORTOVERRIDESSTRIG</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>ADMI_CUSTLIST</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>ADMI_MANAGECUSTOMSEGMENTS</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>ADMI_IMPORTCSVFILE</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>ADMI_MANAGE_OAUTH2</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>ADMI_SETUPCOMPANY</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>ADMI_CUSTOMSCRIPT</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>ADMI_SS_SCHEDULING</permkey>
+      <permlevel>FULL</permlevel>
+    </permission>
+    <permission>
+      <permkey>[scriptid=customrecordgrade_master]</permkey>
+      <permlevel>FULL</permlevel>
+      <restriction />
+    </permission>
+    <permission>
+      <permkey>[scriptid=customrecord_hris_leavebalance]</permkey>
+      <permlevel>FULL</permlevel>
+      <restriction />
+    </permission>
+    <permission>
+      <permkey>[scriptid=customrecord_hris_employee_compen_change]</permkey>
+      <permlevel>FULL</permlevel>
+      <restriction />
+    </permission>
+    <permission>
+      <permkey>[scriptid=customrecord_hris_employee_compensation]</permkey>
+      <permlevel>FULL</permlevel>
+      <restriction />
+    </permission>
+    <permission>
+      <permkey>[scriptid=customrecord_hris_monthlysalinput]</permkey>
+      <permlevel>FULL</permlevel>
+      <restriction />
+    </permission>
+    <permission>
+      <permkey>[type=customsegment, scriptid=cseg_hris_empdept]</permkey>
+      <permlevel>FULL</permlevel>
+      <restriction />
+    </permission>
+    <permission>
+      <permkey>[type=customsegment, scriptid=cseg_hris_emploc]</permkey>
+      <permlevel>FULL</permlevel>
+      <restriction />
+    </permission>
+    <permission>
+      <permkey>[type=customsegment, scriptid=cseg_hris_empsubdpt]</permkey>
+      <permlevel>FULL</permlevel>
+      <restriction />
+    </permission>
+    <permission>
+      <permkey>[scriptid=customrecord_hris_staff_evaluation_form]</permkey>
+      <permlevel>FULL</permlevel>
+      <restriction />
+    </permission>
+    <permission>
+      <permkey>[scriptid=customrecord_hris_staff_employee_eva]</permkey>
+      <permlevel>FULL</permlevel>
+      <restriction />
+    </permission>
+    </permissions>
+</role>

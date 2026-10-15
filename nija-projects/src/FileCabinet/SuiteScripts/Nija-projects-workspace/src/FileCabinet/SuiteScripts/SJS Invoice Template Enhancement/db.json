@@ -1,0 +1,62 @@
+{
+  "scripts": {
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice print ue.js": {
+      "name": "tax invoice print ue.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice print ue.js",
+      "relativePath": "tax invoice print ue.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "tax_invoice_print_ue_3cb8ab.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice cs.js": {
+      "name": "tax invoice cs.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice cs.js",
+      "relativePath": "tax invoice cs.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "tax_invoice_cs_2d2cca.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice sl.js": {
+      "name": "tax invoice sl.js",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice sl.js",
+      "relativePath": "tax invoice sl.js",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement",
+      "extension": ".js",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "tax_invoice_sl_2e0b14.md"
+    },
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice aed xml.xml": {
+      "name": "tax invoice aed xml.xml",
+      "fullPath": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice aed xml.xml",
+      "relativePath": "tax invoice aed xml.xml",
+      "directory": "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement",
+      "extension": ".xml",
+      "tags": [
+        "uncategorized"
+      ],
+      "description": "No description provided.",
+      "dependencies": [],
+      "noteFile": "tax_invoice_aed_xml_19f30c.md"
+    }
+  },
+  "logs": {
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice print ue.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice cs.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice sl.js": [],
+    "C:/Users/EDWIN/Documents/Nija Projects/nija-projects/src/FileCabinet/SuiteScripts/Nija-projects-workspace/src/FileCabinet/SuiteScripts/SJS Invoice Template Enhancement/tax invoice aed xml.xml": []
+  }
+}

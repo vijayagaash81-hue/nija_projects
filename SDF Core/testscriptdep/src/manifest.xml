@@ -1,0 +1,14 @@
+<manifest projecttype="ACCOUNTCUSTOMIZATION">
+  <projectname>testscriptdep</projectname>
+  <frameworkversion>1.0</frameworkversion>
+  <dependencies>
+    <features>
+      <feature required="true">SERVERSIDESCRIPTING</feature>
+      <feature required="false">CRM</feature>
+      <feature required="false">CREATESUITEBUNDLES</feature>
+      <feature required="true">WORKFLOW</feature>
+    </features>
+    <objects>
+    </objects>
+  </dependencies>
+</manifest>

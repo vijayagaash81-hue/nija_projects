@@ -5,6 +5,7 @@
 **Description:** Suitelet (SuiteScript 2.1) displaying pending attendance regularization records (`custrecord_hris_overall_status = 4`) forwarded to the Head of Department (HOD). Pre-selects sublist status to `1` (Approved) for final HOD sign-off.
 
 ---
+[[hod reg approval mr.js]]
 
 ## Log of Changes & Implementation Notes
 

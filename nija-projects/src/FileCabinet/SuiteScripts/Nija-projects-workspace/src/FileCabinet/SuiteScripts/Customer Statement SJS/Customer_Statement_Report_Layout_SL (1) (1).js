@@ -349,6 +349,109 @@ define(['./moment.js', 'N/ui/serverWidget', 'N/file', 'N/encode', 'N/query', 'N/
             return parsed.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
+        function getTransactionDetails(query, pToDate, pvendorid, psubid) {
+            try {
+                var resultArray = [];
+                
+                var sqlToDate = pToDate;
+                var datePattern = 'DD/MM/YYYY';
+                if (pToDate && pToDate.indexOf('-') === -1) {
+                    try {
+                        var parsedDate = format.parse({ value: pToDate, type: format.Type.DATE });
+                        var yyyy = parsedDate.getFullYear();
+                        var mm = ('0' + (parsedDate.getMonth() + 1)).slice(-2);
+                        var dd = ('0' + parsedDate.getDate()).slice(-2);
+                        sqlToDate = yyyy + '-' + mm + '-' + dd;
+                        datePattern = 'YYYY-MM-DD';
+                    } catch (e) {
+                        log.error('Error parsing pToDate', e);
+                    }
+                } else if (pToDate && pToDate.indexOf('-') !== -1) {
+                    datePattern = 'YYYY-MM-DD';
+                }
+
+                var subEntityClause = "";
+                if (psubid) {
+                    subEntityClause = "          AND tl.subsidiary = " + psubid + " ";
+                }
+
+                var SQL =
+                    "SELECT " +
+                    "    recid, " +
+                    "    trandate, " +
+                    "    duedate, " +
+                    "    recordtype, " +
+                    "    documentno, " +
+                    "    ponum, " +
+                    "    memo, " +
+                    "    openingamt, " +
+                    "    appliedamt, " +
+                    "    amountremaining, " +
+                    "    SUM(NVL(amountremaining, 0)) OVER (ORDER BY trandate, recid) AS rtotal " +
+                    "FROM ( " +
+                    "    SELECT " +
+                    "        a.id AS recid, " +
+                    "        a.trandate, " +
+                    "        a.duedate, " +
+                    "        a.recordtype, " +
+                    "        a.trandisplayname AS documentno, " +
+                    "        a.otherrefnum AS ponum, " +
+                    "        a.memo, " +
+                    "        SUM(NVL(e.debit, 0)) AS openingamt, " +
+                    "        SUM(NVL(e.credit, 0)) AS appliedamt, " +
+                    "        SUM(NVL(e.debit, 0) - NVL(e.credit, 0)) AS amountremaining " +
+                    "    FROM transactionaccountingline e " +
+                    "    JOIN account acc ON acc.id = e.account " +
+                    "    JOIN transaction a ON a.id = e.transaction " +
+                    "    WHERE a.trandate <= TO_DATE('" + sqlToDate + "', '" + datePattern + "') " +
+                    "      AND acc.accttype = 'AcctRec' " +
+                    "      AND a.posting = 'T' " +
+                    "      AND EXISTS ( " +
+                    "          SELECT 1 " +
+                    "          FROM transactionline tl " +
+                    "          WHERE tl.transaction = a.id " +
+                    "          AND tl.entity = " + pvendorid + " " +
+                    subEntityClause +
+                    "      ) " +
+                    "    GROUP BY " +
+                    "        a.id, a.trandate, a.duedate, a.recordtype, a.trandisplayname, a.otherrefnum, a.memo " +
+                    ") " +
+                    "ORDER BY trandate, recid";
+
+                log.debug("query", SQL);
+                // Run the query.
+                var queryResults = query.runSuiteQL({
+                    query: SQL
+                });
+
+                var records = queryResults.asMappedResults();
+                log.debug('records.length', records.length);
+                if (records.length > 0) {
+                    for (r = 0; r < records.length; r++) {
+                        // Get the record.
+                        var record = records[r];
+                        
+                        resultArray.push({
+                            'recid': record.recid,
+                            'trandate': record.trandate,
+                            'duedate': record.duedate,
+                            'recordtype': record.recordtype,
+                            'documentno': record.documentno,
+                            'ponum': record.ponum,
+                            'memo': record.memo,
+                            'openingamt': record.openingamt,
+                            'appliedamt': record.appliedamt,
+                            'amountremaining': record.amountremaining,
+                            'rtotal': record.rtotal
+                        });
+                    }
+                }
+                return resultArray;
+            } catch (e) {
+                log.error('Error in getTransactionDetails', e);
+            }
+        }
+
         return {
             onRequest: onRequest
         };
@@ -373,97 +476,4 @@ var addScriptToForm = function (pForm, serverWidgetModule) {
         type: serverWidgetModule.FieldType.INLINEHTML
     });
     scriptfield.defaultValue = clientScript;
-}
-function getTransactionDetails(query, pToDate, pvendorid, psubid) {
-    try {
-        var resultArray = [];
-        // Querying the required result
-
-        // var SQL = "Select recid,trandate,duedate,recordtype,documentno,memo,openingamt,appliedamt,pendingamt, \
-        //  SUM(nvl(openingamt,0)-nvl(appliedamt,0)) OVER(ORDER BY nvl(trandate,null),nvl(id,null)) as balance, foreigntotal \
-        //   from (select a.id as recid,a.trandate,a.duedate, a.recordtype,a.id,\
-        //   case when a.recordType = 'invoice' then a.custbody_njt_old_doc_no else a.trandisplayname end as documentno,\
-        //   a.memo, sum(nvl(e.debit,0)) as openingamt, \
-        //  sum(nvl(e.credit,0)) as appliedamt,SUM(nvl(e.debit,0)-nvl(e.credit,0)) as pendingamt,SUM(a.foreigntotal) as foreigntotal \
-        //  from transactionaccountingline e join account acc on acc.id=e.account join transaction a on a.id=e.transaction \
-        //  left join transactionline b on e.transactionline=b.id and e.transaction=b.transaction  \
-        //  where a.trandate >= '" + pfromDate + "' and a.trandate <= '" + pToDate + "' and acc.accttype in ('AcctRec') and a.posting = 'T'  \
-        //  and b.entity in (" + pvendorid + ") and b.subsidiary = (" + psubid + ") Group by a.id,a.custbody_njt_old_doc_no,a.trandisplayname,a.recordType,a.trandate,a.duedate,a.memo,a.transactionnumber,a.number,b.Class,a.id,a.recordtype)";
-      //For testing purpose comment
-        /* var SQL = "select invid, invnum, trandate, recid, foreigntotal, paidamount, duedate, recordtype, status,documentno, \
-... (removed old commented blocks for clarity) ... */
-        var SQL =
-            "SELECT " +
-            "    recid, " +
-            "    trandate, " +
-            "    duedate, " +
-            "    recordtype, " +
-            "    documentno, " +
-            "    ponum, " +
-            "    memo, " +
-            "    openingamt, " +
-            "    appliedamt, " +
-            "    amountremaining, " +
-            "    SUM(NVL(amountremaining, 0)) OVER (ORDER BY trandate, recid) AS rtotal " +
-            "FROM ( " +
-            "    SELECT " +
-            "        a.id AS recid, " +
-            "        a.trandate, " +
-            "        a.duedate, " +
-            "        a.recordtype, " +
-            "        a.trandisplayname AS documentno, " +
-            "        a.otherrefnum AS ponum, " +
-            "        a.memo, " +
-            "        SUM(NVL(e.debit, 0)) AS openingamt, " +
-            "        SUM(NVL(e.credit, 0)) AS appliedamt, " +
-            "        SUM(NVL(e.debit, 0) - NVL(e.credit, 0)) AS amountremaining " +
-            "    FROM transactionaccountingline e " +
-            "    JOIN account acc ON acc.id = e.account " +
-            "    JOIN transaction a ON a.id = e.transaction " +
-            "    WHERE a.trandate <= TO_DATE('" + pToDate + "', 'DD/MM/YYYY') " +
-            "      AND acc.accttype = 'AcctRec' " +
-            "      AND a.posting = 'T' " +
-            "      AND EXISTS ( " +
-            "          SELECT 1 " +
-            "          FROM transactionline tl " +
-            "          WHERE tl.transaction = a.id " +
-            "          AND tl.entity = " + pvendorid + " " +
-            "      ) " +
-            "    GROUP BY " +
-            "        a.id, a.trandate, a.duedate, a.recordtype, a.trandisplayname, a.otherrefnum, a.memo " +
-            ") " +
-            "ORDER BY trandate, recid";
-
-        log.debug("query", SQL);
-        // Run the query.
-        var queryResults = query.runSuiteQL({
-            query: SQL
-        });
-
-        var records = queryResults.asMappedResults();
-        log.debug('records.length', records.length);
-        if (records.length > 0) {
-            for (r = 0; r < records.length; r++) {
-                // Get the record.
-                var record = records[r];
-                
-                resultArray.push({
-                    'recid': record.recid,
-                    'trandate': record.trandate,
-                    'duedate': record.duedate,
-                    'recordtype': record.recordtype,
-                    'documentno': record.documentno,
-                    'ponum': record.ponum,
-                    'memo': record.memo,
-                    'openingamt': record.openingamt,
-                    'appliedamt': record.appliedamt,
-                    'amountremaining': record.amountremaining,
-                    'rtotal': record.rtotal
-                });
-            }
-        }
-        return resultArray;
-    } catch (e) {
-        log.error('Error in getTransactionDetails', e);
-    }
 }

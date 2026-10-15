@@ -10,7 +10,7 @@ define(['N/record', 'N/render', 'N/search', 'N/log', 'N/format', 'N/file'], func
             var response = context.response;
 
             var letterReqId = request.parameters.recordId;
-            var certType = request.parameters.certType; // Received from URL / Client Script ('2', '3', or '4')
+            var certType = request.parameters.certType; // Received from URL / Client Script ('2', '3', '4', or '5')
 
             if (!letterReqId) {
                 response.write('Missing letter request ID.');
@@ -239,6 +239,10 @@ define(['N/record', 'N/render', 'N/search', 'N/log', 'N/format', 'N/file'], func
             var emp_leavedate_raw = empRec.getText({ fieldId: 'custentity_hirs_empdol' }) || '';
             var emp_leavedate = formatDateLong(emp_leavedate_raw);
 
+            // Bank details for Salary Transfer Letter (certType '5')
+            var accountNo = empRec.getValue({ fieldId: 'custentity_hris_emp_bankaccno' }) || '';
+            var ibanNo = empRec.getValue({ fieldId: 'custentity_hris_empbankibanacctno' }) || empRec.getValue({ fieldId: 'custentity_hris_empbankroutingno' }) || '';
+
             var currency = 'AED'; // Default fallback
             var gross_salary_num = 0;
             var gross_salary_formatted = '0.00';
@@ -438,13 +442,18 @@ define(['N/record', 'N/render', 'N/search', 'N/log', 'N/format', 'N/file'], func
                 docTitle = 'Experience Letter';
                 rawTemplate = letterRec.getValue({ fieldId: 'custrecordnjt_experience_letter' }) || '';
             }
+            else if (certType === '5') {
+                // SALARY TRANSFER LETTER
+                docTitle = 'Salary Transfer Letter';
+                rawTemplate = letterRec.getValue({ fieldId: 'custrecord_njt_salary_transfer_tpl' }) || letterRec.getValue({ fieldId: 'custrecordnjt_salary_transfer_letter' }) || '';
+            }
             else {
                 // SALARY CERTIFICATE (Default / Type 3)
                 docTitle = 'Salary Certificate';
                 rawTemplate = letterRec.getValue({ fieldId: 'custrecord_njt_salary_certificate_tpl' }) || '';
             }
 
-            if (!rawTemplate) {
+            if (!rawTemplate && certType !== '3' && certType !== '5') {
                 response.write('The template body for ' + docTitle + ' is empty on this record.');
                 return;
             }
@@ -472,6 +481,8 @@ define(['N/record', 'N/render', 'N/search', 'N/log', 'N/format', 'N/file'], func
                 .replace(/{{company_address}}/g, escapeXml(companyAddress1))
                 .replace(/{{emp_dept}}/g, escapeXml(emp_dept))
                 .replace(/{{emp_leavedate}}/g, escapeXml(emp_leavedate))
+                .replace(/{{account_no}}/g, escapeXml(accountNo))
+                .replace(/{{iban_no}}/g, escapeXml(ibanNo))
                 .replace(/{{salary_breakdown}}/g, salary_breakdown_table_html);
 
             // Process address line breaks
@@ -490,6 +501,7 @@ define(['N/record', 'N/render', 'N/search', 'N/log', 'N/format', 'N/file'], func
             var letterReqDate_raw = letterRec.getText({ fieldId: 'custrecord_hris_letreq_request_date_cre' }) ||
                 letterRec.getValue({ fieldId: 'custrecord_hris_letreq_request_date_cre' }) || '';
             var letterDate = letterReqDate_raw ? formatDateLong(letterReqDate_raw) : formatDateLong(new Date());
+            var effectiveDate = letterDate;
 
             // Signatory details
             var signatoryName = 'Jene Roa';
@@ -611,6 +623,50 @@ define(['N/record', 'N/render', 'N/search', 'N/log', 'N/format', 'N/file'], func
                     '</td>' +
                     '</tr>' +
                     '</table>';
+            }
+            else if (certType === '5') {
+                // SALARY TRANSFER LETTER
+                var emp_mr_prefix = (emp_gender === 'Male') ? 'Mr.' : 'Mrs.';
+                var pStyle = 'font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt; margin: 0 0 14pt 0; line-height: 19px; text-align: justify; color: #000000;';
+                var signatoryStyle = 'font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt; line-height: 18px; margin-top: 15pt;';
+
+                var passportPhraseST = '';
+                if (emp_nation_final && emp_pass) {
+                    passportPhraseST = ', holder of ' + escapeXml(emp_nation_final) + ' passport no. ' + escapeXml(emp_pass) + ',';
+                } else if (emp_pass) {
+                    passportPhraseST = ', holder of passport no. ' + escapeXml(emp_pass) + ',';
+                } else if (emp_nation_final) {
+                    passportPhraseST = ', of ' + escapeXml(emp_nation_final) + ' nationality,';
+                }
+
+                bodyHtml =
+                    '<div style="font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt; line-height: 18px; margin-bottom: 14pt;">' +
+                    '<p style="margin: 0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt;">Ref: ' + escapeXml(refNo) + '</p>' +
+                    '<p style="margin: 0 0 14pt 0; font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt;">Date: ' + escapeXml(letterDate) + '</p>' +
+                    '<p style="margin: 0 0 14pt 0; font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt; line-height: 16px;">' + letterToHtml + '</p>' +
+                    '<p style="margin: 0 0 14pt 0; font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt;">Dear Sir,</p>' +
+                    '</div>' +
+
+                    '<p style="font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt; margin: 0 0 14pt 0;"><b><u>Subject: Salary Transfer Letter</u></b></p>' +
+
+                    '<p style="' + pStyle + '">This is to certify that ' + emp_mr_prefix + ' ' + escapeXml(emp_name_final) + passportPhraseST + ' is currently joined and an employee of ' + escapeXml(companyName) + ' since ' + escapeXml(emp_job_confirm_dt) + ' up to the present and holds the position of ' + escapeXml(emp_desi_final) + '. ' + emp_his_her_cap + ' total monthly remuneration is ' + escapeXml(currency) + ' ' + escapeXml(gross_salary_formatted) + ' inclusive of all allowances.</p>' +
+
+                    '<p style="' + pStyle + '">We confirm that ' + emp_gender_possessive + ' monthly salary will be transferred for the credit of ' + emp_gender_possessive + ' Account no:' + escapeXml(accountNo) + ' IBAN no.: ' + escapeXml(ibanNo) + ' with yourself effective ' + escapeXml(effectiveDate) + ' and undertake not to transfer the salary to any other bank unless ' + emp_gender_possessive + ' produces a clearance letter from you.</p>' +
+
+                    '<p style="' + pStyle + '">In case of ' + emp_gender_possessive + ' resignation/termination we will inform you accordingly and will transfer ' + emp_gender_possessive + ' gratuity and final settlement of ' + emp_gender_possessive + ' dues for ' + emp_gender_possessive + ' account with your bank.</p>' +
+
+                    '<p style="' + pStyle + '">This certification is issued upon the request of ' + emp_mr_prefix + ' ' + escapeXml(emp_name_final) + ' for the purpose of updating ' + emp_gender_possessive + ' account with you.</p>' +
+
+                    '<p style="' + pStyle + '">Please note that this letter does not constitute any guarantee on our part towards repayment of any type of loan or credit card nor will the company have any legal and financial liability as a result of non-payment. This letter is issued with no liability on the part of the undersigned or the company.</p>' +
+
+                    '<p style="' + pStyle + '">For any questions, please reach us through e-mail at <a href="mailto:' + escapeXml(companyEmail) + '" style="color: #0000ff; text-decoration: underline; font-family: Arial, Helvetica, sans-serif;">' + escapeXml(companyEmail) + '</a> or office number ' + escapeXml(companyPhone.replace('+971 ', '')) + '.</p>' +
+
+                    '<div style="' + signatoryStyle + '">' +
+                    '<p style="margin: 0 0 14pt 0; font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt; line-height: 18px;">Yours faithfully,<br/>' +
+                    'For and on behalf of ' + escapeXml(companyName) + '</p>' +
+                    '<p style="font-weight: bold; margin: 45px 0 2px 0; font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt;">' + escapeXml(signatoryName) + '</p>' +
+                    '<p style="margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt;">' + escapeXml(signatoryTitle) + '</p>' +
+                    '</div>';
             }
             else if (certType === '2') {
                 bodyHtml =

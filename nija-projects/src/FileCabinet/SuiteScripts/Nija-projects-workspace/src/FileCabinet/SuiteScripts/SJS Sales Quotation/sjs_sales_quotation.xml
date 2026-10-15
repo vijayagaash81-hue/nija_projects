@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+    <style type="text/css">
+        /* General page font */
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 11px;
+        }
+        /* Main Item Table */
+        .item-table {
+            padding-top: -5px;
+            width: 100%;
+            border-collapse: collapse;
+            border: 0.1pt solid #000000;
+            margin-bottom: 0px;
+        }
+        /* Header styling */
+        .item-table th {
+            border: 0.1pt solid #000000;
+            padding: 4px 3px;
+            font-size: 10px;
+            background-color: #ffffff;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        /* Data cell styling */
+        .item-table td {
+            border-left: 0.1pt solid #000000;
+            border-right: 0.1pt solid #000000;
+            border-top: none;
+            border-bottom: none;
+            padding: 4px 3px; 
+            font-size: 10px;
+            height: 18px;
+        }
+        /* Border for total row */
+        .total-row td {
+            border-top: 0.1pt solid #000000;
+            border-bottom: 0.1pt solid #000000;
+            border-left: 0.1pt solid #000000;
+            border-right: 0.1pt solid #000000;
+            font-weight: bold;
+            height: 18px;
+            padding: 4px 3px;
+            font-size: 10px;
+        }
+        /* Class to remove all borders for layout-only tables */
+        .no-border, .no-border td {
+            border: none;
+        }
+        /* Header table: no borders and centered for the logo */
+        .header-table, .header-table td {
+            border: none;
+            padding: 0;
+            text-align: center;
+        }
+        .right { text-align: right; }
+        .center { text-align: center; }
+        .bold { font-weight: bold; }
+
+        /* Summary table styling */
+        .summary-table {
+            border: 0.5pt solid #000000; 
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .summary-table td {
+            border: none; 
+            padding: 3px 5px;
+            font-size: 10px;
+        }
+    </style>
+
+    <!-- HEADER AND FOOTER MACRO DEFINITIONS -->
+    <macrolist>
+        <macro id="nlheader">
+            <table class="header-table">
+                <tr>
+                    <td align="center" style="vertical-align: middle;">
+                        <#if record.subsidiary == "SJS Enersol LLC">
+                            <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=2609&amp;c=12075805&amp;h=O64SxlG4LsWpTQ7LCnBKMcYi6jP9FLl-CoauR7s9agUSaA-D" style="width: 740px; height: 160px; padding-top:-100px;" />
+                        <#else>
+                            <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=2619&amp;c=12075805&amp;h=lASWwe_0oZq1SqApNwf7Jqg-8vu504mSGH7thyIidSx1320v" style="width: 650px; height: 90px; padding-top:-40px;" />
+                        </#if>
+                    </td>
+                </tr>
+            </table>
+        </macro>
+        <macro id="nlfooter">
+            <#if record.subsidiary == "SJS Enersol LLC">
+                <table class="no-border" style="width: 100%; margin-top: 5px;">
+                    <tr>
+                        <td style="width: 100%; text-align: center; vertical-align: top; padding-left:50px; padding-top:5px;">
+                             <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=2610&amp;c=12075805&amp;h=XRONrANM19yECUoemjt7hHesM43YYYJpoDKZiz3h5ZvaZA1P" style="width: 580px; height: 55px;"/>
+                        </td>
+                    </tr>
+                </table>
+            <#else>
+                <table class="no-border" style="width: 100%; margin-top: 5px;">
+                    <tr>
+                        <td style="width: 45%; vertical-align: bottom;">
+                            <span style="color: #2e5190; font-weight: bold; font-size: 10px;">Name and Mobile Number:</span><br/>
+                            <span style="color: #2e5190; font-weight: bold; font-size: 10px;">Receiver's Signature: ...........................................................</span>
+                        </td>
+                        <td style="width: 25%; text-align: center; vertical-align: top;">
+                            <img src="https://12075805.app.netsuite.com/core/media/media.nl?id=1342&amp;c=12075805&amp;h=4Vq24cWx1KqWiN1XiHtzzTYH7-sQ2imkhln23ZDCxBNi0hDM" style="width: 160px; height: 30px;"/>
+                        </td>
+                        <td style="width: 30%; text-align: right; vertical-align: bottom;">
+                            <span style="color: #2e5190; font-weight: bold; font-size: 11px;">For SJS Enersol Engineering Works L.L.C.</span>
+                        </td>
+                    </tr>
+                </table>
+               
+                <table class="no-border" style="width: 100%; background-color: #2e5190; margin-top: 3px;">
+                    <tr>
+                        <td align="center" style="color: #ffffff; font-weight: bold; font-size: 10pt; padding: 3px;">
+                            Hex Bolt, Stud Bolt, Anchor Bolt And Heavy Engineering Construction
+                        </td>
+                    </tr>
+                </table>
+            </#if>
+        </macro>
+    </macrolist>
+</head>
+
+<!-- SAFE FORMAT FUNCTION TO HANDLE BOTH NUMBERS AND FORMATTED STRINGS -->
+<#function safeFormat val formatStr>
+    <#if !val?has_content>
+        <#return "">
+    </#if>
+    <#if val?is_number>
+        <#return val?string(formatStr)>
+    </#if>
+    <#if val?is_string>
+        <#attempt>
+            <#local cleanVal = val?replace(",", "")?trim>
+            <#local numVal = cleanVal?number>
+            <#return numVal?string(formatStr)>
+        <#recover>
+            <#return val>
+        </#attempt>
+    </#if>
+    <#return val>
+</#function>
+
+<#assign batchIndex = 0 />
+
+<body header="nlheader" header-height="80pt" footer="nlfooter" footer-height="70pt">
+
+<!-- PAGINATION LOGIC: 5 ITEMS PER PAGE -->
+<#list record.item?chunk(5) as itemBatch>
+    <!-- DOCUMENT TITLE -->
+    <table class="no-border" style="width: 100%; margin-top: 0px;">
+      <tr>
+        <td align="center">
+          <span style="font-size:20px; font-family:Georgia,serif; font-weight:bold; padding-bottom:2px;">
+            Sales Quotation
+          </span>
+        </td>
+      </tr>
+    </table>
+    <br/>
+
+    <!-- CUSTOMER AND QUOTATION CORE DETAILS -->
+    <table class="no-border" cellpadding="0" cellspacing="0" style="width: 100%;">
+        <tr>
+            <!-- BILL TO SECTION -->
+            <td style="width: 50%; vertical-align: top; font-size:11px;">
+                <span style="font-weight: bold; font-size: 12px;">Customer Details:</span><br/>
+                <span style="line-height: 14px;">
+                    <#if record.entity.companyname?has_content>
+                        <strong style="display:block; width:280px; white-space:normal; word-break:break-word;">
+                            ${record.entity.companyname}
+                        </strong><br/>
+                    <#elseif record.entity.firstname?has_content>
+                        <strong style="display:block; width:280px; white-space:normal; word-break:break-word;">
+                            ${record.entity.firstname} ${record.entity.lastname}
+                        </strong><br/>
+                    <#else>
+                        <strong style="display:block; width:280px; white-space:normal; word-break:break-word;">
+                            ${record.entity}
+                        </strong><br/>
+                    </#if>
+                    <span style="font-size: 10px;">
+                        <#if customData?? && customData.addressInfo?? && customData.addressInfo.formattedAddress?has_content>
+                            ${customData.addressInfo.formattedAddress}
+                        <#elseif record.billaddress?has_content>
+                            <#assign fullAddr = record.billaddress?replace("<br />","<br/>")>
+                            <#if fullAddr?contains("<br/>")>
+                                <#assign firstLine = fullAddr?keep_before("<br/>")?trim>
+                                <#assign compName = "">
+                                <#if record.entity.companyname?has_content>
+                                    <#assign compName = record.entity.companyname?trim>
+                                <#elseif record.entity.firstname?has_content>
+                                    <#assign compName = (record.entity.firstname + " " + record.entity.lastname)?trim>
+                                </#if>
+                                <#if compName?has_content && (firstLine?lower_case == compName?lower_case || firstLine?lower_case?contains(compName?lower_case) || compName?lower_case?contains(firstLine?lower_case))>
+                                    ${fullAddr?keep_after("<br/>")}
+                                <#else>
+                                    ${fullAddr}
+                                </#if>
+                            <#else>
+                                ${fullAddr}
+                            </#if>
+                        </#if>
+                    </span>
+                </span>
+            </td>
+            <!-- SPACER COLUMN -->
+            <td style="width: 5%;"></td>
+            <!-- LABELS SECTION -->
+            <td style="width: 20%; font-size:10px; vertical-align: top; line-height: 14px;">
+                <strong>DATE:</strong><br/>
+                <strong>Quotation No:</strong><br/>
+                <strong>CURRENCY:</strong><br/>
+                <strong>Validity of Quotation:</strong><br/>
+                <strong>PAYMENT TERMS:</strong><br/>
+                <strong>Sales Person:</strong>
+            </td>
+            <!-- VALUES SECTION -->
+            <td style="width: 25%; font-size:10px; vertical-align: top; line-height: 14px; white-space:nowrap;">
+                ${record.trandate}<br/>
+                ${record.tranid}<br/>
+                ${record.currency}<br/>
+                <#if record.duedate?has_content>${record.duedate}<#elseif record.custbody_validity?has_content>${record.custbody_validity}<#else>-</#if><br/>
+                <#if record.terms?has_content>${record.terms}<#else>-</#if><br/>
+                <#if record.salesrep?has_content>
+                    <#if record.salesrep.firstname?has_content>
+                        ${record.salesrep.firstname} ${record.salesrep.lastname}
+                    <#else>
+                        ${record.salesrep}
+                    </#if>
+                <#else>
+                    -
+                </#if>
+            </td>
+        </tr>
+    </table>
+
+    <!-- TRN, TEL, AND ATTEN ROW -->
+    <table class="no-border" cellpadding="0" cellspacing="0" style="margin-top: 5px; width: 100%; font-size:10px; line-height: 14px;">
+        <tr>
+            <td style="width: 10%;"><strong>TRN #:</strong></td>   
+            <td style="width: 40%;"><#if record.vatregnum?has_content>${record.vatregnum}<#elseif record.entity.vatregnum?has_content>${record.entity.vatregnum}<#else>-</#if></td>
+            <td style="width: 50%;"></td>
+        </tr>
+        <tr>
+            <td style="width: 10%;"><strong>Tel:</strong></td> 
+            <td style="width: 40%;"><#if record.entity.phone?has_content>${record.entity.phone}<#else>-</#if></td>
+            <td style="width: 50%;"></td>
+        </tr>
+        <tr>
+            <td style="width: 10%;"><strong>Atten:</strong></td> 
+            <td style="width: 40%;">
+                <#if record.custbody_attn?has_content>
+                    ${record.custbody_attn}
+                <#elseif record.custbody_sjs_attn?has_content>
+                    ${record.custbody_sjs_attn}
+                <#elseif record.contact?has_content>
+                    ${record.contact}
+                <#else>
+                    -
+                </#if>
+            </td>
+            <td style="width: 50%;"></td>
+        </tr>
+    </table>
+    <br/>
+
+    <!-- MAIN ITEM TABLE -->
+    <table class="item-table" cellspacing="0">
+        <thead>
+            <tr>
+                <th align="center" style="width:6%;">S.NO</th>
+                <th align="center" style="width:34%;">DESCRIPTION</th>
+                <th align="center" style="width:8%;">UOM</th>
+                <th align="center" style="width:8%;">QTY</th>
+                <th align="center" style="width:11%;">RATE<br/>${record.currency}</th>
+                <th align="center" style="width:11%;">TOTAL<br/>${record.currency}</th>
+                <th align="center" style="width:10%;">5% VAT<br/>${record.currency}</th>
+                <th align="center" style="width:12%;">NET TOTAL<br/>${record.currency}</th>
+            </tr>
+        </thead>
+        <#list itemBatch as item>
+        <tr>
+            <td align="center">${item_index + 1 + (batchIndex * 5)}-</td>
+            <td align="left" style="white-space: normal; word-wrap: break-word;">
+                <#if item.description?has_content>
+                    ${item.description}
+                <#elseif item.custcol_njt_podesc?has_content>
+                    ${item.custcol_njt_podesc}
+                <#else>
+                    ${item.item}
+                </#if>
+            </td>
+            <td align="center">${item.units}</td>
+            <td align="right">${safeFormat(item.quantity, "0.##")}</td>
+            <td align="right">
+                <#if item.rate?has_content>
+                    ${safeFormat(item.rate, "#,##0.00")}
+                <#else>
+                    -
+                </#if>
+            </td>
+            <td align="right">
+                <#if item.amount?has_content>
+                    ${safeFormat(item.amount, "#,##0.00")}
+                <#elseif item.total?has_content>
+                    ${safeFormat(item.total, "#,##0.00")}
+                <#else>
+                    -
+                </#if>
+            </td>
+            <td align="right">
+                <#if item.tax1amt?has_content>
+                    ${safeFormat(item.tax1amt, "#,##0.00")}
+                <#elseif item.taxamount?has_content>
+                    ${safeFormat(item.taxamount, "#,##0.00")}
+                <#elseif item.taxamt?has_content>
+                    ${safeFormat(item.taxamt, "#,##0.00")}
+                <#else>
+                    0.00
+                </#if>
+            </td>
+            <td align="right">
+                <#if item.grossamt?has_content>
+                    ${safeFormat(item.grossamt, "#,##0.00")}
+                <#elseif item.amount?has_content>
+                    <#assign lineAmt = 0>
+                    <#if item.amount?is_number><#assign lineAmt = item.amount><#else><#assign lineAmt = item.amount?replace(",","")?number></#if>
+                    <#assign lineVat = 0>
+                    <#if item.tax1amt?has_content>
+                        <#if item.tax1amt?is_number><#assign lineVat = item.tax1amt><#else><#assign lineVat = item.tax1amt?replace(",","")?number></#if>
+                    <#elseif item.taxamount?has_content>
+                        <#if item.taxamount?is_number><#assign lineVat = item.taxamount><#else><#assign lineVat = item.taxamount?replace(",","")?number></#if>
+                    </#if>
+                    ${safeFormat(lineAmt + lineVat, "#,##0.00")}
+                <#else>
+                    -
+                </#if>
+            </td>
+        </tr>
+        </#list>
+        
+        <!-- FILLER BLANK ROWS TO MAINTAIN TABLE STRUCTURE -->
+        <#assign rowCount = itemBatch?size>
+        <#assign maxRows = 5>
+        <#if rowCount < maxRows>
+            <#list 1..(maxRows - rowCount) as i>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </#list>
+        </#if>
+
+        <#if !itemBatch?has_next>
+        <!-- TOTAL LINE AT THE BOTTOM OF THE TABLE ON THE LAST PAGE -->
+        <tr class="total-row">
+            <td colspan="5" align="left" style="font-weight:bold;">TOTAL</td>
+            <td align="right" style="font-weight:bold;">${safeFormat(record.subtotal, "#,##0.00")}</td>
+            <td align="right" style="font-weight:bold;">
+                <#if record.taxtotal?has_content>
+                    ${safeFormat(record.taxtotal, "#,##0.00")}
+                <#else>
+                    0.00
+                </#if>
+            </td>
+            <td align="right" style="font-weight:bold;">${safeFormat(record.total, "#,##0.00")}</td>
+        </tr>
+        <#else>
+        <!-- Bottom border for intermediate pages -->
+        <tr>
+            <td colspan="8" style="border-top: 0.1pt solid black; height: 1px; padding: 0;"></td>
+        </tr>
+        </#if>
+    </table>
+    <br/>
+
+    <#if !itemBatch?has_next>
+    <!-- BOTTOM SECTION BELOW ITEM TABLE (AMOUNT IN WORDS, REMARKS, SHIPPING METHOD & SUMMARY BOX) -->
+    <table class="no-border" cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 5px;">
+        <tr>
+            <!-- LEFT COLUMN: AMOUNT IN WORDS, REMARKS, SHIPPING METHOD -->
+            <td style="width: 58%; vertical-align: top; padding-right: 10px;">
+                <div style="font-size: 10px; margin-bottom: 12px;">
+                    <strong>${record.currency}:</strong> <#if customData?? && customData.totalWords??>${customData.totalWords}</#if> Only /-
+                </div>
+                <div style="font-size: 10px; margin-bottom: 8px;">
+                    <strong>Remarks:</strong> <#if record.memo?has_content>${record.memo}</#if>
+                </div>
+                <div style="font-size: 10px;">
+                    <strong>Shipping Method:</strong> <#if customData?? && customData.shippingMethod?has_content>${customData.shippingMethod}<#elseif record.shipcarrier?has_content>${record.shipcarrier}<#elseif record.shipmethod?has_content>${record.shipmethod}</#if>
+                </div>
+            </td>
+            
+            <!-- RIGHT COLUMN: SUMMARY TABLE BOX -->
+            <td style="width: 42%; vertical-align: top;">
+                <table class="summary-table" cellspacing="0">
+                    <tr>
+                        <td style="font-weight:bold;">Subtotal</td>
+                        <td align="right">${safeFormat(record.subtotal, "#,##0.00")}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;">Discount</td>
+                        <td align="right">
+                            <#if record.discounttotal?has_content && record.discounttotal?number != 0>
+                                ${safeFormat(record.discounttotal, "#,##0.00")}
+                            <#else>
+                                0.00
+                            </#if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;">Net Amount</td>
+                        <td align="right">
+                            <#if customData?? && customData.netAmount??>
+                                ${safeFormat(customData.netAmount, "#,##0.00")}
+                            <#else>
+                                ${safeFormat(record.subtotal, "#,##0.00")}
+                            </#if>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;">Tax Total</td>
+                        <td align="right">
+                            <#if record.taxtotal?has_content>
+                                ${safeFormat(record.taxtotal, "#,##0.00")}
+                            <#else>
+                                0.00
+                            </#if>
+                        </td>
+                    </tr>
+                    <tr style="border-top: 0.5pt solid black; background-color: #ffffff;">
+                        <td style="font-weight:bold;">Total</td>
+                        <td align="right" style="font-weight:bold;">
+                            ${safeFormat(record.total, "#,##0.00")}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    </#if>
+
+    <#if itemBatch?has_next>
+        <!-- Page Break if more chunks exist -->
+        <pbr />
+    </#if>
+    <#assign batchIndex = batchIndex + 1 />
+</#list>
+
+</body>
+</pdf>

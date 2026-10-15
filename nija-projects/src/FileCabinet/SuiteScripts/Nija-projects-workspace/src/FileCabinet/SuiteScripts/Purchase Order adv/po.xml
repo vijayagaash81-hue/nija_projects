@@ -17,6 +17,8 @@
 
     .no-border td{
         border:none;
+        align:left;
+        text-align:left;
     }
 
     .main-table{
@@ -28,16 +30,19 @@
     .main-table th{
         border:0.5pt solid #000;
         background-color:#f2f2f2;
-        padding:5px;
-        font-size:10pt;
+        padding:4px 2px;
+        font-size:9.5pt;
         font-weight:bold;
         text-align:center;
+        white-space:nowrap;
     }
 
     .main-table td{
         border:0.5pt solid #000;
         padding:5px;
         font-size:9pt;
+        align:left;
+        text-align:left;
     }
 
     .label{
@@ -92,6 +97,13 @@
 </style>
 
 <macrolist>
+
+    <!-- WATERMARK -->
+    <macro id="draft_watermark">
+        <#if record.custbody_hris_sales_approval_status?has_content && (record.custbody_hris_sales_approval_status?string?lower_case == "pending approval" || record.custbody_hris_sales_approval_status?string == "1")>
+            <p align="center" valign="middle" rotate="-45" style="font-size: 125pt; color: #e5e5e5; font-weight: bold; letter-spacing: 5px; opacity: 0.25;">DRAFT</p>
+        </#if>
+    </macro>
 
     <!-- HEADER -->
     <macro id="nlheader">
@@ -216,7 +228,8 @@
       header-height="90pt"
       footer="nlfooter"
       footer-height="45pt"
-      padding="0.5in">
+      padding="0.5in"
+      background-macro="draft_watermark">
 
 <#list record.item?chunk(5) as itemBatch>
 
@@ -240,48 +253,48 @@
 
         <!-- LEFT -->
 
-        <td style="width:55%;vertical-align:top;">
+        <td style="width:55%;vertical-align:top;" align="left">
 
-            <table class="no-border">
+            <table class="no-border" style="width:100%;table-layout:fixed;">
 
                 <tr>
-                    <td class="label">Purchase Order No:</td>
-                    <td>${record.tranid}</td>
+                    <td class="label" style="width:40%;" align="left">Purchase Order No:</td>
+                    <td style="width:60%;" align="left">${record.tranid}</td>
                 </tr>
 
                 <tr>
-                    <td class="label">RFQ REF No:</td>
-                    <td>${record.custbody_njt_purc_qout!""}</td>
+                    <td class="label" style="width:40%;" align="left">RFQ REF No:</td>
+                    <td style="width:60%;" align="left">${record.custbody_njt_purc_qout!""}</td>
                 </tr>
 
                 <tr>
-                    <td class="label">Delivery Point:</td>
-                    <td>${record.custbody_delivery_point!""}</td>
+                    <td class="label" style="width:40%;" align="left">Delivery Point:</td>
+                    <td style="width:60%;" align="left">${record.custbody_delivery_point!""}</td>
                 </tr>
 
                 <tr>
-                    <td class="label">Delivery Location:</td>
-                    <td>${record.custbody_delivery_location!""}</td>
+                    <td class="label" style="width:40%;" align="left">Delivery Location:</td>
+                    <td style="width:60%;" align="left">${record.custbody_delivery_location!""}</td>
                 </tr>
 
                 <tr>
-                    <td class="label">Delivery Date:</td>
-                    <td>${record.duedate!""}</td>
+                    <td class="label" style="width:40%;" align="left">Delivery Date:</td>
+                    <td style="width:60%;" align="left">${record.duedate!""}</td>
                 </tr>
 
                 <tr>
-                    <td class="label">Request By:</td>
-                    <td>${(record.employee!"")?replace("^([A-Z0-9_-]+)\\s+", "", "r")}</td>
+                    <td class="label" style="width:40%;" align="left">Request By:</td>
+                    <td style="width:60%;" align="left">${(record.employee!"")?replace("^([A-Z0-9_-]+)\\s+", "", "r")}</td>
                 </tr>
 
                 <tr>
-                    <td class="label">Store Person Name:</td>
-                    <td>${(record.custbody4!"")?replace("^([A-Z0-9_-]+)\\s+", "", "r")}</td>
+                    <td class="label" style="width:40%;" align="left">Store Person Name:</td>
+                    <td style="width:60%;" align="left">${(record.custbody4!"")?replace("^([A-Z0-9_-]+)\\s+", "", "r")}</td>
                 </tr>
 
                 <tr>
-                    <td class="label">Store Person Contact:</td>
-                    <td>${record.custbody4.phone!""}</td>
+                    <td class="label" style="width:40%;" align="left">Store Person Contact:</td>
+                    <td style="width:60%;" align="left">${record.custbody4.phone!""}</td>
                 </tr>
 
             </table>
@@ -290,42 +303,38 @@
 
         <!-- RIGHT -->
 
-        <td style="width:45%;vertical-align:top;">
+        <td style="width:45%;vertical-align:top;" align="left">
 
-            <table class="no-border">
+            <table class="no-border" style="width:100%;table-layout:fixed;">
 
                 <tr>
-                    <td class="label">Date:</td>
-                    <td>${record.trandate}</td>
+                    <td class="label" style="width:35%;" align="left">Date:</td>
+                    <td style="width:65%;" align="left">${record.trandate}</td>
                 </tr>
 
                 <tr>
-                    <td class="label">Payment Terms:</td>
-                    <td>${record.terms!""}</td>
+                    <td class="label" style="width:35%;" align="left">Payment Terms:</td>
+                    <td style="width:65%;" align="left">${record.terms!""}</td>
                 </tr>
 
                 <tr>
-                    <td class="label">Delivery Terms:</td>
-                    <td>${record.incoterm!""}</td>
+                    <td class="label" style="width:35%;" align="left">Delivery Terms:</td>
+                    <td style="width:65%;" align="left">${record.incoterm!""}</td>
                 </tr>
 
                 <tr>
-                    <td class="label">Division:</td>
-                    <td>${record.class!""}</td>
+                    <td class="label" style="width:35%;" align="left">Division:</td>
+                    <td style="width:65%;" align="left">${record.class!""}</td>
                 </tr>
 
                 <tr>
-                    <td class="label">Atten To:</td>
-                    <td><#if record.custbody6?contains(":")>
-            ${record.custbody6?split(":")[1]?trim}
-        <#else>
-            ${record.custbody6!""}
-        </#if></td>
+                    <td class="label" style="width:35%;" align="left">Atten To:</td>
+                    <td style="width:65%;" align="left"><#if record.custbody6?has_content><#if record.custbody6?contains(":")>${(record.custbody6?split(":")[1]!"")?replace("^[0-9\\s\\-_]+", "", "r")?trim}<#else>${(record.custbody6!"")?replace("^[0-9\\s\\-_]+", "", "r")?trim}</#if></#if></td>
                 </tr>
 
                 <tr>
-                    <td class="label">Contact Person:</td>
-                    <td>${record.custbody7!""}</td>
+                    <td class="label" style="width:35%;" align="left">Contact Person:</td>
+                    <td style="width:65%;" align="left"><#if record.custbody6?has_content><#if record.custbody6?contains(":")>${(record.custbody6?split(":")[1]!"")?replace("^[0-9\\s\\-_]+", "", "r")?trim}<#else>${(record.custbody6!"")?replace("^[0-9\\s\\-_]+", "", "r")?trim}</#if></#if></td>
                 </tr>
 
             </table>
@@ -344,7 +353,7 @@
 
         <!-- ORDER BY -->
 
-        <td style="width:55%;vertical-align:top;">
+        <td style="width:55%;vertical-align:top;" align="left">
 
             <span class="section-title">ORDER BY:</span><br/>
 
@@ -358,7 +367,7 @@
 
         <!-- ORDER TO -->
 
-        <td style="width:45%;vertical-align:top;">
+        <td style="width:45%;vertical-align:top;" align="left">
 
             <span class="section-title">ORDER TO:</span><br/>
 
@@ -376,7 +385,7 @@
 
 <!-- ITEM TABLE -->
 
-<table class="main-table" style="margin-top:20px;white-space:nowrap; ">
+<table class="main-table" style="margin-top:20px; table-layout:fixed;">
 
     <thead>
 
@@ -384,13 +393,13 @@
 
             <th style="width:5%;">S.NO</th>
             <th style="width:28%;">Description</th>
-            <th style="width:10%;">UOM</th>
-            <th style="width:10%;">Quantity</th>
-            <th style="width:10%;">Rate</th>
-            <th style="width:12%;">Amount</th>
-            <th style="width:8%;">Tax Rate</th>
-            <th style="width:8%;">Tax Amount</th>
-            <th style="width:9%;">Total</th>
+            <th style="width:6%;">UOM</th>
+            <th style="width:8%;">Quantity</th>
+            <th style="width:8%;">Rate</th>
+            <th style="width:11%;">Amount</th>
+            <th style="width:9%;">Tax Rate</th>
+            <th style="width:12%;">Tax Amount</th>
+            <th style="width:13%;">Total</th>
 
         </tr>
 
@@ -404,7 +413,15 @@
 
             <td align="center">${item_index + 1 + (itemBatch?index * 5)}</td>
 
-            <td>${item.description!item.item}</td>
+            <td align="left">
+    <#if item.custcol_njt_podesc?? && item.custcol_njt_podesc?has_content>
+        ${item.custcol_njt_podesc}
+    <#elseif item.description?? && item.description?has_content>
+        ${item.description}
+    <#else>
+        ${item.item}
+    </#if>
+          </td>
 
             <td align="center">${item.units!""}</td>
 
@@ -454,44 +471,32 @@
 <!-- TOTAL IN WORDS (SEPARATED) -->
 <!-- TOTAL IN WORDS -->
 
-<table class="main-table" style="margin-top:5px; white-space:nowrap;">
+<table class="main-table" style="margin-top:5px; table-layout:fixed;">
 
     <tr>
 
-        <!-- S.NO -->
-        <!-- <td style="width:0%;border:none;"></td> -->
-
-        <!-- DESCRIPTION -->
-        <td style="width:61.5%;">
+        <!-- S.NO + Description + UOM + Quantity + Rate (5% + 28% + 6% + 8% + 8% = 55%) -->
+        <td style="width:55%;">
             <b>${record.currency}</b>
             Total in Words:
             ${record.custbody_njt_tran_tiw!""}
         </td>
 
-        <!-- UOM -->
-        <!-- <td style="width:10%;"></td> -->
-
-        <!-- QTY -->
-        <!-- <td style="width:10%;"></td> -->
-
-        <!-- RATE -->
-        <!-- <td style="width:10%;"></td> -->
-
-        <!-- AMOUNT -->
-        <td style="width:11.5%;" align="right">
+        <!-- AMOUNT (11%) -->
+        <td style="width:11%;" align="right">
             ${record.subtotal?string(",##0.00")}
         </td>
 
-        <!-- TAX RATE -->
-        <td style="width:10%;"></td>
+        <!-- TAX RATE (9%) -->
+        <td style="width:9%;"></td>
 
-        <!-- TAX AMOUNT -->
-        <td style="width:12.8%;" align="right">
+        <!-- TAX AMOUNT (12%) -->
+        <td style="width:12%;" align="right">
             ${record.taxtotal?string(",##0.00")}
         </td>
 
-        <!-- TOTAL -->
-        <td style="width:8.3%;" align="right">
+        <!-- TOTAL (13%) -->
+        <td style="width:13%;" align="right">
             ${record.total?string(",##0.00")}
         </td>
 
@@ -527,6 +532,7 @@
 <div class="terms">
 
     <b>Terms and Conditions</b><br/>
+    1.MTC Required upon delivery
 
     ${record.custbody5!""}
 

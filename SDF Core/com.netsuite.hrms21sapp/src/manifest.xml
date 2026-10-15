@@ -1,0 +1,22 @@
+<manifest projecttype="SUITEAPP">
+  <publisherid>com.netsuite</publisherid>
+  <projectid>hrms21sapp</projectid>
+  <projectname>hrms21sapp</projectname>
+  <projectversion>1.0.0</projectversion>
+  <frameworkversion>1.0</frameworkversion>
+  <dependencies>
+    <features>
+      <feature required="true">PAYABLES</feature>
+      <feature required="true">ACCOUNTING</feature>
+      <feature required="false">EXTREMELIST</feature>
+      <feature required="true">INVENTORY</feature>
+      <feature required="false">MAILMERGE</feature>
+      <feature required="true">MULTILOCINVT</feature>
+      <feature required="true">CUSTOMSEGMENTS</feature>
+      <feature required="true">OPPORTUNITIES</feature>
+      <feature required="true">RECEIVABLES</feature>
+      <feature required="true">CUSTOMRECORDS</feature>
+      <feature required="true">ADVRECEIVING</feature>
+    </features>
+  </dependencies>
+</manifest>

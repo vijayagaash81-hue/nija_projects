@@ -176,22 +176,43 @@ ORDER BY
                             }
                             if (r.item_id) {
                                 const isActive = r.quotaionlne_status != 2;
+                                const reqQty = isActive ? (Number(r.req_qty) || 0) : 0;
+                                const quotedQty = isActive ? (Number(r.quoted_qty) || 0) : 0;
+                                const priceVal = isActive ? (Number(r.price) || 0) : 0;
 
-                                vendors[vid].items[r.item_id] = {
-                                    // desc always
-                                    desc: r.item_desc || r.item_name || 'Item',
+                                if (!vendors[vid].items[r.item_id]) {
+                                    vendors[vid].items[r.item_id] = {
+                                        // desc always
+                                        desc: r.item_desc || r.item_name || 'Item',
 
-                                    // rest depends on status
-                                    req: isActive ? (r.req_qty || 0) : 0,
-                                    quoted: isActive ? (r.quoted_qty || 0) : 0,
-                                    price: isActive ? (r.price || 0) : 0,
+                                        // rest depends on status
+                                        req: reqQty,
+                                        quoted: quotedQty,
+                                        price: priceVal,
 
-                                    lastpurchaseprice: isActive ? (r.lastpurchasepriceforitem || 0) : 0,
-                                    lastpoid: isActive ? (r.last_po_id || 0) : 0,
-                                    lastpodate: isActive ? (r.last_po_date || 0) : 0,
-                                    lastporate: isActive ? (r.last_po_item_rate || 0) : 0,
-                                    lastvendorname: isActive ? (r.lastvendorname || '') : ''
-                                };
+                                        lastpurchaseprice: isActive ? (r.lastpurchasepriceforitem || 0) : 0,
+                                        lastpoid: isActive ? (r.last_po_id || 0) : 0,
+                                        lastpodate: isActive ? (r.last_po_date || 0) : 0,
+                                        lastporate: isActive ? (r.last_po_item_rate || 0) : 0,
+                                        lastvendorname: isActive ? (r.lastvendorname || '') : ''
+                                    };
+                                } else {
+                                    // Consolidate/merge quantities for the same item
+                                    vendors[vid].items[r.item_id].req += reqQty;
+                                    vendors[vid].items[r.item_id].quoted += quotedQty;
+                                    if (!vendors[vid].items[r.item_id].price && priceVal) {
+                                        vendors[vid].items[r.item_id].price = priceVal;
+                                    }
+                                    if (!vendors[vid].items[r.item_id].lastpurchaseprice && isActive && r.lastpurchasepriceforitem) {
+                                        vendors[vid].items[r.item_id].lastpurchaseprice = r.lastpurchasepriceforitem;
+                                    }
+                                    if (!vendors[vid].items[r.item_id].lastporate && isActive && r.last_po_item_rate) {
+                                        vendors[vid].items[r.item_id].lastporate = r.last_po_item_rate;
+                                    }
+                                    if (!vendors[vid].items[r.item_id].lastvendorname && isActive && r.lastvendorname) {
+                                        vendors[vid].items[r.item_id].lastvendorname = r.lastvendorname;
+                                    }
+                                }
                             }
 
                         });

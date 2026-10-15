@@ -18,38 +18,70 @@ define(['N/ui/serverWidget', 'N/query', 'N/log', 'N/task', 'N/redirect'],
             const allResults = [];
 
             itemArray.forEach(item => {
+                if (!item) return;
                 const sql = `
                 SELECT
-    a.custrecord_njt_pq_vendor AS vendorid,
-    BUILTIN.DF(a.custrecord_njt_pq_vendor) AS vendorname,
-    b.custrecord_njt_pq_items_items AS itemid,
-    b.custrecord_njt_pq_items_description AS itemsdesc,
-    b.custrecord_njt_pq_items_request_quantity AS requestedquants,
-    b.custrecord_njt_pq_items_quantity AS quoted_quants,
-    b.custrecord_njt_pq_items_rate AS rate,
-    d.custrecord_njt_pur_req_open_quantity AS propenquantity,
-    c.id
-FROM
-    customrecord_njt_pq_h a
-    LEFT JOIN customrecord_njt_pq_items b
-        ON b.custrecord_njt_pq_items_parent_link = a.id
-    LEFT JOIN customrecord_njt_pur_req_h c
-        ON c.id = a.custrecord_njt_pq_pr
-    LEFT JOIN customrecord_njt_pur_req_det_l d
-        ON d.custrecord_njt_pur_req_det_pl = c.id
-       AND d.custrecord_njt_pur_req_det_item = b.custrecord_njt_pq_items_items
-WHERE
-    a.id = ${quotationId}
-    AND b.custrecord_njt_pq_items_items = ${item}
-    --AND c.id = 369;
-
-            `;
+                    a.custrecord_njt_pq_vendor AS vendorid,
+                    BUILTIN.DF(a.custrecord_njt_pq_vendor) AS vendorname,
+                    b.custrecord_njt_pq_items_items AS itemid,
+                    b.custrecord_njt_pq_items_description AS itemsdesc,
+                    b.custrecord_njt_pq_items_request_quantity AS requestedquants,
+                    b.custrecord_njt_pq_items_quantity AS quoted_quants,
+                    b.custrecord_njt_pq_items_rate AS rate,
+                    d.custrecord_njt_pur_req_open_quantity AS propenquantity,
+                    d.id AS pr_det_id,
+                    b.id AS pq_item_id
+                FROM
+                    customrecord_njt_pq_h a
+                    LEFT JOIN customrecord_njt_pq_items b
+                        ON b.custrecord_njt_pq_items_parent_link = a.id
+                    LEFT JOIN customrecord_njt_pur_req_h c
+                        ON c.id = a.custrecord_njt_pq_pr
+                    LEFT JOIN customrecord_njt_pur_req_det_l d
+                        ON d.custrecord_njt_pur_req_det_pl = c.id
+                       AND d.custrecord_njt_pur_req_det_item = b.custrecord_njt_pq_items_items
+                WHERE
+                    a.id = ${quotationId}
+                    AND b.custrecord_njt_pq_items_items = ${item}
+                `;
                 log.debug("SQL Query", sql);
 
                 try {
                     const result = query.runSuiteQL({ query: sql }).asMappedResults();
                     if (result && result.length > 0) {
-                        allResults.push(result[0]);
+                        let itemObj = {
+                            vendorid: result[0].vendorid,
+                            vendorname: result[0].vendorname,
+                            itemid: result[0].itemid,
+                            itemsdesc: result[0].itemsdesc,
+                            rate: result[0].rate,
+                            requestedquants: 0,
+                            quoted_quants: 0,
+                            propenquantity: 0
+                        };
+
+                        const pqSeen = new Set();
+                        const prSeen = new Set();
+
+                        result.forEach(r => {
+                            if (r.pq_item_id && !pqSeen.has(r.pq_item_id)) {
+                                pqSeen.add(r.pq_item_id);
+                                itemObj.requestedquants += (Number(r.requestedquants) || 0);
+                                itemObj.quoted_quants += (Number(r.quoted_quants) || 0);
+                            } else if (!r.pq_item_id && pqSeen.size === 0) {
+                                itemObj.requestedquants += (Number(r.requestedquants) || 0);
+                                itemObj.quoted_quants += (Number(r.quoted_quants) || 0);
+                            }
+
+                            if (r.pr_det_id && !prSeen.has(r.pr_det_id)) {
+                                prSeen.add(r.pr_det_id);
+                                itemObj.propenquantity += (Number(r.propenquantity) || 0);
+                            } else if (!r.pr_det_id && prSeen.size === 0) {
+                                itemObj.propenquantity += (Number(r.propenquantity) || 0);
+                            }
+                        });
+
+                        allResults.push(itemObj);
                     }
                 } catch (e) {
                     log.error('Query Error', e);

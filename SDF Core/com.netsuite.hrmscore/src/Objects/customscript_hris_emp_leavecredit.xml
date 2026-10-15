@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<scheduledscript scriptid="customscript_hris_emp_leavecredit">
+      
+    <defaultfunction>SCH_LeaveCreditOnJoining</defaultfunction>
+      
+    <description/>
+      
+    <isinactive>F</isinactive>
+      
+    <name>Leave Credit on Joining</name>
+      
+    <notifyadmins>F</notifyadmins>
+      
+    <notifyemails/>
+      
+    <notifyowner>T</notifyowner>
+      
+    <scriptfile>[/SuiteApps/com.netsuite.hrmscore/HRIS Employee/hris_emp_leavecredit_ss.js]</scriptfile>
+      
+    <scriptcustomfields>
+            
+        <scriptcustomfield scriptid="custscript_hrisempidtocreateleaves">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+            <fieldtype>CLOBTEXT</fieldtype>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <label>Employee Id</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <setting/>
+                  
+            <storevalue>T</storevalue>
+                
+        </scriptcustomfield>
+          
+    </scriptcustomfields>
+      
+    <scriptdeployments>
+            
+        <scriptdeployment scriptid="customdeploy_hris_emp_leavecredit">
+                  
+            <custscript_hrisempidtocreateleaves/>
+                  
+            <isdeployed>T</isdeployed>
+                  
+            <loglevel>DEBUG</loglevel>
+                  
+            <status>NOTSCHEDULED</status>
+                  
+            <title>Leave Credit on Joining</title>
+                  
+            <recurrence>
+                        
+                <single>
+                              
+                    <repeat/>
+                              
+                    <startdate>2026-03-20</startdate>
+                              
+                    <starttime>18:00:00Z</starttime>
+                            
+                </single>
+                      
+            </recurrence>
+                
+        </scriptdeployment>
+          
+    </scriptdeployments>
+    
+</scheduledscript>

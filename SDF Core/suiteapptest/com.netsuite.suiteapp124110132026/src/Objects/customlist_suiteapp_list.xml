@@ -1,0 +1,24 @@
+<customlist scriptid="customlist_suiteapp_list">
+  <description></description>
+  <isinactive>F</isinactive>
+  <isordered>T</isordered>
+  <name>SuiteApp list</name>
+  <customvalues>
+    <customvalue scriptid="val_432319_9691235_sb1_250">
+      <isinactive>F</isinactive>
+      <value>SApp List 1</value>
+    </customvalue>
+    <customvalue scriptid="val_432320_9691235_sb1_786">
+      <isinactive>F</isinactive>
+      <value>SApp List 2</value>
+    </customvalue>
+    <customvalue scriptid="val_432321_9691235_sb1_826">
+      <isinactive>F</isinactive>
+      <value>SApp List 3</value>
+    </customvalue>
+    <customvalue scriptid="val_432322_9691235_sb1_771">
+      <isinactive>F</isinactive>
+      <value>Sapp List 4</value>
+    </customvalue>
+  </customvalues>
+</customlist>

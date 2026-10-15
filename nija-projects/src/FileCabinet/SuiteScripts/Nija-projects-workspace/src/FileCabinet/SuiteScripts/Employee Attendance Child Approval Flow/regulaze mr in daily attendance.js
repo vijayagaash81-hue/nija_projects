@@ -4,7 +4,7 @@
  * @NModuleScope Public
  */
 define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/url', 'N/query', 'N/email'],
-    function (record, search, task, log, format, runtime, url, query, email) {
+    function(record, search, task, log, format, runtime, url, query, email) {
 
         // ---------------------------------------------------------------------
         // Input Data Phase: Retrieve data to process
@@ -13,7 +13,7 @@ define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/u
             try {
                 var scriptParams = runtime.getCurrentScript().getParameter('custscript_njt_column_array_selectreg');
                 log.debug('Script Params', scriptParams); // Log the raw script parameter
-
+                
                 var dataArray = [];
                 if (scriptParams) {
                     dataArray = JSON.parse(scriptParams);
@@ -125,7 +125,7 @@ define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/u
             try {
                 var managerId = context.key;
                 var processedCount = 0;
-
+                
                 // Variables to hold metadata for the email
                 var managerName = "Manager";
                 var scriptIdToUse = "";
@@ -138,7 +138,7 @@ define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/u
                 // Array to track processed IDs to prevent duplicates in batch
                 var processedRecordIds = [];
 
-                context.values.forEach(function (value) {
+                context.values.forEach(function(value) {
                     try {
                         // Check if the value is valid
                         if (!value || value === "undefined" || value === "null") {
@@ -258,6 +258,41 @@ define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/u
         }
 
         // ---------------------------------------------------------------------
+        // Helper: Calculate Days Between Dates
+        // ---------------------------------------------------------------------
+        function calculateDays(fromDateStr, toDateStr) {
+            if (!fromDateStr || !toDateStr) return '';
+            try {
+                var parseDate = function(str) {
+                    if (str.indexOf('/') !== -1) {
+                        var p = str.split('/');
+                        if (p.length === 3) {
+                            if (p[0].length === 4) return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
+                            return new Date(parseInt(p[2], 10), parseInt(p[1], 10) - 1, parseInt(p[0], 10));
+                        }
+                    } else if (str.indexOf('-') !== -1) {
+                        var p2 = str.split('-');
+                        if (p2.length === 3) {
+                            if (p2[0].length === 4) return new Date(parseInt(p2[0], 10), parseInt(p2[1], 10) - 1, parseInt(p2[2], 10));
+                            return new Date(parseInt(p2[2], 10), parseInt(p2[1], 10) - 1, parseInt(p2[0], 10));
+                        }
+                    }
+                    return new Date(str);
+                };
+                var d1 = parseDate(fromDateStr);
+                var d2 = parseDate(toDateStr);
+                if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
+                    var diffTime = Math.abs(d2 - d1);
+                    var diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                    return diffDays + (diffDays === 1 ? ' day' : ' days');
+                }
+            } catch (e) {
+                log.error('Calculate Days Error', e.toString());
+            }
+            return '';
+        }
+
+        // ---------------------------------------------------------------------
         // Helper: Send Summary Email
         // ---------------------------------------------------------------------
         function sendSummaryEmail(recipientId, recipientName, count, fromDate, toDate, scriptId, deployId, empFilter) {
@@ -274,19 +309,27 @@ define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/u
                 // Append parameters for the target Suitelet
                 var fullLink = 'https://' + url.resolveDomain({
                     hostType: url.HostType.APPLICATION
-                }) + suiteletUrl +
-                    '&custparam_employee=' + (empFilter || "") +
-                    '&custparam_fromdate=' + (fromDate || "") +
-                    '&custparam_todate=' + (toDate || "");
+                }) + suiteletUrl + 
+                '&custparam_employee=' + (empFilter || "") + 
+                '&custparam_fromdate=' + (fromDate || "") + 
+                '&custparam_todate=' + (toDate || "");
 
                 var subject = 'Attendance Regularization Approved';
 
-                var body = 'Dear ' + recipientName + ',<br><br>' +
-                    'Attendance regularization has been approved for <b>' + count + '</b> employee(s) reporting to you.<br><br>' +
-                    'You can view the details by clicking the link below:<br>' +
-                    '<a href="' + fullLink + '">View Attendance Regularization</a><br><br>' +
-                    'Regards,<br>' +
-                    currentUser.name;
+                var periodText = '';
+                if (fromDate && toDate) {
+                    var daysStr = calculateDays(fromDate, toDate);
+                    periodText = fromDate + ' to ' + toDate + (daysStr ? ' (' + daysStr + ')' : '');
+                } else if (fromDate) {
+                    periodText = fromDate;
+                } else {
+                    periodText = 'N/A';
+                }
+
+                var body = 'Dear Line Manager, (weekly wise approval)<br><br>' +
+                    'Attendance regularization has been applied by HR for the period from <b>' + periodText + '</b> for further review and verification.<br>' +
+                    'Kindly review and complete the verification process within 24 hours.<br>' +
+                    '<a href="' + fullLink + '">(Attach Link)</a>';
 
                 email.send({
                     author: currentUser.id,
@@ -306,12 +349,12 @@ define(['N/record', 'N/search', 'N/task', 'N/log', 'N/format', 'N/runtime', 'N/u
         // Summarize Phase
         // ---------------------------------------------------------------------
         function summarize(summary) {
-            summary.mapSummary.errors.iterator().each(function (key, error, executionNo) {
+            summary.mapSummary.errors.iterator().each(function(key, error, executionNo) {
                 log.error('Map Error for Key: ' + key, error);
                 return true;
             });
 
-            summary.reduceSummary.errors.iterator().each(function (key, error, executionNo) {
+            summary.reduceSummary.errors.iterator().each(function(key, error, executionNo) {
                 log.error('Reduce Error for Key: ' + key, error);
                 return true;
             });

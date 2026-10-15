@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<customrecordtype scriptid="customrecord_hris_unique_reference_numbe">
+      
+    <accesstype>CUSTRECORDENTRYPERM</accesstype>
+      
+  
+    <allowattachments>T</allowattachments>
+      
+    <allowinlinedeleting>F</allowinlinedeleting>
+      
+    <allowinlinedetaching>T</allowinlinedetaching>
+      
+    <allowinlineediting>F</allowinlineediting>
+      
+    <allowmobileaccess>F</allowmobileaccess>
+      
+    <allownumberingoverride>F</allownumberingoverride>
+      
+    <allowquickadd>T</allowquickadd>
+      
+    <allowquicksearch>F</allowquicksearch>
+      
+    <allowuiaccess>T</allowuiaccess>
+      
+    <customsegment/>
+      
+    <description/>
+      
+    <enabledle>T</enabledle>
+      
+    <enablekeywords>T</enablekeywords>
+      
+    <enablemailmerge>F</enablemailmerge>
+      
+    <enablenametranslation>F</enablenametranslation>
+      
+    <enablenumbering>F</enablenumbering>
+      
+    <enableoptimisticlocking>T</enableoptimisticlocking>
+      
+    <enablesystemnotes>T</enablesystemnotes>
+      
+    <hierarchical>F</hierarchical>
+      
+    <icon/>
+      
+    <iconbuiltin>T</iconbuiltin>
+      
+    <iconindex/>
+      
+    <includeinsearchmenu>T</includeinsearchmenu>
+      
+    <includename>T</includename>
+      
+    <isinactive>F</isinactive>
+      
+    <isordered>F</isordered>
+      
+    <numberinginit/>
+      
+    <numberingmindigits/>
+      
+    <numberingprefix/>
+      
+    <numberingsuffix/>
+      
+    <recordname>Unique Reference Number</recordname>
+      
+    <showcreationdate>F</showcreationdate>
+      
+    <showcreationdateonlist>F</showcreationdateonlist>
+      
+    <showid>F</showid>
+      
+    <showlastmodified>F</showlastmodified>
+      
+    <showlastmodifiedonlist>F</showlastmodifiedonlist>
+      
+    <shownotes>T</shownotes>
+      
+    <showowner>F</showowner>
+      
+    <showownerallowchange>F</showownerallowchange>
+      
+    <showowneronlist>F</showowneronlist>
+      
+    <customrecordcustomfields>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_record_type">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>SELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Record type</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>-123</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_unique_number">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>T</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>INTEGER</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Unique Number</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_urn_subsidiary">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>MULTISELECT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Subsidiary</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete>NO_ACTION</onparentdelete>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype>-117</selectrecordtype>
+                  
+            <showinlist>T</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+            
+        <customrecordcustomfield scriptid="custrecord_hris_employee_code_prefix">
+                  
+            <accesslevel>2</accesslevel>
+                  
+      
+            <allowquickadd>F</allowquickadd>
+                  
+            <applyformatting>F</applyformatting>
+                  
+            <checkspelling>F</checkspelling>
+                  
+            <defaultchecked>F</defaultchecked>
+                  
+            <defaultselection/>
+                  
+            <defaultvalue/>
+                  
+            <description/>
+                  
+            <displayheight/>
+                  
+            <displaytype>NORMAL</displaytype>
+                  
+            <displaywidth/>
+                  
+            <dynamicdefault/>
+                  
+      
+            <encryptatrest>F</encryptatrest>
+                  
+            <fieldtype>TEXT</fieldtype>
+                  
+            <globalsearch>F</globalsearch>
+                  
+            <help/>
+                  
+            <isformula>F</isformula>
+                  
+            <ismandatory>F</ismandatory>
+                  
+            <isparent>F</isparent>
+                  
+            <label>Employee Code Prefix</label>
+                  
+            <linktext/>
+                  
+            <maxlength/>
+                  
+            <maxvalue/>
+                  
+            <minvalue/>
+                  
+            <onparentdelete/>
+                  
+            <parentsubtab/>
+                  
+            <rolerestrict>F</rolerestrict>
+                  
+            <searchcomparefield/>
+                  
+            <searchdefault/>
+                  
+            <searchlevel>2</searchlevel>
+                  
+            <selectrecordtype/>
+                  
+            <showinlist>F</showinlist>
+                  
+            <sourcefilterby/>
+                  
+            <sourcefrom/>
+                  
+            <sourcelist/>
+                  
+            <storevalue>T</storevalue>
+                  
+            <subtab/>
+                
+        </customrecordcustomfield>
+          
+    </customrecordcustomfields>
+    
+</customrecordtype>

@@ -122,7 +122,8 @@
 
 <body header="nlheader" header-height="110pt" footer="nlfooter" footer-height="115pt" padding="0.5in" size="A4">
 
-<#list record.item?chunk(15) as itemBatch>
+<#assign itemList = (filteredItems.list)!((record.item)![]) />
+<#list itemList?chunk(8) as itemBatch>
     <!-- DOCUMENT TITLE -->
     <table class="no-border" style="margin-bottom: 10px;">
         <tr>
@@ -182,12 +183,12 @@
                     <tr>
                         <td class="label" style="width: 60px;">DO No.</td>
                         <td style="width: 10px;" align="center">:</td>
-                        <td>${record.createdfrom.tranid}</td>
+                        <td>${record.tranid}</td>
                     </tr>
                     <tr>
                         <td class="label" style="width: 60px; vertical-align: top;">Order No</td>
                         <td style="width: 10px; vertical-align: top;" align="center">:</td>
-                        <td style="vertical-align: top;">${record.createdfrom.otherrefnum}</td>
+                        <td style="vertical-align: top;">${record.custbody_njt_item_po!""}</td>
                     </tr>
                 </table>
             </td>
@@ -206,18 +207,20 @@
         </thead>
         <tbody>
             <#list itemBatch as item>
+            <#if (item.custcol_njt_podesc?has_content) || (item.description?has_content) || (item.qty?has_content) || (item.quantity?has_content)>
             <tr>
-                <td align="center">${item_index + 1 + (itemBatch?index * 15)}</td>
-                <td align="left">${item.description}</td>
+                <td align="center">${item_index + 1 + (itemBatch_index * 8)}</td>
+                <td align="left"><#if item.custcol_njt_podesc?has_content>${item.custcol_njt_podesc}<#else>${item.description!""}</#if></td>
                 <!-- UNITS CENTERED AGAIN -->
-                <td align="center">${item.units}</td>
-                <td align="right">${item.quantity?string(",##0.00")}</td>
+                <td align="center"><#if item.unitsdisplay?has_content>${item.unitsdisplay}<#else>${item.units!""}</#if></td>
+                <td align="right"><#if item.qty?has_content>${item.qty}<#else>${(item.quantity!0)?string(",##0.00")}</#if></td>
             </tr>
+            </#if>
             </#list>
+            <#if itemBatch?has_next>
+                <tr><td colspan="4" style="border-top: 0.5pt solid black; height: 1px; padding: 0;"></td></tr>
+            </#if>
         </tbody>
-        <#if itemBatch?has_next>
-            <tr><td colspan="4" style="border-top: 0.5pt solid black; height: 1px; padding: 0;"></td></tr>
-        </#if>
     </table>
 
     <#if !itemBatch?has_next>

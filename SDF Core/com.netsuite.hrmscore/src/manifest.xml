@@ -1,0 +1,31 @@
+<manifest projecttype="SUITEAPP">
+  <publisherid>com.netsuite</publisherid>
+  <projectid>hrmscore</projectid>
+  <projectname>Hrms Core</projectname>
+  <projectversion>1.0.0</projectversion>
+  <frameworkversion>1.0</frameworkversion>
+  <dependencies>
+    <features>
+      <feature required="true">CLASSES</feature>
+      <feature required="false">MULTILANGUAGE</feature>
+      <feature required="true">LOCATIONS</feature>
+      <feature required="true">DEPARTMENTS</feature>
+      <feature required="true">ACCOUNTING</feature>
+      <feature required="false">CRM</feature>
+      <feature required="false">EXTREMELIST</feature>
+      <feature required="false">MAILMERGE</feature>
+      <feature required="true">CUSTOMRECORDS</feature>
+      <feature required="true">SUBSIDIARIES</feature>
+      <feature required="true">SERVERSIDESCRIPTING</feature>
+      <feature required="true">MULTICURRENCY</feature>
+      <feature required="false">CREATESUITEBUNDLES</feature>
+      <feature required="false">WEBSERVICES</feature>
+      <feature required="true">TIMETRACKING</feature>
+      <feature required="false">WEBSITE</feature>
+      <feature required="false">JOBS</feature>
+      <feature required="true">ADDRESSCUSTOMIZATION</feature>
+      <feature required="true">CUSTOMSEGMENTS</feature>
+      <feature required="true">ADVANCEDJOBS</feature>
+    </features>
+  </dependencies>
+</manifest>

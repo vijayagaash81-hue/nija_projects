@@ -437,7 +437,8 @@ define(["N/ui/serverWidget", "N/search", "N/log", "N/task", "N/redirect", "N/rec
                     "ON customrecord_njt_emp_daily_atten_ch.custrecord_njt_daily_atten_ch_emp = employee.id " +
                 "INNER JOIN customrecord_hris_shift " +
                     "ON employee.id = customrecord_hris_shift.custrecord_njt_emp_parent_link " +
-                "WHERE 1 = 1 ";
+                "WHERE 1 = 1 " +
+                "AND customrecord_njt_emp_daily_atten_ch.custrecord_hris_overall_status IS NULL ";
 
             if (fromPost && toPost) {
                 baseQuery += " AND customrecord_njt_emp_daily_atten_ch.custrecord_njt_emp_daily_date BETWEEN '" + fromPost + "' AND '" + toPost + "' ";

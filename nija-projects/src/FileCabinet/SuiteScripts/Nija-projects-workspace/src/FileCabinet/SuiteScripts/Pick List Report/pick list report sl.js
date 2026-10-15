@@ -16,12 +16,16 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
                         BUILTIN.DF(B.custrecord_pl_det_item) AS item, 
                         B.custrecord_njt_item_description AS item_desc, 
                         E.description AS item_record_desc,
+                        BUILTIN.DF(B.custrecord_pl_det_units) AS uom,
+                        B.custrecord_pl_det_units AS uom_id,
                         BUILTIN.DF(D.custrecord_inv_bin_lot_det_bin_num) AS bin, 
                         D.custrecord_inv_bin_available AS available, 
                         C.custrecord_cust_inv_det_quantity AS inv_qty,
                         D.custrecord_inv_bin_lot_det_quantity AS qty_to_pick, 
                         B.custrecord_pl_det_picked_quantity AS qty_done, 
-                        B.custrecord_pl_det_is_picked AS is_picked 
+                        B.custrecord_pl_det_is_picked AS is_picked,
+                        B.id AS line_id,
+                        C.id AS inv_det_id
                     FROM customrecord_njt_pick_list A 
                     INNER JOIN customrecord_pick_list_details B ON B.custrecord_pl_det_parent_link = A.id 
                     INNER JOIN customrecord_cuctom_inv_det C ON C.custrecord_cust_inv_pick_list = A.id 
@@ -34,12 +38,25 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
 
                 let rawResults = query.runSuiteQL({ query: sql }).asMappedResults();
 
-                // Strict deduplication
-                let seen = {};
-                let results = rawResults.filter(item => {
-                    let k = `${item.picklist_no}|${item.salesorder}|${item.item}|${item.bin}|${item.qty_to_pick}`;
-                    return seen.hasOwnProperty(k) ? false : (seen[k] = true);
-                });
+                // Deduplicate and consolidate bin rows per item (picklist_no, salesorder, item, bin)
+                // Prioritize entries with qty_to_pick > 0 so picked bin details are preserved
+                let dataMap = {};
+                for (let i = 0; i < rawResults.length; i++) {
+                    let item = rawResults[i];
+                    let k = `${item.picklist_no || ''}|${item.salesorder || ''}|${item.item || ''}|${item.bin || ''}`;
+                    
+                    let currentQtyToPick = parseFloat(item.qty_to_pick) || 0;
+                    
+                    if (!dataMap[k]) {
+                        dataMap[k] = Object.assign({}, item);
+                    } else {
+                        let existingQtyToPick = parseFloat(dataMap[k].qty_to_pick) || 0;
+                        if (currentQtyToPick > existingQtyToPick) {
+                            dataMap[k] = Object.assign({}, item);
+                        }
+                    }
+                }
+                let results = Object.values(dataMap);
 
                 // Filter by visible keys if parameter is present (passed from front-end search/filter)
                 const visibleKeysParam = scriptContext.request.parameters.visible_keys;
@@ -108,6 +125,7 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
 
                         .so-badge { font-weight: 700; color: #1b3f6b; margin: 0; text-align: center; line-height: 1.2; font-size: 10.5px; }
                         .item-name { font-weight: 700; display: block; text-align: center; font-size: 10.5px; color: #111827; }
+                        .uom-text { font-weight: 700; display: block; text-align: center; font-size: 10.5px; color: #1f2937; }
                         .item-subtext { font-size: 9px; color: #6b7280; display: block; text-align: center; margin-top: 2px; }
 
                         .bin-container { color: #4b5563; font-weight: 600; }
@@ -141,21 +159,26 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
 
                     const qtyToPick = parseFloat(row.qty_to_pick) || 0;
                     const qtyDone = parseFloat(row.qty_done) || 0;
-                    const pickPct = qtyToPick > 0 ? Math.min(100, Math.round((qtyDone / qtyToPick) * 100)) : 0;
-                    const isDone = (row.is_picked === 'T' || row.is_picked === true);
+                    const binInvQty = qtyToPick;
+                    const binQtyDone = qtyToPick > 0 ? Math.min(qtyDone, qtyToPick) : 0;
+                    const pickPct = qtyToPick > 0 ? Math.min(100, Math.round((binQtyDone / qtyToPick) * 100)) : 0;
+                    const isDone = qtyToPick > 0 && (row.is_picked === 'T' || row.is_picked === true);
 
                     const itemDesc = row.item_desc || row.item_record_desc || row.item;
+                    const uom = row.uom || (row.uom_id !== null && row.uom_id !== undefined ? String(row.uom_id) : '');
 
                     const pickCellContent = isNewPick ? `<p style="font-weight:bold; margin:0; text-align:center; color:#1b3f6b; font-size:10px;">${row.picklist_no || '\u2014'}</p>` : '';
                     const soCellContent = isNewSO ? `<p style="font-weight:bold; margin:0; text-align:center; color:#1b3f6b; font-size:10px;">#${row.salesorder || 'N/A'}</p>` : '';
                     const customerCellContent = isNewSO ? `<p style="font-weight:bold; margin:0; text-align:center; color:#1f2937; font-size:10px;">${row.customer || '\u2014'}</p>` : '';
                     const itemCellContent = isNewItem ? `<p style="font-weight:bold; margin:0; text-align:center; font-size:10px; color:#1f2937;">${itemDesc}</p>` : '';
+                    const uomCellContent = isNewItem ? `<p style="font-weight:bold; margin:0; text-align:center; font-size:10px; color:#1f2937;">${uom || '\u2014'}</p>` : '';
 
                     if (isPrint) {
                         let pickStyle = `${FONT_BASE} border-top:${isNewPick ? CELL_BORDER : 'none'}; border-bottom:${isEndPick ? CELL_BORDER : 'none'}; border-left:${CELL_BORDER}; border-right:${CELL_BORDER}; text-align:center; vertical-align:middle; padding:8px;`;
                         let soStyle = `${FONT_BASE} border-top:${isNewSO ? CELL_BORDER : 'none'}; border-bottom:${isEndSO ? CELL_BORDER : 'none'}; border-left:${CELL_BORDER}; border-right:${CELL_BORDER}; text-align:center; vertical-align:middle; padding:8px;`;
                         let custStyle = `${FONT_BASE} border-top:${isNewSO ? CELL_BORDER : 'none'}; border-bottom:${isEndSO ? CELL_BORDER : 'none'}; border-left:${CELL_BORDER}; border-right:${CELL_BORDER}; text-align:center; vertical-align:middle; padding:8px;`;
                         let itemStyle = `${FONT_BASE} border-top:${isNewItem ? CELL_BORDER : 'none'}; border-bottom:${isEndItem ? CELL_BORDER : 'none'}; border-left:${CELL_BORDER}; border-right:${CELL_BORDER}; text-align:center; vertical-align:middle; padding:8px;`;
+                        let uomStyle = `${FONT_BASE} border-top:${isNewItem ? CELL_BORDER : 'none'}; border-bottom:${isEndItem ? CELL_BORDER : 'none'}; border-left:${CELL_BORDER}; border-right:${CELL_BORDER}; text-align:center; vertical-align:middle; padding:8px;`;
                         let pdfDataStyle = `${FONT_BASE} border-top:${CELL_BORDER}; border-bottom:${CELL_BORDER}; border-left:${CELL_BORDER}; border-right:${CELL_BORDER}; padding:8px; vertical-align:middle;`;
 
                         tableRows += `
@@ -164,11 +187,12 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
                             <td style="${soStyle}">${soCellContent}</td>
                             <td style="${custStyle}">${customerCellContent}</td>
                             <td style="${itemStyle}">${itemCellContent}</td>
+                            <td style="${uomStyle}">${uomCellContent}</td>
                             <td style="${pdfDataStyle}"><p style="margin:0; color:#4b5563; font-weight:600; text-align:left; font-size:10px;">&#128230; ${row.bin || '\u2014'}</p></td>
-                            <td align="center" style="${pdfDataStyle} text-align:center;"><b>${row.inv_qty || 0}</b></td>
+                            <td align="center" style="${pdfDataStyle} text-align:center;"><b>${binInvQty}</b></td>
                             <td align="center" style="${pdfDataStyle} text-align:center;"><b>${row.available || 0}</b></td>
                             <td align="center" style="${pdfDataStyle} text-align:center;">
-                                <p style="font-size:9px; font-weight:bold; color:#1b3f6b; margin:0 0 3px 0; text-align:center;">${qtyDone} / ${qtyToPick}</p>
+                                <p style="font-size:9px; font-weight:bold; color:#1b3f6b; margin:0 0 3px 0; text-align:center;">${binQtyDone} / ${qtyToPick}</p>
                                 <table width="70" align="center" style="border:0.5px solid #d1d5db; height:8px; border-collapse:collapse; margin:0 auto;">
                                     <tr>
                                         <td width="${pickPct}%" style="background-color:#1b3f6b; border:0px; padding:0; height:8px; line-height:0; font-size:0;"></td>
@@ -189,11 +213,12 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
                             <td class="group-col ${isEndItem ? 'group-end' : ''}" data-order="${row.salesorder || ''}" data-search="#${row.salesorder || ''} ${row.salesorder || ''}">${isNewSO ? `<p class="so-badge">#${row.salesorder || 'N/A'}</p>` : ''}</td>
                             <td class="group-col ${isEndItem ? 'group-end' : ''}" data-order="${row.customer || ''}" data-search="${row.customer || ''}">${isNewSO ? `<span class="item-name">${row.customer || '\u2014'}</span>` : ''}</td>
                             <td class="group-col ${isEndItem ? 'group-end' : ''}" data-order="${itemDesc || ''}" data-search="${itemDesc} ${row.item || ''}">${isNewItem ? `<span class="item-name">${itemDesc}</span>` : ''}</td>
+                            <td class="group-col ${isEndItem ? 'group-end' : ''}" data-order="${uom || ''}" data-search="${uom || ''}">${isNewItem ? `<span class="uom-text">${uom || '\u2014'}</span>` : ''}</td>
                             <td data-order="${row.bin || ''}"><div class="bin-container"><span class="bin-icon">&#128230;</span> ${row.bin || '\u2014'}</div></td>
-                            <td align="center" data-order="${parseFloat(row.inv_qty) || 0}"><b>${row.inv_qty || 0}</b></td>
+                            <td align="center" data-order="${binInvQty}"><b>${binInvQty}</b></td>
                             <td align="center" data-order="${parseFloat(row.available) || 0}"><b>${row.available || 0}</b></td>
                             <td align="center" data-order="${pickPct}">
-                                <p class="progress-text">${qtyDone} / ${qtyToPick}</p>
+                                <p class="progress-text">${binQtyDone} / ${qtyToPick}</p>
                                 <div class="progress-container"><div class="progress-fill" style="width: ${pickPct}%;"></div></div>
                             </td>
                             <td align="center" data-order="${isDone ? 'Picked' : 'Pending'}"><p class="status-pill ${isDone ? 'status-picked' : 'status-pending'}">${isDone ? 'Picked' : 'Pending'}</p></td>
@@ -214,13 +239,14 @@ define(['N/query', 'N/log', 'N/render', 'N/url', 'N/runtime'], (query, log, rend
                         <thead>
                             <tr>
                                 <th width="8%" style="${isPrint ? headerCellStylePdf : ''}">Pick List #${sortArrow}</th>
-                                <th width="12%" style="${isPrint ? headerCellStylePdf : ''}">Sales Order${sortArrow}</th>
-                                <th width="15%" style="${isPrint ? headerCellStylePdf : ''}">Customer${sortArrow}</th>
-                                <th width="20%" style="${isPrint ? headerCellStylePdf : ''}">Item Details${sortArrow}</th>
-                                <th width="12%" style="${isPrint ? headerCellStylePdf : ''}">BIN${sortArrow}</th>
+                                <th width="11%" style="${isPrint ? headerCellStylePdf : ''}">Sales Order${sortArrow}</th>
+                                <th width="14%" style="${isPrint ? headerCellStylePdf : ''}">Customer${sortArrow}</th>
+                                <th width="18%" style="${isPrint ? headerCellStylePdf : ''}">Item Details${sortArrow}</th>
+                                <th width="6%" style="${isPrint ? headerCellStylePdf : ''}">UOM${sortArrow}</th>
+                                <th width="11%" style="${isPrint ? headerCellStylePdf : ''}">BIN${sortArrow}</th>
                                 <th width="6%" style="${isPrint ? headerCellStylePdf : ''}">Inv Qty${sortArrow}</th>
                                 <th width="7%" style="${isPrint ? headerCellStylePdf : ''}">Available${sortArrow}</th>
-                                <th width="12%" style="${isPrint ? headerCellStylePdf : ''}">Qty / Picked Qty${sortArrow}</th>
+                                <th width="11%" style="${isPrint ? headerCellStylePdf : ''}">Qty / Picked Qty${sortArrow}</th>
                                 <th width="8%" style="${isPrint ? headerCellStylePdf : ''}">Status${sortArrow}</th>
                             </tr>
                         </thead>

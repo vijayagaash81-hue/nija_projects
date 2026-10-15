@@ -5,7 +5,7 @@
 **Description:** Suitelet (SuiteScript 2.1) serving as the initial entry point for Employee / HR Attendance Regularization submission. Displays daily attendance child records for all employees across the organization, accepts regularized IN/OUT and Overtime IN/OUT hours, and submits them to Map/Reduce for routing to respective Line Managers or HODs.
 
 ---
-
+[[regulaze mr in daily attendance.js]]
 ## Log of Changes & Implementation Notes
 
 ### 01/09/2026:
@@ -20,3 +20,7 @@
 - **POST Submission**:
   - Formats selected rows into `selectObj` containing `employeeID`, `employeePost`, `fromPost`, `toPost`, regularized hours, and OT hours.
   - Submits Map/Reduce task `customscript_njt_regulaze_mr_in_daily_a` (`custscript_njt_reg_arr`).
+
+### 09/09/2026:
+- **SuiteQL Overall Status Filter**:
+  - Added `AND customrecord_njt_emp_daily_atten_ch.custrecord_hris_overall_status IS NULL` filter to `setSublistvalue()` base query so that only attendance records with empty / unsubmitted overall status are retrieved for regularization submission.

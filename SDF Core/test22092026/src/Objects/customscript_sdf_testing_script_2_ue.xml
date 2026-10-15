@@ -1,0 +1,10 @@
+<usereventscript scriptid="customscript_sdf_testing_script_2_ue">
+  <description></description>
+  <isinactive>F</isinactive>
+  <name>Sdf Testing Script 2 UE</name>
+  <notifyadmins>F</notifyadmins>
+  <notifyemails></notifyemails>
+  <notifyowner>T</notifyowner>
+  <notifyuser>F</notifyuser>
+  <scriptfile>[/SuiteScripts/sdf_testing_record_2_ue.js]</scriptfile>
+</usereventscript>
