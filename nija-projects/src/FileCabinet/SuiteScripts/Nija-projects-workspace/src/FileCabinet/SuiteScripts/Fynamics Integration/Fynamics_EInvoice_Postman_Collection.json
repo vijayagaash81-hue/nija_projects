@@ -1,0 +1,155 @@
+{
+	"info": {
+		"_postman_id": "8d3e91b2-c7f4-4e92-a1b4-fynamics-einvoice",
+		"name": "Fynamics E-Invoicing API Tests",
+		"description": "Collection to test Fynamics OAuth Token Authentication and KSA generate_uuid E-Invoice submission.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_auth_url",
+			"value": "https://sandbox-ksa.fynamicstax.com",
+			"type": "string"
+		},
+		{
+			"key": "client_id",
+			"value": "api-2e09338c-7819-4164-aab0-c8bf96f0e78a",
+			"type": "string"
+		},
+		{
+			"key": "client_secret",
+			"value": "VvtPSpGZFTYrTZhW2PqJfQXxg6zUai7A",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Get OAuth Access Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"var token = (jsonData.data && jsonData.data.access_token) ? jsonData.data.access_token : jsonData.access_token;",
+							"if (token) {",
+							"    pm.collectionVariables.set('access_token', token);",
+							"    console.log('Access token saved to collection variable: ' + token.substring(0, 15) + '...');",
+							"} else {",
+							"    console.error('No access_token found in response body');",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{client_id}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{client_secret}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "read write",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_auth_url}}/api/partner/auth/authenticate",
+					"host": [
+						"{{base_auth_url}}"
+					],
+					"path": [
+						"api",
+						"partner",
+						"auth",
+						"authenticate"
+					]
+				},
+				"description": "Authenticates using Client ID and Client Secret via application/x-www-form-urlencoded."
+			},
+			"response": []
+		},
+		{
+			"name": "2. Generate UUID (E-Invoice Submission)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept_language",
+						"value": "en"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"docs\": {\n    \"invoice\": {\n      \"doc_counter_val\": \"1\",\n      \"doc_no\": \"InvSample003\",\n      \"doc_date\": \"2026-05-13\",\n      \"doc_time\": \"11:10:00\",\n      \"doc_type_code\": \"388\",\n      \"doc_type_trans\": \"0100010\",\n      \"doc_cur\": \"SAR\",\n      \"doc_tax_cur\": \"SAR\"\n    },\n    \"supplierparty\": {\n      \"seller_reg_type\": \"CRN\",\n      \"seller_other_id\": \"2055004471\",\n      \"seller_adrs_line1\": \"Road 120\",\n      \"seller_adrs_line2\": \"Jubail Industrial City\",\n      \"seller_bldg_number\": \"0223\",\n      \"seller_adrs_number\": \"11111\",\n      \"seller_city\": \"Al Jubail\",\n      \"seller_postal_code\": \"11111\",\n      \"seller_state\": \"Eastern Province\",\n      \"seller_district\": \"Al Jubail\",\n      \"seller_country_code\": \"SA\",\n      \"seller_vat_number\": \"314414679700003\",\n      \"seller_name\": \"SJS ENERSOL COM\",\n      \"seller_email\": \"sedres@sedres.com\",\n      \"seller_phone\": \"0532024948\"\n    },\n    \"customerparty\": {\n      \"other_reg_type\": \"OTH\",\n      \"other_buyer_id\": \"3116215961\",\n      \"buyer_adrs_line1\": \"Sagarpur\",\n      \"buyer_adrs_line2\": \"Janakpuri\",\n      \"buyer_bldg_number\": \"1452\",\n      \"buyer_adrs_number\": \"3rd cross\",\n      \"buyer_city\": \"Bangalore\",\n      \"buyer_country_code\": \"IN\",\n      \"buyer_district\": \"Delhi\",\n      \"buyer_postal_code\": \"110046\",\n      \"buyer_state\": \"New Delhi\",\n      \"buyer_vat_number\": \"311621596100003\",\n      \"buyer_name\": \"CASH MASTER - CASH SALES\",\n      \"buyer_email\": \"zain@yopmail.com\",\n      \"buyer_phone\": \"+918851326523\"\n    },\n    \"invoice_level_charges\": {\n      \"doc_adv_paid_cur\": \"SAR\",\n      \"doc_adv_paid_with_vat_amt\": \"0.00\",\n      \"doc_charge_sum_cur\": \"SAR\",\n      \"doc_charge_sum\": \"61.81\",\n      \"doc_net_cur\": \"SAR\",\n      \"doc_net_amt_bfr_vat\": \"53.75\",\n      \"doc_net_dis_cur\": \"SAR\",\n      \"doc_net_dis_amt\": \"0.00\",\n      \"doc_outstanding_cur\": \"SAR\",\n      \"doc_outstanding_amt\": \"61.81\",\n      \"doc_rounding_cur\": \"SAR\",\n      \"doc_rounding_amt\": \"0.000000\",\n      \"doc_ttl_wo_vat_cur\": \"SAR\",\n      \"doc_ttl_wo_vat_amt\": \"53.75\",\n      \"doc_ttl_with_vat_cur\": \"SAR\",\n      \"doc_ttl_with_vat_amt\": \"61.81\",\n      \"doc_ttl_vat_acct_cur\": \"SAR\",\n      \"doc_ttl_vat_acct_amt\": \"61.81\",\n      \"doc_ttl_vat_cur\": \"SAR\",\n      \"doc_ttl_vat_amt\": \"8.06\",\n      \"vat_ctg_code\": \"S\",\n      \"vat_ctg_rate\": \"15.00\",\n      \"vat_ctg_tax_cur\": \"SAR\",\n      \"vat_ctg_tax_amt\": \"8.06\",\n      \"vat_ctg_taxable_cur\": \"SAR\",\n      \"vat_ctg_taxable_amt\": \"53.75\",\n      \"vat_exmp_reason_code\": \"\",\n      \"vat_exmp_reason_text\": \"\",\n      \"reason_doc_alwc_code\": \"95\",\n      \"reason_doc_alwc\": \"discount\",\n      \"reason_doc_charge_code\": \"CG\",\n      \"reason_doc_charge\": \"Cleaning\",\n      \"doc_alwc_cur\": \"SAR\",\n      \"doc_alwc_amt\": \"0.00\",\n      \"doc_alwc_base_amt\": \"0.00\",\n      \"doc_alwc_base_cur\": \"SAR\",\n      \"doc_alwc_indicator\": false,\n      \"doc_alwc_percent\": \"0.00\",\n      \"doc_alwc_vat_ctg\": \"S\",\n      \"doc_alwc_vat_rate\": \"15.00\",\n      \"doc_charge_cur\": \"SAR\",\n      \"doc_charge_amt\": \"0.00\",\n      \"doc_charge_base_cur\": \"SAR\",\n      \"doc_charge_base_amt\": \"53.75\",\n      \"doc_charge_indicator\": true,\n      \"doc_charge_percent\": \"15.00\",\n      \"doc_charge_vat_ctg\": \"S\",\n      \"doc_charge_vat_rate\": \"15.00\"\n    },\n    \"invoiceadditionaldocument\": {\n      \"purchase_order_id\": \"1073149\",\n      \"contract_id\": \"161313031\",\n      \"doc_payment_account\": \"SA000000000000001\",\n      \"doc_payment_terms\": \"Payment by credit\",\n      \"doc_supply_date\": \"2026-04-09\",\n      \"doc_supply_end_date\": \"2026-04-09\",\n      \"doc_inv_notes\": \"Invoice notes\"\n    },\n    \"item\": [\n      {\n        \"line_id\": \"1\",\n        \"line_quantity\": \"1.00\",\n        \"line_unit\": \"BAG\",\n        \"line_vat_amt\": \"8.06\",\n        \"line_vat_cur\": \"SAR\",\n        \"item_identity_by_buyer\": \"CH000532\",\n        \"item_identity_by_seller\": \"CH000532\",\n        \"item_name\": \"Rice Basmati Taj Mahal 10Kgs\",\n        \"item_grs_price_cur\": \"SAR\",\n        \"item_grs_price_bfr_vat_bfr_dis\": \"53.75\",\n        \"item_net_price_cur\": \"SAR\",\n        \"item_net_price_aft_dis_bfr_vat\": \"53.75\",\n        \"item_price_alwc_indicator\": false,\n        \"item_price_base_qty\": \"1\",\n        \"item_price_base_unit\": \"BAG\",\n        \"item_price_dis_cur\": \"SAR\",\n        \"item_price_dis_amt\": \"0.000000\",\n        \"item_std_identity\": \"\",\n        \"item_vat_ctg_code\": \"S\",\n        \"item_vat_rate\": \"15.00\",\n        \"item_line_alwc_cur\": \"SAR\",\n        \"item_line_alwc_amt\": \"0.00\",\n        \"item_line_alwc_base_amt\": \"0.00\",\n        \"item_line_alwc_base_cur\": \"SAR\",\n        \"item_line_alwc_indicator\": false,\n        \"item_line_alwc_percentage\": \"0.000000\",\n        \"item_line_alwc_reason_charge_code\": \"95\",\n        \"item_line_alwc_reason_charge\": \"Discount\",\n        \"item_line_charge_cur\": \"SAR\",\n        \"item_line_charge_amt\": \"0.00\",\n        \"item_line_charge_base_cur\": \"SAR\",\n        \"item_line_charge_base_amt\": \"53.750000\",\n        \"item_line_charge_indicator\": false,\n        \"item_line_charge_percent\": \"0.00\",\n        \"item_line_charge_reason_code\": \"CG\",\n        \"item_line_charge_reason\": \"Cleaning\",\n        \"item_line_incl_vat_cur\": \"SAR\",\n        \"item_line_incl_vat_amt\": \"61.81\",\n        \"item_line_net_cur_incl_alwc\": \"SAR\",\n        \"item_line_net_amt_incl_alwc\": \"53.75\"\n      }\n    ],\n    \"payment_type\": [\n      {\n        \"payment_type_code\": \"30\",\n        \"reasons_for_issuance\": \"partially\"\n      }\n    ],\n    \"billing_reference\": [\n      {\n        \"billing_reference_id\": \"166166151\"\n      }\n    ],\n    \"prepayment_details\": {\n      \"prepayment_doc_type_code\": \"\",\n      \"prepayment_id\": \"\",\n      \"prepayment_issue_date\": \"\",\n      \"prepayment_issue_time\": \"\",\n      \"prepayment_uuid\": \"\",\n      \"prepayment_vat_ctg\": \"\",\n      \"prepayment_vat_rate\": \"\",\n      \"prepayment_vat_tax_cur\": \"\",\n      \"prepayment_vat_tax_amt\": \"\",\n      \"prepayment_vat_taxable_cur\": \"\",\n      \"prepayment_vat_taxable_amt\": \"\"\n    }\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_auth_url}}/api/partner/ksaapi/generate_uuid",
+					"host": [
+						"{{base_auth_url}}"
+					],
+					"path": [
+						"api",
+						"partner",
+						"ksaapi",
+						"generate_uuid"
+					]
+				},
+				"description": "Submits the invoice docs structure to Fynamics KSA generate_uuid API."
+			},
+			"response": []
+		}
+	]
+}

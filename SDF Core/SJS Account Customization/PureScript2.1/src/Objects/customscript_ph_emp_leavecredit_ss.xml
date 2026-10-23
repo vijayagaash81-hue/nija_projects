@@ -1,0 +1,54 @@
+<scheduledscript scriptid="customscript_ph_emp_leavecredit_ss">
+  <description>Scheduled script to credit leave balance for newly joined/updated employees based on leave configuration.</description>
+  <isinactive>F</isinactive>
+  <name>PH Employee Leave Credit SS</name>
+  <notifyadmins>F</notifyadmins>
+  <notifyemails></notifyemails>
+  <notifyowner>T</notifyowner>
+  <scriptfile>[/SuiteScripts/Pure Harvest 2.1 Scripts/Employee/SS 2.1/hris_emp_leavecredit_ss.js]</scriptfile>
+  <scriptcustomfields>
+    <scriptcustomfield scriptid="custscript_hr21empidtocreateleaves">
+      <accesslevel>2</accesslevel>
+      <applyformatting>F</applyformatting>
+      <checkspelling>F</checkspelling>
+      <defaultchecked>F</defaultchecked>
+      <defaultselection></defaultselection>
+      <defaultvalue></defaultvalue>
+      <description>Employee internal ID to process leave credit</description>
+      <displayheight></displayheight>
+      <displaytype>NORMAL</displaytype>
+      <displaywidth></displaywidth>
+      <dynamicdefault></dynamicdefault>
+      <fieldtype>CLOBTEXT</fieldtype>
+      <help>Internal ID of the employee to credit leaves</help>
+      <isformula>F</isformula>
+      <ismandatory>F</ismandatory>
+      <label>Employee Id</label>
+      <linktext></linktext>
+      <maxlength></maxlength>
+      <maxvalue></maxvalue>
+      <minvalue></minvalue>
+      <onparentdelete></onparentdelete>
+      <searchlevel>2</searchlevel>
+      <selectrecordtype></selectrecordtype>
+      <setting></setting>
+      <storevalue>T</storevalue>
+    </scriptcustomfield>
+  </scriptcustomfields>
+  <scriptdeployments>
+    <scriptdeployment scriptid="customdeploy_ph_emp_leavecredit_ss">
+      <custscript_hr21empidtocreateleaves></custscript_hr21empidtocreateleaves>
+      <isdeployed>T</isdeployed>
+      <loglevel>DEBUG</loglevel>
+      <status>NOTSCHEDULED</status>
+      <title>PH Employee Leave Credit SS</title>
+      <recurrence>
+        <single>
+          <repeat></repeat>
+          <startdate>2026-10-20</startdate>
+          <starttime>18:00:00Z</starttime>
+        </single>
+      </recurrence>
+    </scriptdeployment>
+  </scriptdeployments>
+</scheduledscript>

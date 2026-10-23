@@ -1,0 +1,13 @@
+<manifest projecttype="ACCOUNTCUSTOMIZATION">
+    <projectname>Purchase Inquiry</projectname>
+    <frameworkversion>1.0</frameworkversion>
+    <dependencies>
+        <features>
+            <feature required="false">CRM</feature>
+        </features>
+        <objects>
+            <object>customrecord_njt_pur_req_h</object>
+            <object>customrecord_njt_pur_inq</object>
+        </objects>
+    </dependencies>
+</manifest>
