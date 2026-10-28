@@ -378,6 +378,28 @@
                             </td>
                         </tr>
                     </table>
+                    <!-- Fynamics QR Code Image -->
+                    <#if (customData.qrImageUrl)?has_content>
+                        <div align="center" style="margin-top: 8px;">
+                            <img class="qr-code" src="${customData.qrImageUrl?string?replace('&amp;', '&')?xml}" style="width: 100px; height: 100px;" />
+                        </div>
+                    <#elseif (record.custbody_fynamics_qr_image)?has_content>
+                        <div align="center" style="margin-top: 8px;">
+                            <#if record.custbody_fynamics_qr_image?is_hash && (record.custbody_fynamics_qr_image.url)?has_content>
+                                <img class="qr-code" src="${record.custbody_fynamics_qr_image.url?string?replace('&amp;', '&')?xml}" style="width: 100px; height: 100px;" />
+                            <#else>
+                                <img class="qr-code" src="${record.custbody_fynamics_qr_image?string?replace('&amp;', '&')?xml}" style="width: 100px; height: 100px;" />
+                            </#if>
+                        </div>
+                    <#elseif (record.custbody_fynamics_qr_url)?has_content>
+                        <div align="center" style="margin-top: 8px;">
+                            <img class="qr-code" src="${record.custbody_fynamics_qr_url?string?replace('&amp;', '&')?xml}" style="width: 100px; height: 100px;" />
+                        </div>
+                    <#elseif (record.custbody_fynamics_qr_code)?has_content>
+                        <div align="center" style="margin-top: 8px;">
+                            <barcode codetype="qrcode" showtext="false" value="${record.custbody_fynamics_qr_code?string?replace('&amp;', '&')?xml}" width="100px" height="100px"/>
+                        </div>
+                    </#if>
                 </td>
             </tr>
             <tr>

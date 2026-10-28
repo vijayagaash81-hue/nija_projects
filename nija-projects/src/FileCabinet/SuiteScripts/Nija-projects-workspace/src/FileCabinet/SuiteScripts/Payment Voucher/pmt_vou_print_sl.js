@@ -118,33 +118,60 @@ define(['N/render', 'N/record', 'N/file', 'N/log', 'N/search'], function (render
                     }
                 }
 
-                // Get Subsidiary Address and Phone
+                // Get Subsidiary Address and Phone from Subsidiary record
                 var subsidiaryId = rec.getValue({ fieldId: 'subsidiary' });
                 var subsidiaryAddress = '';
                 var subsidiaryPhone = '';
+                var subsidiaryRec = null;
                 if (subsidiaryId) {
                     try {
-                        var subsidiaryRec = record.load({
+                        subsidiaryRec = record.load({
                             type: record.Type.SUBSIDIARY,
                             id: subsidiaryId
                         });
-                        subsidiaryAddress = subsidiaryRec.getValue({ fieldId: 'mainaddress_text' }) || '';
+
+                        // 1. Fetch address and phone from the mainaddress subrecord
+                        try {
+                            var mainAddressSubrec = subsidiaryRec.getSubrecord({ fieldId: 'mainaddress' });
+                            if (mainAddressSubrec) {
+                                subsidiaryAddress = mainAddressSubrec.getValue({ fieldId: 'addrtext' }) || '';
+                                subsidiaryPhone = mainAddressSubrec.getValue({ fieldId: 'addrphone' }) || '';
+                            }
+                        } catch (subErr) {
+                            log.error('Error fetching address subrecord', subErr.message);
+                        }
+
+                        // 2. Fallback lookup for mainaddress if subrecord did not return addrtext
+                        if (!subsidiaryAddress) {
+                            try {
+                                var subLookup = search.lookupFields({
+                                    type: search.Type.SUBSIDIARY,
+                                    id: subsidiaryId,
+                                    columns: ['mainaddress', 'phone']
+                                });
+                                subsidiaryAddress = subLookup.mainaddress || '';
+                                if (!subsidiaryPhone && subLookup.phone) {
+                                    subsidiaryPhone = subLookup.phone;
+                                }
+                            } catch (lookErr) {
+                                log.error('Error looking up subsidiary address', lookErr.message);
+                            }
+                        }
                         
                         // Remove the first line of the address to avoid repeating the Subsidiary Name
                         if (subsidiaryAddress) {
                             var addressLines = subsidiaryAddress.replace(/\r/g, '').split('\n');
                             if (addressLines.length > 1) {
                                 addressLines.shift(); // Removes the first line
-                                subsidiaryAddress = addressLines.join('\n');
+                                subsidiaryAddress = addressLines.join('\n').trim();
                             }
                         }
 
-                        try {
-                            var mainAddressSubrec = subsidiaryRec.getSubrecord({ fieldId: 'mainaddress' });
-                            subsidiaryPhone = mainAddressSubrec.getValue({ fieldId: 'addrphone' }) || '';
-                        } catch (subErr) {
-                            log.error('Error fetching address subrecord', subErr.message);
+                        if (!subsidiaryPhone && subsidiaryRec.getValue({ fieldId: 'phone' })) {
+                            subsidiaryPhone = subsidiaryRec.getValue({ fieldId: 'phone' });
                         }
+
+                        var subsiUrl = subsidiaryRec.getValue({ fieldId: 'url' }) || '';
                     } catch (e) {
                         log.error('Error fetching subsidiary data', e.message);
                     }
@@ -162,6 +189,10 @@ define(['N/render', 'N/record', 'N/file', 'N/log', 'N/search'], function (render
                         var docId = rec.getSublistValue({ sublistId: 'apply', fieldId: 'doc', line: i });
                         var amount = rec.getSublistValue({ sublistId: 'apply', fieldId: 'amount', line: i });
                         var refnum = rec.getSublistValue({ sublistId: 'apply', fieldId: 'refnum', line: i });
+                        var dueDate = rec.getSublistText({ sublistId: 'apply', fieldId: 'applydate', line: i }) || 
+                                      rec.getSublistValue({ sublistId: 'apply', fieldId: 'applydate', line: i }) || 
+                                      rec.getSublistText({ sublistId: 'apply', fieldId: 'duedate', line: i }) || 
+                                      rec.getSublistValue({ sublistId: 'apply', fieldId: 'duedate', line: i }) || '';
                         
                         var transNum = refnum;
                         var projCode = '';
@@ -186,9 +217,14 @@ define(['N/render', 'N/record', 'N/file', 'N/log', 'N/search'], function (render
                                     id: docId
                                 });
                                 
-                                // 3. Get Transaction Number and Project Code
+                                // 3. Get Transaction Number, Project Code, and Due/Transaction Date
                                 transNum = appliedRec.getValue({ fieldId: 'transactionnumber' }) || appliedRec.getValue({ fieldId: 'tranid' }) || refnum;
                                 projCode = appliedRec.getText({ fieldId: 'cseg_njt_seg_proj' }) || appliedRec.getValue({ fieldId: 'cseg_njt_seg_proj' }) || '';
+                                dueDate = appliedRec.getText({ fieldId: 'duedate' }) || 
+                                          appliedRec.getValue({ fieldId: 'duedate' }) || 
+                                          appliedRec.getText({ fieldId: 'trandate' }) || 
+                                          appliedRec.getValue({ fieldId: 'trandate' }) || 
+                                          dueDate;
                                 log.debug("transactionnumber",transNum);
                                 log.debug("cseg_njt_seg_proj",projCode);
                             }
@@ -201,6 +237,7 @@ define(['N/render', 'N/record', 'N/file', 'N/log', 'N/search'], function (render
                             cseg_njt_seg_proj: projCode,
                             doc: refnum,
                             refnum: refnum,
+                            dueDate: dueDate,
                             amount: amount
                         });
                     }
@@ -228,8 +265,10 @@ define(['N/render', 'N/record', 'N/file', 'N/log', 'N/search'], function (render
                         lines: applyLines,
                         bankName: bankName,
                         totalWords: amountInWords,
+                        currency: currencyText,
                         subsidiaryAddress: subsidiaryAddress,
-                        subsidiaryPhone: subsidiaryPhone
+                        subsidiaryPhone: subsidiaryPhone,
+                        subsiUrl: subsiUrl || ''
                     }
                 });
 
@@ -238,6 +277,14 @@ define(['N/render', 'N/record', 'N/file', 'N/log', 'N/search'], function (render
                     templateName: 'record',
                     record: rec
                 });
+
+                // Bind the subsidiary record to 'subsidiary' object used in FreeMarker (e.g., ${subsidiary.mainaddress_text})
+                if (subsidiaryRec) {
+                    renderer.addRecord({
+                        templateName: 'subsidiary',
+                        record: subsidiaryRec
+                    });
+                }
 
                 // 5. Render as PDF
                 var pdfFile = renderer.renderAsPdf();

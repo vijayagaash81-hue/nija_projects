@@ -196,9 +196,9 @@ define(['N/render', 'N/record', 'N/file', 'N/search'], function(render, record, 
             xmlContent = xmlContent.replace(/AED/g, 'USD');
         }
 
-        // 4b. Remove header logo, footer logo, and stamp images if 'Tax Invoice without logo' was selected
+        // 4b. Remove header logo, footer logo, and stamp images if 'Tax Invoice without logo' was selected (preserve QR code)
         if (hideLogo === 'T') {
-            xmlContent = xmlContent.replace(/<img[^>]*>/gi, '');
+            xmlContent = xmlContent.replace(/<img(?![^>]*class="qr-code")[^>]*>/gi, '');
         }
 
         // 5. Initialize the Renderer engine
@@ -217,6 +217,23 @@ define(['N/render', 'N/record', 'N/file', 'N/search'], function(render, record, 
         // 7b. Convert the total to words and pass it as a custom data source
         var totalAmount = rec.getValue({ fieldId: 'total' });
         var amountInWords = convertAmountToWords(totalAmount, currencySelection);
+
+        // 7c. Retrieve QR Code Image URL if available
+        var qrImageVal = rec.getValue({ fieldId: 'custbody_fynamics_qr_image' }) || rec.getValue({ fieldId: 'custbody_fynamics_qr_url' });
+        var qrImageUrl = '';
+        if (qrImageVal) {
+            if (typeof qrImageVal === 'number' || (!isNaN(qrImageVal) && !isNaN(parseFloat(qrImageVal)) && String(qrImageVal).indexOf('/') === -1)) {
+                try {
+                    var qrFileObj = file.load({ id: qrImageVal });
+                    qrImageUrl = qrFileObj.url;
+                } catch (e) {
+                    log.error('Error loading QR image file', e.message);
+                }
+            } else {
+                qrImageUrl = String(qrImageVal);
+            }
+        }
+
         renderer.addCustomDataSource({
             format: render.DataSource.OBJECT,
             alias: 'customData',
@@ -224,7 +241,8 @@ define(['N/render', 'N/record', 'N/file', 'N/search'], function(render, record, 
                 totalWords: amountInWords,
                 addressInfo: addressData,
                 deliveryOrderNo: deliveryOrderNo,
-                hideLogo: (hideLogo === 'T')
+                hideLogo: (hideLogo === 'T'),
+                qrImageUrl: escapeXml(qrImageUrl)
                 // varregnum:vatRegNumber
             }
         });

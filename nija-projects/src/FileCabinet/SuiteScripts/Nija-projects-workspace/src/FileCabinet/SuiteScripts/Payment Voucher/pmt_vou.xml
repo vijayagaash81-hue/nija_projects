@@ -63,7 +63,8 @@
         }
 
         .signature-table {
-            margin-top: 50px;
+            width: 100%;
+            margin-top: 20pt;
         }
 
         .signature-table td {
@@ -71,6 +72,7 @@
             border-top: 1px solid black;
             padding-top: 5px;
             font-weight: bold;
+            font-size: 9pt;
         }
 
         .total-box {
@@ -82,14 +84,27 @@
         }
 
     </style>
+    <macrolist>
+        <macro id="nlfooter">
+            <table class="signature-table">
+                <tr>
+                    <td width="20%" align="center">Prepared By</td>
+                    <td width="20%" align="center">Accounts Manager</td>
+                    <td width="20%" align="center">Division Head</td>
+                    <td width="20%" align="center">M.D</td>
+                    <td width="20%" align="center">Received By</td>
+                </tr>
+            </table>
+        </macro>
+    </macrolist>
 </head>
 
-<body size="A4">
+<body size="A4" footer="nlfooter" footer-height="55pt">
 
     <!-- Default to an empty row if no apply lines exist to prevent breaking -->
     <#assign applyLines = customApply.lines?has_content?then(customApply.lines, [{}])>
     <!-- PAGINATION LOGIC: 5 ITEMS PER PAGE -->
-    <#list applyLines?chunk(5) as applyBatch>
+    <#list applyLines?chunk(10) as applyBatch>
 
     <!-- Main Wrapper for Full Border -->
     <table class="border">
@@ -98,8 +113,16 @@
             <td colspan="2" align="center" style="text-align: center; padding: 5px;">
                 <p align="center" style="margin: 0px; padding: 0px;">
                     <span class="company">${record.subsidiary?upper_case}</span><br/>
-                    <span class="subcompany">${customApply.subsidiaryAddress?replace('\n', '<br/>')}</span>
-                    <#if customApply.subsidiaryPhone?has_content><br/><span class="subcompany">Tel: ${customApply.subsidiaryPhone}</span></#if>
+                    <#if (customApply.subsidiaryAddress)?has_content>
+                        <span class="subcompany">${customApply.subsidiaryAddress?replace('\n', '<br/>')}</span>
+                    <#elseif subsidiary?? && (subsidiary.mainaddress_text)?has_content>
+                        <span class="subcompany">${subsidiary.mainaddress_text?replace('\n', '<br/>')}</span>
+                    </#if>
+                    <#if (customApply.subsiUrl)?has_content>
+                        <br/><span class="subcompany"> ${customApply.subsiUrl}</span>
+                    <#elseif subsidiary?? && (subsidiary.phone)?has_content>
+                        <br/><span class="subcompany"> ${subsidiary.phone}</span>
+                    </#if>
                 </p>
             </td>
         </tr>
@@ -152,7 +175,7 @@
 
                     <tr>
                         <td class="field-label">Total Amount:</td>
-                        <td><#if record.total?has_content>${record.total?string("#,##0.00")}</#if></td>
+                        <td><#if record.total?has_content>${record.currency!customApply.currency!""} ${record.total?string("#,##0.00")}</#if></td>
                     </tr>
                 </table>
             </td>
@@ -211,8 +234,8 @@
 
         <tr>
             <th width="8%">S.No</th>
-            <th width="22%">Document No</th>
-            <th width="25%">Project Code</th>
+            <th width="22%">Date</th>
+            <th width="25%">Document No</th>
             <th width="25%">Invoice No</th>
             <th width="20%">Amount</th>
         </tr>
@@ -220,18 +243,18 @@
         <#list applyBatch as apply>
 
         <tr>
-            <td align="center"><#if apply.refnum?? || apply.doc?? || apply.transactionnumber??>${apply_index + 1 + (applyBatch?index * 5)}</#if></td>
+            <td align="center"><#if apply.refnum?? || apply.doc?? || apply.transactionnumber??>${apply_index + 1 + (applyBatch?index * 10)}</#if></td>
+            <td>${apply.dueDate!""}</td>
             <td>${apply.transactionnumber!""}</td>
-            <td>${apply.cseg_njt_seg_proj!""}</td>
             <td>${apply.doc!""}</td>
-            <td align="right"><#if apply.amount?has_content>${apply.amount?string("#,##0.00")}</#if></td>
+            <td align="right"><#if apply.amount?has_content>${record.currency!customApply.currency!""} <#if apply.amount?is_number>${apply.amount?string("#,##0.00")}<#else>${(apply.amount?number?string("#,##0.00"))!apply.amount}</#if></#if></td>
         </tr>
 
         </#list>
 
         <!-- Fill empty rows to maintain consistent table height -->
-        <#if applyBatch?size lt 5>
-            <#list 1..(5 - applyBatch?size) as i>
+        <#if applyBatch?size lt 10>
+            <#list 1..(10 - applyBatch?size) as i>
             <tr>
                 <td>&nbsp;</td>
                 <td></td>
@@ -246,7 +269,7 @@
         <#if !applyBatch?has_next>
         <tr>
             <td colspan="4" align="right"><b>Total</b></td>
-            <td align="right"><b><#if record.total?has_content>${record.total?string("#,##0.00")}</#if></b></td>
+            <td align="right"><b><#if record.total?has_content>${record.currency!customApply.currency!""} ${record.total?string("#,##0.00")}</#if></b></td>
         </tr>
         </#if>
 
@@ -270,22 +293,6 @@
 </#if>
 </td>
         </tr>
-    </table>
-
-    <br/><br/><br/>
-
-    <!-- Signature Section -->
-
-    <table class="signature-table">
-
-        <tr>
-            <td width="20%" align="center">Prepared By</td>
-            <td width="20%" align="center">Accounts Manager</td>
-            <td width="20%" align="center">Division Head</td>
-            <td width="20%" align="center">M.D</td>
-            <td width="20%" align="center">Received By</td>
-        </tr>
-
     </table>
     </#if>
 

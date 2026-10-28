@@ -122,3 +122,16 @@ You can use either of the following in your Advanced PDF/HTML template:
     <barcode codetype="qrcode" showtext="false" value="${record.custbody_fynamics_qr_code}" width="120px" height="120px"/>
 </#if>
 ```
+
+---
+
+## 7. Live Progress Loading Popup & Automatic Completion Reload
+
+When the user clicks the **Generate E-Invoice** button on an Invoice:
+1. **Instant Visual Feedback**: A modern, animated loading modal overlay immediately covers the screen with backdrop blur and spinner.
+2. **Background Map/Reduce Polling**: The client script periodically polls the invoice fields via `N/search.lookupFields` (every 2.5 seconds) to track completion.
+3. **Automatic Screen Refresh**:
+   - Once the Map/Reduce script clears the invoice and sets `custbody_fynamics_einvoice_status = 'CLEARED'`, the modal turns into a green success indicator.
+   - After a brief 1.5-second pause, the page automatically reloads, showing the updated invoice with the QR code and hiding the buttons.
+4. **Error & Timeout Handling**: If clearance is rejected or encounters an error, the modal displays the exact error message and provides a "Close & Refresh" button. A 3-minute safety timeout prevents infinite spinning.
+

@@ -71,19 +71,28 @@ define([
                     type: record.Type.INVOICE,
                     id: invoiceId,
                     values: {
-                        [fieldId]: true
+                        [fieldId]: true,
+                        'custbody_fynamics_einvoice_status': 'IN_PROGRESS'
                     },
                     options: {
                         ignoreMandatoryFields: true
                     }
                 });
                 log.audit({
-                    title: 'Invoice Checkbox Set Successfully',
+                    title: 'Invoice Checkbox Set Successfully & Status set to IN_PROGRESS',
                     details: `Field ${fieldId} checked on Invoice #${invoiceId}`
                 });
                 return fieldId;
             } catch (err) {
-                // Field might not exist yet; try next candidate
+                try {
+                    record.submitFields({
+                        type: record.Type.INVOICE,
+                        id: invoiceId,
+                        values: { [fieldId]: true },
+                        options: { ignoreMandatoryFields: true }
+                    });
+                    return fieldId;
+                } catch (fallbackErr) {}
             }
         }
         log.warn({
@@ -184,13 +193,15 @@ define([
                 }
 
                 // Strip &generate_einvoice=T from the browser URL immediately
-                // so that pressing Refresh (F5) or reloading the page will NOT re-trigger the Map/Reduce
+                // and pass flags to trigger the Client Script loading popup
                 const cleanScriptField = form.addField({
                     id: 'custpage_clean_url_script',
                     type: 'inlinehtml',
-                    label: 'Clean URL'
+                    label: 'Clean URL and Trigger Popup'
                 });
                 cleanScriptField.defaultValue = `<script>
+                    window._fynamicsJustTriggered = true;
+                    window._fynamicsInvoiceId = "${invoiceId}";
                     if (window.history && window.history.replaceState) {
                         var cleanUrl = window.location.href.replace(/([&?])generate_einvoice=T&?/g, '$1').replace(/[?&]$/, '');
                         window.history.replaceState(null, document.title, cleanUrl);
@@ -198,7 +209,10 @@ define([
                 </script>`;
             }
 
-            // 3. Check if invoice is triggered (either just now or previously recorded)
+            // 3. Always attach Client Script for VIEW mode (needed for button click and loading popup polling)
+            form.clientScriptModulePath = './njt_cs_fynamics_einvoice_btn.js';
+
+            // 4. Check if invoice is triggered (either just now or previously recorded)
             const isTriggered = justTriggered || isInvoiceTriggered(invoiceRec);
 
             if (isTriggered) {
@@ -221,9 +235,7 @@ define([
                 return;
             }
 
-            // 4. If NOT triggered yet: attach Client Script and add "Generate E-Invoice" button
-            form.clientScriptModulePath = './njt_cs_fynamics_einvoice_btn.js';
-
+            // 5. If NOT triggered yet: add "Generate E-Invoice" button
             form.addButton({
                 id: 'custpage_btn_generate_einvoice',
                 label: 'Generate E-Invoice',

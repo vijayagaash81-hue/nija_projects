@@ -253,30 +253,28 @@
    
     <thead>
         <tr style="height:20px;border-bottom: 0.7pt solid #007FF5;">
-            <th align="center" style="width: 11%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Doc No</th>
+            <th align="center" style="width: 13%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Doc No</th>
             <th align="center" style="width: 7%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Posting Date</th>
             <th align="center" style="width: 7%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Due Date</th>
             <th align="center" style="width: 8%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">TRX Type</th>
-            <th align="center" style="width: 9%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">LPO/REF No</th>
-            <th align="center" style="width: 6%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">D.N NO</th>
+            <th align="center" style="width: 10%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">LPO/REF No</th>
             <th align="center" style="width: 9%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Debit</th>
             <th align="center" style="width: 9%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Credit</th>
-            <th align="center" style="width: 9%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Open Amount</th>
-            <th align="center" style="width: 10%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Cumulative<br/>Balance</th>
+            <th align="center" style="width: 10%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Open Amount</th>
+            <th align="center" style="width: 11%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Cumulative<br/>Balance</th>
             <th align="center" style="width: 6%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">PDC Amount</th>
             <th align="center" style="width: 5%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">Due Days</th>
-            <th align="center" style="width: 4%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">PDC Maturity<br/>Days</th>
+            <th align="center" style="width: 5%; font-size:7pt; font-weight: bold; background-color: #EFF4F8;">PDC Maturity<br/>Days</th>
         </tr>
     </thead>
     <tbody>
         <#list customData.transactions as tx>
         <tr style="border-bottom: 1px dotted #007FFF;">
-            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.docNo}</td>
+            <td align="center" style="font-size: 7pt; padding: 5px 2px; whitespace:nowrap;">${tx.docNo}</td>
             <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.postDate}</td>
             <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.dueDate}</td>
             <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.trxType}</td>
             <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.refNo}</td>
-            <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.dnNo!""}</td>
             <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.debit}</td>
             <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.credit}</td>
             <td align="center" style="font-size: 7pt; padding: 5px 2px;">${tx.open}</td>
@@ -289,7 +287,7 @@
         
         <!-- Totals Row -->
         <tr>
-            <td colspan="6" align="right" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">Totals:</td>
+            <td colspan="5" align="right" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">Totals:</td>
             <td align="center" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">${customData.totalDebit}</td>
             <td align="center" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">${customData.totalCredit}</td>
             <td align="center" style="border-top: none; background-color: #FAFAFA; padding: 6px 3px; font-size: 7.5pt; font-weight: bold;">${customData.totalOpen}</td>
